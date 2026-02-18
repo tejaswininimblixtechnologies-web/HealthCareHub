@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class UploadImageHelper {
 
-    @Value("${assignment.upload.path}")
+ /*   @Value("${assignment.upload.path}")
     private String uploadPath;
 
     public MultipleImageResponse uploadImages(List<MultipartFile> pictures) throws Exception {
@@ -78,5 +78,8 @@ public class UploadImageHelper {
 
         return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);
     }
+
+
+  */
 
 }

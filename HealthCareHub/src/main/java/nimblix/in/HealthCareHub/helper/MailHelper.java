@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 
 @Component
 @RequiredArgsConstructor
-public class MailHelper {
+ public class MailHelper {
 
-    private final JavaMailSender mailSender;
+ /*   private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String fromEmail;
@@ -90,6 +90,9 @@ public class MailHelper {
     public static int getSixDigitRandomNumber() {
         return 100000 + new java.util.Random().nextInt(900000);
     }
+
+
+  */
 }
 
 
