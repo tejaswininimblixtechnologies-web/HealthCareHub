@@ -4,44 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
+import java.util.List;
+
 @Entity
-@Table(name = "doctors")
+@Table(name = "specializations")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Doctor {
+public class Specialization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "experience_years")
-    private Integer experienceYears;
-
-    @Column(name = "phoneNo")
-    private String phone;
-
-    @Column(name = "qualification")
-    private String qualification;
-
-    // Login User (Doctor Account)
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    // Many Doctors → One Hospital
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
-
-    @ManyToOne
-    @JoinColumn(name = "specialization_id")
-    private Specialization specialization;
+    @OneToMany(mappedBy = "specialization")
+    private List<Doctor> doctors;
 
     @Column(name = "created_time")
     private String createdTime;
@@ -63,5 +44,4 @@ public class Doctor {
 
 
     }
-
 }

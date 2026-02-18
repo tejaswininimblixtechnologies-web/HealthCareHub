@@ -1,9 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
-
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -18,8 +15,6 @@ public class Patient {
 
     private String gender;
 
-    private String email;
 
-    private Integer age;
-}
+    }
 
