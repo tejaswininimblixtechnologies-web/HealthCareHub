@@ -1,29 +1,26 @@
 package nimblix.in.HealthCareHub.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.dto.DoctorRegisterRequest;
+import nimblix.in.HealthCareHub.model.Doctor;
+import nimblix.in.HealthCareHub.service.DoctorService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/doctor")
+@RequiredArgsConstructor
 public class DoctorController {
 
+    private final DoctorService doctorService;
 
-    /*
-Json object:
-key and value pair
+    @PostMapping("/register")
+    public ResponseEntity<?> registerDoctor(
+            @Valid @RequestBody DoctorRegisterRequest request) {
 
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
-}
-
-*/
-
+        return ResponseEntity.ok(doctorService.registerDoctor(request));
+    }
 
 }
