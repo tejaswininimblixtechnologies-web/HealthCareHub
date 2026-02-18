@@ -28,6 +28,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // ===== SKIP PUBLIC ENDPOINTS =====
+        String path = request.getServletPath();
+
+        if (path.startsWith("/auth") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-ui") ||
+                path.startsWith("/swagger-resources") ||
+                path.startsWith("/webjars") ||
+                path.startsWith("/error")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // ===== READ TOKEN =====
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -36,20 +51,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String username;
+        String email;
 
         try {
-            username = jwtUtil.extractUsername(token);
+            // IMPORTANT — NOW USING EMAIL
+            email = jwtUtil.extractEmail(token);
         } catch (Exception e) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        if (username != null &&
+        // ===== AUTHENTICATE USER =====
+        if (email != null &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails =
-                    userDetailsService.loadUserByUsername(username);
+                    userDetailsService.loadUserByUsername(email);
 
             if (jwtUtil.validateToken(token, userDetails)) {
 

@@ -3,11 +3,8 @@ package nimblix.in.HealthCareHub.security;
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.repository.UserRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,23 +13,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(username.toLowerCase())
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+        //  use ignore case email
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        if (!user.isEnabled()) {
-            throw new UsernameNotFoundException("User is disabled");
-        }
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority(
-                        "ROLE_" + user.getRole().name()
-                ))
-        );
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .roles(user.getRole().name())
+                .build();
     }
 }

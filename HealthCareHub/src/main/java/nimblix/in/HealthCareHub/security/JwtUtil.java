@@ -1,6 +1,8 @@
 package nimblix.in.HealthCareHub.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,34 +21,40 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    // ================= GENERATE TOKEN =================
+    // email is stored as username inside Spring Security
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)
-                )
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 7 days
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return parseClaims(token).getSubject();
+    // ================= EXTRACT EMAIL =================
+    public String extractEmail(String token) {
+        return extractAllClaims(token).getSubject();
     }
 
+    // ================= VALIDATE TOKEN =================
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername())
+
+        String email = extractEmail(token);
+
+        return email.equals(userDetails.getUsername())
                 && !isTokenExpired(token);
     }
 
-    public boolean isTokenExpired(String token) {
-        return parseClaims(token)
+    // ================= CHECK EXPIRY =================
+    private boolean isTokenExpired(String token) {
+        return extractAllClaims(token)
                 .getExpiration()
                 .before(new Date());
     }
 
-    private Claims parseClaims(String token) {
+    // ================= READ CLAIMS =================
+    private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
