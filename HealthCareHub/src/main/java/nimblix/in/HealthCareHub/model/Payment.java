@@ -4,43 +4,31 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "patients")
+@Table(name = "payments")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Patient {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    private Double amount;
 
-    @Column(name = "age")
-    private Integer age;
+    private String paymentStatus; // SUCCESS, FAILED, PENDING
 
-    @Column(name = "gender")
-    private String gender;
+    private LocalDateTime paymentDate;
 
-    @Column(name = "phoneNo")
-    private String phone;
-
-    @Column(name = "disease")
-    private String disease;
-
-    // Login User
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
-    // Hospital Relationship
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
 
     @Column(name = "created_time")
     private String createdTime;

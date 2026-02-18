@@ -4,43 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
+import java.util.List;
+
 @Entity
-@Table(name = "patients")
+@Table(name = "specializations")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Patient {
+public class Specialization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "age")
-    private Integer age;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "phoneNo")
-    private String phone;
-
-    @Column(name = "disease")
-    private String disease;
-
-    // Login User
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    // Hospital Relationship
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
+    @OneToMany(mappedBy = "specialization")
+    private List<Doctor> doctors;
 
     @Column(name = "created_time")
     private String createdTime;

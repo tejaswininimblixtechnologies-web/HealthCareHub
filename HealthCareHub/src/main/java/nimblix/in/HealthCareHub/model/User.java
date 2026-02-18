@@ -5,42 +5,28 @@ import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Patient {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String email;
 
-    @Column(name = "age")
-    private Integer age;
+    @Column(nullable = false)
+    private String password;
 
-    @Column(name = "gender")
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @Column(name = "phoneNo")
-    private String phone;
-
-    @Column(name = "disease")
-    private String disease;
-
-    // Login User
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    // Hospital Relationship
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
+    private boolean enabled = true;
 
     @Column(name = "created_time")
     private String createdTime;
