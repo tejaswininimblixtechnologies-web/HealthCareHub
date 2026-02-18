@@ -1,29 +1,21 @@
 package nimblix.in.HealthCareHub.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.helper.UploadImageHelper;
+import nimblix.in.HealthCareHub.response.MultipleImageResponse;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctor")
+@RequiredArgsConstructor
 public class DoctorController {
 
+    private final UploadImageHelper uploadImageHelper;
 
-    /*
-Json object:
-key and value pair
-
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
-}
-
-*/
-
-
+    @PostMapping("/upload")
+    public MultipleImageResponse uploadFiles(@RequestParam("files") List<MultipartFile> files) throws Exception {
+        return uploadImageHelper.uploadImages(files);
+    }
 }
