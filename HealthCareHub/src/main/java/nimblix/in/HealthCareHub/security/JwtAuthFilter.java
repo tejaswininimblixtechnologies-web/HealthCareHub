@@ -27,6 +27,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+        String requestPath = request.getRequestURI();
+
+// Skip JWT authentication for document upload API
+        if (requestPath.startsWith("/patients/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         final String authHeader = request.getHeader("Authorization");
 

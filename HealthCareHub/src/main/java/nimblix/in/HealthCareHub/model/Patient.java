@@ -1,11 +1,15 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import java.util.List;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "patient")
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,6 +19,7 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "patient_id")
     private Long id;
 
     @Column(name = "name")
@@ -62,4 +67,10 @@ public class Patient {
 
 
     }
+
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<PatientDocument> documents;
+
 }
