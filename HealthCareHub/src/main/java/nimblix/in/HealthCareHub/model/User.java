@@ -18,34 +18,27 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private String email;        // LOGIN FIELD
 
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role;           // ADMIN / DOCTOR / PATIENT
 
     private boolean enabled = true;
 
-    @Column(name = "created_time")
     private String createdTime;
-
-    @Column(name = "updated_time")
     private String updatedTime;
 
-
     @PrePersist
-    protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+    protected void onCreate() {
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = createdTime;
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
-
+    protected void onUpdate() {
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }

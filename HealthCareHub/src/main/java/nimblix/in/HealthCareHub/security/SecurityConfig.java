@@ -25,18 +25,35 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
+
+                // No session (JWT based)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
+                // Authorization rules
                 .authorizeHttpRequests(auth -> auth
+
+                        // AUTH APIs (login/register)
+                        .requestMatchers("/auth/**").permitAll()
+
+                        // Swagger (VERY IMPORTANT)
                         .requestMatchers(
-                                "/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**"
                         ).permitAll()
+
+                        // Allow error page
+                        .requestMatchers("/error").permitAll()
+
+                        // Everything else requires token
                         .anyRequest().authenticated()
                 )
+
+                // Add JWT filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
