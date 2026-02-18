@@ -5,42 +5,29 @@ import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "reviews")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Patient {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    private Integer rating; // 1 to 5
 
-    @Column(name = "age")
-    private Integer age;
+    private String comment;
 
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "phoneNo")
-    private String phone;
-
-    @Column(name = "disease")
-    private String disease;
-
-    // Login User
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    // Hospital Relationship
     @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     @Column(name = "created_time")
     private String createdTime;

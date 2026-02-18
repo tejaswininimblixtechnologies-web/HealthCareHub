@@ -1,64 +1,67 @@
 package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.*;
+import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 @Entity
 @Table(name = "doctors")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long doctorId;
+    private Long id;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(nullable = false)
-    private String lastName;
-
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    private String phone;
-
-    private String specialization;
-
-    private String qualification;
-
+    @Column(name = "experience_years")
     private Integer experienceYears;
 
-    private String licenseNumber;
+    @Column(name = "phoneNo")
+    private String phone;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private DoctorStatus status;
+    @Column(name = "qualification")
+    private String qualification;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    // Login User (Doctor Account)
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // Many Doctors → One Hospital
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
+    @ManyToOne
+    @JoinColumn(name = "specialization_id")
+    private Specialization specialization;
+
+    @Column(name = "created_time")
+    private String createdTime;
+
+    @Column(name = "updated_time")
+    private String updatedTime;
+
 
     @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        if (this.status == null) {
-            this.status = DoctorStatus.ACTIVE;
-        }
+    protected void onCreate(){
+        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+
     }
 
     @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    protected void onUpdate(){
+        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+
+
     }
 
-    public enum DoctorStatus {
-        ACTIVE, INACTIVE, ON_LEAVE
-    }
 }
