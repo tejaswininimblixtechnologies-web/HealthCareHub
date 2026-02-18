@@ -8,20 +8,24 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="doctor")
-public class Doctor {
+@Table(name="patient")
+public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String doctorName;
-    private String specialization;
+    private String patientName;
+    private Integer age;
 
-    @OneToMany(mappedBy="doctor")
+    @ManyToMany
+    @JoinTable(
+            name="patient_medicine",
+            joinColumns=@JoinColumn(name = "patient_id"),
+            inverseJoinColumns=@JoinColumn(name = "medicine_id")
+    )
     private List<Medicine> medicines;
 }
