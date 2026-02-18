@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AdminNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleAdminNotFound(UserNotFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleAdminNotFound(AdminNotFoundException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.NOT_FOUND.value());
         response.put("error", "Not Found");
@@ -54,4 +54,41 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    //Doctor Not Found
+    @ExceptionHandler(DoctorNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleDoctorNotFound(DoctorNotFoundException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Doctor Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    //Nurse Not Found
+    @ExceptionHandler(NurseNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNurseNotFound(NurseNotFoundException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Nurse Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    //Appointment Not Found
+    @ExceptionHandler(AppointmentNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleAppointmentNotFound(AppointmentNotFoundException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Appointment Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
 }
