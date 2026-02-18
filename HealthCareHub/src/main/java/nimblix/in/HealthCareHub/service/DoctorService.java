@@ -3,6 +3,10 @@ package nimblix.in.HealthCareHub.service;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import org.springframework.http.ResponseEntity;
 
+import nimblix.in.HealthCareHub.dto.DoctorPerformanceReport;
+
+import java.util.List;
+
 public interface DoctorService {
     String registerDoctor(DoctorRegistrationRequest request);
 
@@ -11,4 +15,8 @@ public interface DoctorService {
     String updateDoctorDetails(DoctorRegistrationRequest request);
 
     String deleteDoctorDetails(Long doctorId);
+
+    List<DoctorPerformanceReport> getDoctorPerformanceReport();
+
+
 }
