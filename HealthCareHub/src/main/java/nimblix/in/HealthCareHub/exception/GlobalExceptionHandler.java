@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             IllegalArgumentException.class,
             PaymentException.class,
-            MissingServletRequestParameterException.class
+            //MissingServletRequestParameterException.class
     })
     public ResponseEntity<Map<String, Object>> handleBadRequest(Exception ex) {
         Map<String, Object> response = new HashMap<>();
