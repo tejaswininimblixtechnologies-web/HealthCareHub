@@ -5,7 +5,7 @@ import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "patient")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +15,9 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "patient_id")
     private Long id;
+
 
     @Column(name = "name")
     private String name;
@@ -28,6 +30,7 @@ public class Patient {
 
     @Column(name = "phoneNo")
     private String phone;
+
 
     @Column(name = "disease")
     private String disease;
