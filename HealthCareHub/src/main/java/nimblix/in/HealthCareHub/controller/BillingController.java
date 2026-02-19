@@ -28,6 +28,15 @@ public class BillingController {
         try {
             List<BillingHistoryResponse> billingHistory = billingService.getBillingHistoryByPatientId(patientId);
 
+            if (billingHistory == null || billingHistory.isEmpty()) {
+                Map<String, Object> emptyResponse = new HashMap<>();
+                emptyResponse.put("success", false);
+                emptyResponse.put("message", "No billing history found for patientId: " + patientId);
+                emptyResponse.put("data", billingHistory);
+                emptyResponse.put("totalRecords", 0);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyResponse);
+            }
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Billing history retrieved successfully");
@@ -53,6 +62,15 @@ public class BillingController {
             @PathVariable String status) {
         try {
             List<BillingHistoryResponse> billingHistory = billingService.getBillingHistoryByPatientIdAndStatus(patientId, status.toUpperCase());
+
+            if (billingHistory == null || billingHistory.isEmpty()) {
+                Map<String, Object> emptyResponse = new HashMap<>();
+                emptyResponse.put("success", false);
+                emptyResponse.put("message", "No billing history found for patientId: " + patientId + " with status: " + status);
+                emptyResponse.put("data", billingHistory);
+                emptyResponse.put("totalRecords", 0);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyResponse);
+            }
 
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
@@ -117,4 +135,3 @@ public class BillingController {
         }
     }
 }
-
