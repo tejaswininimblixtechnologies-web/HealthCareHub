@@ -37,7 +37,7 @@ public class Patient {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Hospital Relationship
+    // Many Patients → One Hospital
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
@@ -48,18 +48,14 @@ public class Patient {
     @Column(name = "updated_time")
     private String updatedTime;
 
-
     @PrePersist
-    protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+    protected void onCreate() {
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
-
+    protected void onUpdate() {
+        this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }
