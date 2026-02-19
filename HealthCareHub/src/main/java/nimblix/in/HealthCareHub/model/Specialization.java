@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
@@ -22,6 +23,7 @@ public class Specialization {
     private String name;
 
     @OneToMany(mappedBy = "specialization")
+    @JsonManagedReference
     private List<Doctor> doctors;
 
     @Column(name = "created_time")
