@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="medicine")
+@Table(name="medicines")
 public class Medicine {
 
 
@@ -17,7 +17,7 @@ public class Medicine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String medicineName;
-    private String manufacture;
+    private String manufacturer;
     private Double price;
     private Integer stock;
     private String expiryDate;
@@ -25,4 +25,5 @@ public class Medicine {
     @ManyToOne
     @JoinColumn(name="doctor_id")
     private Doctor doctor;
+
 }

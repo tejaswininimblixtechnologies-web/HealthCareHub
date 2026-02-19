@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="doctor")
+@Table(name="doctors")
 public class Doctor {
 
     @Id
@@ -22,6 +23,11 @@ public class Doctor {
     private String doctorName;
     private String specialization;
 
-    @OneToMany(mappedBy="doctor")
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
+    @OneToMany(mappedBy="doctor", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Medicine> medicines;
 }

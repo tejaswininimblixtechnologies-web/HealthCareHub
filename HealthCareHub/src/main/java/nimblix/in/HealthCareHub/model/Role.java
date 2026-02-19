@@ -1,4 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
-public enum role {
+public enum Role {
+    DOCTOR,
+    PATIENT
 }

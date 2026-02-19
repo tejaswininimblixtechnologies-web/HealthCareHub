@@ -21,11 +21,8 @@ public class Patient {
     private String patientName;
     private Integer age;
 
-    @ManyToMany
-    @JoinTable(
-            name="patient_medicine",
-            joinColumns=@JoinColumn(name = "patient_id"),
-            inverseJoinColumns=@JoinColumn(name = "medicine_id")
-    )
-    private List<Medicine> medicines;
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
 }
