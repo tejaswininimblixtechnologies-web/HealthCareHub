@@ -1,21 +1,27 @@
 package nimblix.in.HealthCareHub.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import nimblix.in.HealthCareHub.dto.RoomRequest;
 import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.service.RoomService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/rooms")
+@RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth") // 🔐 This enables Swagger lock authorization
 public class RoomController {
 
-    @Autowired
-    private RoomService roomService;
+    private final RoomService roomService;
 
-    // Add new room
     @PostMapping("/add")
-    public Room addRoom(@RequestBody Room room) {
-        return roomService.addRoom(room);
+    public ResponseEntity<Room> addRoom(@Valid @RequestBody RoomRequest request) {
+        Room savedRoom = roomService.addRoom(request);
+        return ResponseEntity.ok(savedRoom);
     }
 }
