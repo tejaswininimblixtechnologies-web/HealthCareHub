@@ -1,82 +1,66 @@
 package nimblix.in.HealthCareHub.helper;
 
 import lombok.extern.slf4j.Slf4j;
-import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.response.MultipleImageResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 @Component
+@Slf4j
 public class UploadImageHelper {
 
-    @Value("${assignment.upload.path}")
-    private String uploadPath;
+    private final String UPLOAD_DIR = "uploads/";
 
-    public MultipleImageResponse uploadImages(List<MultipartFile> pictures) throws Exception {
+    public MultipleImageResponse uploadMultipleImages(List<MultipartFile> files) {
+
         List<String> uploadedFileNames = new ArrayList<>();
-        List<String> failedFileNames = new ArrayList<>();
 
-        if (pictures == null || pictures.isEmpty()) {
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "No files provided", Collections.emptyList());
-        }
-
-        for (MultipartFile file : pictures) {
-            if (file == null || file.isEmpty()) {
-                failedFileNames.add(file != null ? file.getOriginalFilename() : "Unknown file");
-                continue;
-            }
-
-            String fileName = System.currentTimeMillis() + "_"+file.getOriginalFilename();
-            // Optional: sanitize file name
-            // fileName = fileName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
-
-            // Ensure upload directory exists
-            if (!uploadPath.endsWith(File.separator)) {
-                uploadPath += File.separator;
-            }
-
-            File directory = new File(uploadPath);
+        try {
+            File directory = new File(UPLOAD_DIR);
             if (!directory.exists()) {
-                boolean created = directory.mkdirs();
-                if (created) {
-                    log.info("Directory created at: {}", uploadPath);
-                } else {
-                    log.error("Failed to create directory at: {}", uploadPath);
-                }
+                directory.mkdirs();
             }
 
-            Path path = Paths.get(uploadPath + fileName);
-            byte[] fileData = file.getBytes();
+            for (MultipartFile file : files) {
 
-            try {
-                // ✅ Save file in original (non-encrypted) format
-                Files.write(path, fileData);
+                String fileName = file.getOriginalFilename();
 
-                log.info("File saved successfully: {}", fileName);
+                if (fileName == null || fileName.isEmpty()) {
+                    continue;
+                }
+
+                File destinationFile =
+                        new File(UPLOAD_DIR + File.separator + fileName);
+
+                file.transferTo(destinationFile);
+
                 uploadedFileNames.add(fileName);
 
-            } catch (Exception e) {
-                log.error("Error saving file: {}, error: {}", fileName, e.getMessage(), e);
-                failedFileNames.add(fileName);
+                log.info("Uploaded: " + fileName);
             }
-        }
 
-        if (uploadedFileNames.isEmpty()) {
-            String failedFilesMessage = "Image upload failed for the following files: " + String.join(", ", failedFileNames);
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, failedFilesMessage, Collections.emptyList());
-        }
+            return new MultipleImageResponse(
+                    "200",
+                    "Images uploaded successfully",
+                    uploadedFileNames
+            );
 
-        return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);
+        } catch (Exception e) {
+
+            log.error("Upload failed", e);
+
+            return new MultipleImageResponse(
+                    "500",
+                    "Image upload failed",
+                    new ArrayList<>()
+            );
+        }
     }
-
 }
+
+
+
