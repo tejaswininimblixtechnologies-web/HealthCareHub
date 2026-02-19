@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
@@ -29,7 +30,7 @@ public class DoctorAvailability {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    private boolean isAvailable;
+    private Boolean isAvailable;
 
     @Column(name = "created_time")
     private String createdTime;
