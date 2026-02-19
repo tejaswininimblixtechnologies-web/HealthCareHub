@@ -49,19 +49,14 @@ public class Doctor {
     @Column(name = "updated_time")
     private String updatedTime;
 
-
     @PrePersist
-    protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+    protected void onCreate() {
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
-
+    protected void onUpdate() {
+        this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
-
 }

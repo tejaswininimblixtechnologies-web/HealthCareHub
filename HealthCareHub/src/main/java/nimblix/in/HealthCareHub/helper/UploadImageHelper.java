@@ -23,29 +23,34 @@ public class UploadImageHelper {
     private String uploadPath;
 
     public MultipleImageResponse uploadImages(List<MultipartFile> pictures) throws Exception {
+
         List<String> uploadedFileNames = new ArrayList<>();
         List<String> failedFileNames = new ArrayList<>();
 
         if (pictures == null || pictures.isEmpty()) {
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "No files provided", Collections.emptyList());
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERORR,
+                    "No files provided",
+                    Collections.emptyList()
+            );
         }
 
         for (MultipartFile file : pictures) {
+
             if (file == null || file.isEmpty()) {
                 failedFileNames.add(file != null ? file.getOriginalFilename() : "Unknown file");
                 continue;
             }
 
-            String fileName = System.currentTimeMillis() + "_"+file.getOriginalFilename();
-            // Optional: sanitize file name
-            // fileName = fileName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
-            // Ensure upload directory exists
+            // Ensure upload directory ends with separator
             if (!uploadPath.endsWith(File.separator)) {
-                uploadPath += File.separator;
+                uploadPath = uploadPath + File.separator;
             }
 
             File directory = new File(uploadPath);
+
             if (!directory.exists()) {
                 boolean created = directory.mkdirs();
                 if (created) {
@@ -59,9 +64,7 @@ public class UploadImageHelper {
             byte[] fileData = file.getBytes();
 
             try {
-                // ✅ Save file in original (non-encrypted) format
                 Files.write(path, fileData);
-
                 log.info("File saved successfully: {}", fileName);
                 uploadedFileNames.add(fileName);
 
@@ -72,11 +75,21 @@ public class UploadImageHelper {
         }
 
         if (uploadedFileNames.isEmpty()) {
-            String failedFilesMessage = "Image upload failed for the following files: " + String.join(", ", failedFileNames);
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, failedFilesMessage, Collections.emptyList());
+            String failedFilesMessage =
+                    "Image upload failed for the following files: " +
+                            String.join(", ", failedFileNames);
+
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERORR,
+                    failedFilesMessage,
+                    Collections.emptyList()
+            );
         }
 
-        return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);
+        return new MultipleImageResponse(
+                HealthCareConstants.STATUS_SUCCESS,
+                "Image upload successful",
+                uploadedFileNames
+        );
     }
-
 }

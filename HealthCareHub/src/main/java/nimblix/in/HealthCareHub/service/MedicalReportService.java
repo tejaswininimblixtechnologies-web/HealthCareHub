@@ -1,4 +1,12 @@
 package nimblix.in.HealthCareHub.service;
 
-public class MedicalReportService {
+import nimblix.in.HealthCareHub.model.MedicalReport;
+
+import java.util.List;
+
+public interface MedicalReportService {
+
+    List<MedicalReport> getReportsByPatient(Long patientId);
+
 }
+

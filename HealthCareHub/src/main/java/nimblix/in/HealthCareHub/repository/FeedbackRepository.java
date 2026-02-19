@@ -1,4 +1,8 @@
 package nimblix.in.HealthCareHub.repository;
 
-public interface FeedbackRepository {
+import nimblix.in.HealthCareHub.model.Feedback;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 }
+

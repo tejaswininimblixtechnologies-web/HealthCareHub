@@ -27,7 +27,11 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    private LocalDateTime appointmentDateTime;
+    @Column(name = "doctor_name")
+    private String doctorName;
+
+    @Column(name = "appointment_time")
+    private LocalDateTime appointmentTime;
 
     private String status; // BOOKED, CANCELLED, COMPLETED
 
@@ -38,13 +42,13 @@ public class Appointment {
     private String updatedTime;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }
