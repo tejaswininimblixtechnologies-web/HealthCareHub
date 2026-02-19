@@ -23,7 +23,7 @@ public class HealthCareConstants {
     public static String SUBSCRIPTION_TRAIL ="TRIAL" ;
     public static String TEACHER_ROLE ="TEACHER" ;
     public static  String DATA = "Data";
-    public static String IN_ACTIVE ="inActive" ;
+    public static String IN_ACTIVE ="inActive";
     public static String STATUS_SUCCESS ="SUCCESS" ;
     public static final String STUDENT ="STUDENT" ;
     public static String STUDENT_NOT_FOUND ="Student not found" ;

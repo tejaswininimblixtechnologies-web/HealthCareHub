@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import nimblix.in.HealthCareHub.repository.BlacklistedTokenRepository;
+
 
 import java.io.IOException;
 
@@ -20,6 +22,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
+    private final BlacklistedTokenRepository blacklistedTokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -36,6 +39,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
+        if (blacklistedTokenRepository.existsByToken(token)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         String username;
 
         try {
