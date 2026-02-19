@@ -3,7 +3,11 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+<<<<<<< HEAD
       <profile name="Annotation profile for HealthCareHub" enabled="true">
+=======
+      <profile name="Annotation profile for SchoolPEPProject" enabled="true">
+>>>>>>> 5c8a25abd2984e2f5fbf0dd1382d923e6cd71541
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
