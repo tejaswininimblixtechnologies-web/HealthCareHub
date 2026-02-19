@@ -1,29 +1,30 @@
 package nimblix.in.HealthCareHub.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Appointment;
+import nimblix.in.HealthCareHub.service.DoctorService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/doctor")
 public class DoctorController {
 
+    private final DoctorService doctorService;
 
-    /*
-Json object:
-key and value pair
+    @PutMapping("/appointments/reschedule/{id}")
+    public ResponseEntity<Appointment> rescheduleAppointment(
+            @PathVariable Long id,
+            @RequestParam String newDateTime) {
 
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
-}
+        LocalDateTime dateTime = LocalDateTime.parse(newDateTime);
 
-*/
+        Appointment updated =
+                doctorService.rescheduleAppointment(id, dateTime);
 
-
+        return ResponseEntity.ok(updated);
+    }
 }
