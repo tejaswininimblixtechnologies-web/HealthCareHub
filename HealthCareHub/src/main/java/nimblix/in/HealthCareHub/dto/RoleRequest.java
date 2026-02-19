@@ -1,7 +1,10 @@
 package nimblix.in.HealthCareHub.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RoleRequest {
 
+    @NotBlank(message = "Role name must not be empty")
     private String name;
 
     public String getName() {
