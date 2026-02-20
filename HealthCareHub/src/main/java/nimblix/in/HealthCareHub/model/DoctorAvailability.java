@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
@@ -21,15 +22,16 @@ public class DoctorAvailability {
     private Long id;
 
 
-    @Column(name = "doctor_id")
+    @Column(name = "doctor_id",nullable = false)
     private Long doctorId;
-
+    @Column(nullable = false)
     private String availableDate;
-
+    @Column(nullable = false)
     private String startTime;
+    @Column(nullable = false)
     private String endTime;
-
-    private boolean isAvailable;
+    @Column(nullable = false)
+    private Boolean isAvailable;
 
     @Column(name = "created_time")
     private String createdTime;
