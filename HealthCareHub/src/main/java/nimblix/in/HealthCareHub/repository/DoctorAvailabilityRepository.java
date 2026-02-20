@@ -4,8 +4,6 @@ import nimblix.in.HealthCareHub.model.DoctorAvailability;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -16,15 +14,15 @@ public interface DoctorAvailabilityRepository extends JpaRepository<DoctorAvaila
     // For ADD
     boolean existsByDoctorIdAndAvailableDateAndStartTime(
             Long doctorId,
-            LocalDate availableDate,
-            LocalTime startTime
+            String availableDate,
+            String startTime
     );
 
     // For UPDATE
     boolean existsByDoctorIdAndAvailableDateAndStartTimeAndIdNot(
             Long doctorId,
-            LocalDate availableDate,
-            LocalTime startTime,
+            String availableDate,
+            String startTime,
             Long id
     );
 }
