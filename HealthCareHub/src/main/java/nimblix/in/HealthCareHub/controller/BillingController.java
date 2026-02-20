@@ -14,7 +14,7 @@ public class BillingController {
     @Autowired
     private BillingService billingService;
 
-    @GetMapping("/patient/{patientId}")
+    @PostMapping("/patient/{patientId}")
     public List<BillResponse> getBills(@PathVariable Long patientId) {
         return billingService.getBillsByPatient(patientId);
     }
