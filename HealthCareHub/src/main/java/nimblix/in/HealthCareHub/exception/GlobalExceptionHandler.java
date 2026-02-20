@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AdminNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleAdminNotFound(UserNotFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleAdminNotFound(AdminNotFoundException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.NOT_FOUND.value());
         response.put("error", "Not Found");
@@ -55,4 +56,66 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    //Doctor Not Found
+    @ExceptionHandler(DoctorNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleDoctorNotFound(DoctorNotFoundException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Doctor Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    //Nurse Not Found
+    @ExceptionHandler(NurseNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNurseNotFound(NurseNotFoundException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Nurse Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    //Appointment Not Found
+    @ExceptionHandler(AppointmentNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleAppointmentNotFound(AppointmentNotFoundException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Appointment Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    // JWT Authentication Error
+    @ExceptionHandler(JwtAuthenticationException.class)
+    public ResponseEntity<Map<String, Object>> handleJwtException(JwtAuthenticationException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.UNAUTHORIZED.value());
+        response.put("error", "JWT Authentication Failed");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    // Authentication Failed (401 Unauthorized)
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Map<String, Object>> handleAuthenticationException(
+            org.springframework.security.core.AuthenticationException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.UNAUTHORIZED.value());
+        response.put("error", "Unauthorized");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
 }
