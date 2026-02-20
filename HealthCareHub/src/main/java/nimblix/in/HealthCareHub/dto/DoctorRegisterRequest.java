@@ -7,7 +7,6 @@ public class DoctorRegisterRequest {
 
     private String name;
     private Integer experienceYears;
-    @Pattern(regexp = "^[0-9]{10}$",
     private String phoneNo;
     private String qualification;
     private Double consultationFee;
