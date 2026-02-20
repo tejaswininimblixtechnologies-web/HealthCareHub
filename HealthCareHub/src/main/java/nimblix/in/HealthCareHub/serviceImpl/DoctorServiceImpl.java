@@ -25,10 +25,25 @@ public class DoctorServiceImpl implements DoctorService {
     private final SpecializationRepository specializationRepository;
     private final DoctorAvailabilityRepository doctorAvailabilityRepository;
 
-    // ================= ADD TIME SLOT =================
 
     @Override
     public DoctorAvailability addDoctorTimeSlot(DoctorAvailabilityRequest request) {
+
+        if (request.getDoctorId() == null)
+            throw new RuntimeException("Doctor ID cannot be null");
+
+        if (request.getAvailableDate() == null || request.getAvailableDate().trim().isEmpty())
+            throw new RuntimeException("Available date cannot be null or empty");
+
+        if (request.getStartTime() == null || request.getStartTime().trim().isEmpty())
+            throw new RuntimeException("Start time cannot be null or empty");
+
+        if (request.getEndTime() == null || request.getEndTime().trim().isEmpty())
+            throw new RuntimeException("End time cannot be null or empty");
+
+        if (request.getIsAvailable() == null)
+            throw new RuntimeException("Availability status cannot be null");
+
 
         doctorRepository.findById(request.getDoctorId())
                 .orElseThrow(() -> new UserNotFoundException(
@@ -38,8 +53,8 @@ public class DoctorServiceImpl implements DoctorService {
         boolean exists = doctorAvailabilityRepository
                 .existsByDoctorIdAndAvailableDateAndStartTime(
                         request.getDoctorId(),
-                        request.getAvailableDate(),   // String
-                        request.getStartTime()        // String
+                        request.getAvailableDate(),
+                        request.getStartTime()
                 );
 
         if (exists) {
@@ -50,17 +65,16 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         DoctorAvailability slot = DoctorAvailability.builder()
-                .doctorId(request.getDoctorId())   // ✅ Use doctorId (Long)
-                .availableDate(request.getAvailableDate()) // String
-                .startTime(request.getStartTime())         // String
-                .endTime(request.getEndTime())             // String
+                .doctorId(request.getDoctorId())
+                .availableDate(request.getAvailableDate())
+                .startTime(request.getStartTime())
+                .endTime(request.getEndTime())
                 .isAvailable(request.getIsAvailable())
                 .build();
 
         return doctorAvailabilityRepository.save(slot);
     }
 
-    // ================= UPDATE TIME SLOT =================
 
     @Override
     public DoctorAvailability updateDoctorTimeSlot(Long slotId,
@@ -104,7 +118,6 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorAvailabilityRepository.save(slot);
     }
 
-    // ================= DOCTOR REGISTRATION =================
 
     @Override
     public String registerDoctor(DoctorRegistrationRequest request) {

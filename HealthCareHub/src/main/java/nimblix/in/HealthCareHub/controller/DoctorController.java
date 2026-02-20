@@ -24,12 +24,12 @@ public class DoctorController {
     }
     */
 
-//    @PostMapping("/register")
-//    public String registerDoctor(
-//            @RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
-//
-//        return doctorService.RegisterDoctor(doctorRegistrationRequest);
-//    }
+    @PostMapping("/register")
+    public String registerDoctor(
+            @RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
+
+        return doctorService.registerDoctor(doctorRegistrationRequest);
+    }
 
     @PostMapping("/timeslot/add")
     public ResponseEntity<?> addTimeSlot(

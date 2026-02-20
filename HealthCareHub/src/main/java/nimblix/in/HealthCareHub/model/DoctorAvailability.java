@@ -22,14 +22,15 @@ public class DoctorAvailability {
     private Long id;
 
 
-    @Column(name = "doctor_id")
+    @Column(name = "doctor_id",nullable = false)
     private Long doctorId;
-
+    @Column(nullable = false)
     private String availableDate;
-
+    @Column(nullable = false)
     private String startTime;
+    @Column(nullable = false)
     private String endTime;
-
+    @Column(nullable = false)
     private Boolean isAvailable;
 
     @Column(name = "created_time")
