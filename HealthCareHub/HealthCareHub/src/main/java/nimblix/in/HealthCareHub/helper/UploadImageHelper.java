@@ -11,10 +11,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -24,75 +22,100 @@ public class UploadImageHelper {
     private String uploadPath;
 
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-    private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList(".jpg", ".jpeg", ".png", ".pdf", ".doc", ".docx");
+    private static final List<String> ALLOWED_EXTENSIONS =
+            Arrays.asList(".jpg", ".jpeg", ".png", ".pdf", ".doc", ".docx");
 
-    public MultipleImageResponse uploadImages(List<MultipartFile> pictures) throws Exception {
+    public MultipleImageResponse uploadImages(List<MultipartFile> pictures) {
+
         List<String> uploadedFileNames = new ArrayList<>();
         List<String> failedFileNames = new ArrayList<>();
 
         if (pictures == null || pictures.isEmpty()) {
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "No files provided", Collections.emptyList());
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERROR,
+                    "No files provided",
+                    Collections.emptyList());
         }
 
-        // Ensure upload directory exists (once, outside loop)
-        String normalizedPath = uploadPath.endsWith(File.separator) ? uploadPath : uploadPath + File.separator;
-        File directory = new File(normalizedPath);
-        if (!directory.exists()) {
-            boolean created = directory.mkdirs();
-            if (created) {
-                log.info("Directory created at: {}", normalizedPath);
-            } else {
-                log.error("Failed to create directory at: {}", normalizedPath);
-                return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "Failed to create upload directory", Collections.emptyList());
-            }
+        if (uploadPath == null || uploadPath.trim().isEmpty()) {
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERROR,
+                    "Upload path not configured",
+                    Collections.emptyList());
         }
 
-        for (MultipartFile file : pictures) {
-            if (file == null || file.isEmpty()) {
-                failedFileNames.add(file != null ? file.getOriginalFilename() : "Unknown file");
-                continue;
+        try {
+            String normalizedPath = uploadPath.endsWith(File.separator)
+                    ? uploadPath
+                    : uploadPath + File.separator;
+
+            File directory = new File(normalizedPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
             }
 
-            String originalFileName = file.getOriginalFilename();
-            
-            // Validate file size
-            if (file.getSize() > MAX_FILE_SIZE) {
-                log.warn("File too large: {}", originalFileName);
-                failedFileNames.add(originalFileName + " (too large)");
-                continue;
-            }
+            for (MultipartFile file : pictures) {
 
-            // Validate file extension
-            String extension = getFileExtension(originalFileName);
-            if (!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())) {
-                log.warn("Invalid file type: {}", originalFileName);
-                failedFileNames.add(originalFileName + " (invalid type)");
-                continue;
-            }
+                if (file == null || file.isEmpty()) {
+                    failedFileNames.add("Unknown file");
+                    continue;
+                }
 
-            // Sanitize and create unique filename
-            String sanitizedName = originalFileName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
-            String fileName = System.currentTimeMillis() + "_" + sanitizedName;
+                String originalFileName = file.getOriginalFilename();
+                if (originalFileName == null) {
+                    failedFileNames.add("Unnamed file");
+                    continue;
+                }
 
-            Path path = Paths.get(normalizedPath + fileName);
-            byte[] fileData = file.getBytes();
+                // Validate file size
+                if (file.getSize() > MAX_FILE_SIZE) {
+                    failedFileNames.add(originalFileName + " (too large)");
+                    continue;
+                }
 
-            try {
-                Files.write(path, fileData);
-                log.info("File saved successfully: {}", fileName);
+                // Validate extension
+                String extension = getFileExtension(originalFileName);
+                if (!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())) {
+                    failedFileNames.add(originalFileName + " (invalid type)");
+                    continue;
+                }
+
+                // Sanitize filename
+                String sanitizedName =
+                        originalFileName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
+
+                String fileName =
+                        System.currentTimeMillis() + "_" + sanitizedName;
+
+                Path path = Paths.get(normalizedPath, fileName);
+
+                Files.write(
+                        path,
+                        file.getBytes(),
+                        StandardOpenOption.CREATE);
+
                 uploadedFileNames.add(fileName);
-            } catch (Exception e) {
-                log.error("Error saving file: {}, error: {}", fileName, e.getMessage(), e);
-                failedFileNames.add(originalFileName);
             }
+
+        } catch (Exception e) {
+            log.error("File upload error: {}", e.getMessage(), e);
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERROR,
+                    "File upload failed due to server error",
+                    Collections.emptyList());
         }
 
         if (uploadedFileNames.isEmpty()) {
-            String failedFilesMessage = "Image upload failed for the following files: " + String.join(", ", failedFileNames);
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, failedFilesMessage, Collections.emptyList());
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERROR,
+                    "Image upload failed for: " + String.join(", ", failedFileNames),
+                    Collections.emptyList());
         }
 
-        return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);
+        return new MultipleImageResponse(
+                HealthCareConstants.STATUS_SUCCESS,
+                "Image upload successful",
+                uploadedFileNames);
     }
 
     private String getFileExtension(String fileName) {
