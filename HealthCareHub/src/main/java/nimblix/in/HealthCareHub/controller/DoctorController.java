@@ -1,7 +1,6 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
-
 import nimblix.in.HealthCareHub.helper.UploadImageHelper;
 import nimblix.in.HealthCareHub.response.MultipleImageResponse;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
@@ -13,27 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/doctors")
+@RequestMapping("/api/doctors")   // Only one RequestMapping
 @RequiredArgsConstructor
 public class DoctorController {
 
     private final DoctorService doctorService;
     private final UploadImageHelper uploadImageHelper;
 
-    /*
-    Sample JSON for Doctor Registration:
-
-    {
-        "name": "tejaswini",
-        "mobileNumber": "8937483454",
-        "date": "10-05-2026"
-    }
-    */
-
     // Doctor Registration API
     @PostMapping("/register")
     public String registerDoctor(@RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
-        return doctorService.RegisterDoctor(doctorRegistrationRequest);
+        return doctorService.registerDoctor(doctorRegistrationRequest); 
     }
 
     // Multiple File Upload API
