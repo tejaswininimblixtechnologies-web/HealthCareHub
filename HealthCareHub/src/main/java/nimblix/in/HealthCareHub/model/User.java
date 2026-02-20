@@ -20,10 +20,17 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(unique = true, nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String name;
+
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     private boolean enabled = true;
@@ -34,18 +41,14 @@ public class User {
     @Column(name = "updated_time")
     private String updatedTime;
 
-
     @PrePersist
-    protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+    protected void onCreate() {
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
-
+    protected void onUpdate() {
+        this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }
