@@ -1,8 +1,7 @@
 package nimblix.in.HealthCareHub.controller;
 
-import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
-import nimblix.in.HealthCareHub.service.DoctorService;
+import nimblix.in.HealthCareHub.model.Doctor;
+import nimblix.in.HealthCareHub.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -10,11 +9,49 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/doctors")
-@RequiredArgsConstructor
+@RequestMapping("/doctors")
 public class DoctorController {
 
-    private final DoctorService doctorService;
+    @Autowired
+    private DoctorRepository doctorRepository;
+    @PostMapping
+    public Doctor addDoctor(@RequestBody Doctor doctor){
+        return doctorRepository.save(doctor);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*

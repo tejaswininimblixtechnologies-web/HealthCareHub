@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
-import java.util.List;
 
 @Entity
 @Table(name = "hospitals")

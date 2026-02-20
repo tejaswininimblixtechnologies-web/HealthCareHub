@@ -1,36 +1,26 @@
 package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "patients")
-@Getter
-@Setter
-@NoArgsConstructor
+import java.util.List;
+
+
+@Data
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@Entity
+@Table(name="patients")
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "age")
-    private Integer age;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "phoneNo")
-    private String phone;
-
-    @Column(name = "disease")
+    private String patientName;
     private String disease;
+    private Integer age;
 
     // Login User
 
@@ -56,10 +46,13 @@ public class Patient {
 
     }
 
-    @PreUpdate
-    protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
 
-    }
+//    @ManyToMany
+//    @JoinTable(
+//            name="patient_medicines",
+//            joinColumns=@JoinColumn(name="patient_id"),
+//            inverseJoinColumns = @JoinColumn(name="medicine_id")
+//    )
+//    private List<Medicine> medicines;
 }

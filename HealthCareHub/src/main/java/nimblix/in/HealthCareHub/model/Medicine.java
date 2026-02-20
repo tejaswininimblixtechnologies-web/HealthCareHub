@@ -8,22 +8,24 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="doctors")
-public class Doctor {
+@Table(name="medicines")
+public class Medicine {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String doctorName;
-    private String specialization;
+    private String medicineName;
+    private String manufacturer;
+    private Double price;
+    private Integer stock;
+    private String expiryDate;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-    private List<Medicine> medicines;
-
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 }
