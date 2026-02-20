@@ -47,6 +47,11 @@ public class Doctor {
     @Column(name = "specialization_id")
     private Long specializationId;
 
+    // Non-invasive helper so existing callers to getSpecialization() compile
+    public Long getSpecialization() {
+        return this.specializationId;
+    }
+
     @Column(name = "created_time")
     private String createdTime;
 

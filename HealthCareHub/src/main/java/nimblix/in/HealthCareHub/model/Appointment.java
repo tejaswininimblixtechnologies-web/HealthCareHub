@@ -27,9 +27,17 @@ public class Appointment {
     @Column(name = "doctor_id")
     private Long doctorId;
 
-    private String appointmentDateTime;
+    private LocalDateTime appointmentDateTime;
 
     private String status; // BOOKED, CANCELLED, COMPLETED
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", insertable = false, updatable = false)
+    private Doctor doctor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", insertable = false, updatable = false)
+    private Patient patient;
 
     @Column(name = "created_time")
     private String createdTime;
