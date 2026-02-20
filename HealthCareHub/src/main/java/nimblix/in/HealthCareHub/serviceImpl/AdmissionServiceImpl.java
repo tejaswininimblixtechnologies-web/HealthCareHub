@@ -52,5 +52,4 @@ public class AdmissionServiceImpl implements AdmissionService {
                         admission.getHospital().getName() : null)
                 .build();
     }
-
 }
