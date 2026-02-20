@@ -9,4 +9,8 @@ public interface DoctorService {
     DoctorAvailability addDoctorTimeSlot(DoctorAvailabilityRequest request);
 
     DoctorAvailability updateDoctorTimeSlot(Long slotId, DoctorAvailabilityRequest request);
+import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
+
+public interface DoctorService {
+    String RegisterDoctor(DoctorRegistrationRequest doctorRegistrationRequest);
 }

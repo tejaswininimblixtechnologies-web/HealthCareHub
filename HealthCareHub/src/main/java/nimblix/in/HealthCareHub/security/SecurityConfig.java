@@ -36,6 +36,7 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/doctor/timeslot/add",
                                 "/doctor/timeslot/update/**"
+                                "/api/doctors/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
