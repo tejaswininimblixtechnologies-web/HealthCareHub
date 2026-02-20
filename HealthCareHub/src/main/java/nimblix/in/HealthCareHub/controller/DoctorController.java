@@ -17,17 +17,12 @@ public class DoctorController {
     private final DoctorService doctorService;
 
 
-    /*
-Json object:
-key and value pair
+    @PostMapping("/register")
+    public ResponseEntity<?> registerDoctor(
+            @Valid @RequestBody DoctorRegisterRequest request) {
 
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
-}
-
-*/
+        return ResponseEntity.ok(doctorService.registerDoctor(request));
+    }
 
     @PostMapping("/register")
     public String registerDoctor(@RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
@@ -40,3 +35,4 @@ key and value pair
 
 
 }
+

@@ -1,8 +1,12 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+
+import java.util.List;
 
 @Entity
 @Table(name = "doctors")
@@ -23,7 +27,7 @@ public class Doctor {
     @Column(name = "experience_years")
     private Integer experienceYears;
 
-    @Column(name = "phoneNo")
+    @Column(name = "phoneNo", unique = false)
     private String phone;
 
     @Column(name = "EmailId")
@@ -53,6 +57,8 @@ public class Doctor {
     @Column(name = "updated_time")
     private String updatedTime;
 
+    @Column(name = "consultation_fee")
+    private Double consultationFee;
 
     @PrePersist
     protected void onCreate(){
