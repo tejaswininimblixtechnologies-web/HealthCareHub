@@ -22,6 +22,29 @@ public class Patient {
     private String disease;
     private Integer age;
 
+    // Login User
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    // Hospital Relationship
+
+    @Column(name = "hospital_id")
+    private Long hospitalId;
+
+    @Column(name = "created_time")
+    private String createdTime;
+
+    @Column(name = "updated_time")
+    private String updatedTime;
+
+
+    @PrePersist
+    protected void onCreate(){
+        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+
+    }
 
 
 

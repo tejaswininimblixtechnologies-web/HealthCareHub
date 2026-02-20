@@ -32,6 +32,7 @@ public class Hospital {
 
     private Integer totalBeds;
 
+
     @Column(name = "created_time", updatable = false)
     private String createdTime;
 

@@ -20,13 +20,14 @@ public class DoctorAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name = "doctor_id")
-    private Long doctor;
+    private Long doctorId;
 
-    private LocalDate availableDate;
+    private String availableDate;
 
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime;
+    private String endTime;
 
     private boolean isAvailable;
 

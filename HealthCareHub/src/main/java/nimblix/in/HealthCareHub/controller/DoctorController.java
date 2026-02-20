@@ -66,5 +66,14 @@ key and value pair
 
 */
 
+    @PostMapping("/register")
+    public String registerDoctor(@RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
+        return doctorService.RegisterDoctor(doctorRegistrationRequest);
+    }
+
+
+
+
+
 
 }

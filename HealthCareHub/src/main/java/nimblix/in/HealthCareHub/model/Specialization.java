@@ -21,6 +21,7 @@ public class Specialization {
 
     private String name;
 
+
     @Column(name = "created_time")
     private String createdTime;
 

@@ -25,6 +25,7 @@ public class Payment {
 
     private LocalDateTime paymentDate;
 
+
     @Column(name = "appointment_id")
     private Long appointmentId;
 

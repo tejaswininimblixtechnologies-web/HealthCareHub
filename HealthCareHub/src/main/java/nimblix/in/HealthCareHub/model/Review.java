@@ -25,7 +25,7 @@ public class Review {
     @Column(name = "patient_id")
     private Long patientId;
 
-    @Column(name = "doctor_id")
+    @JoinColumn(name = "doctor_id")
     private Long doctorId;
 
     @Column(name = "created_time")

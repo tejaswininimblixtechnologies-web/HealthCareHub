@@ -23,10 +23,11 @@ public class Appointment {
     @Column(name = "patient_id")
     private Long patientId;
 
+
     @Column(name = "doctor_id")
     private Long doctorId;
 
-    private LocalDateTime appointmentDateTime;
+    private String appointmentDateTime;
 
     private String status; // BOOKED, CANCELLED, COMPLETED
 
