@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
-import java.util.List;
 
 @Entity
 @Table(name = "hospitals")
@@ -32,14 +31,6 @@ public class Hospital {
     private String email;
 
     private Integer totalBeds;
-
-    // One Hospital → Many Doctors
-    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
-    private List<Doctor> doctors;
-
-    // One Hospital → Many Patients
-    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
-    private List<Patient> patients;
 
     @Column(name = "created_time", updatable = false)
     private String createdTime;

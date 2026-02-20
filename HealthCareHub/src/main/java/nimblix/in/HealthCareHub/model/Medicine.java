@@ -1,9 +1,12 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +26,6 @@ public class Medicine {
     private String expiryDate;
 
     @ManyToOne
-    @JoinColumn(name="doctor_id")
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
-
 }

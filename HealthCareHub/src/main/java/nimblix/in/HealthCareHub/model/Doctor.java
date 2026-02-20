@@ -23,11 +23,7 @@ public class Doctor {
     private String doctorName;
     private String specialization;
 
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
-
-    @OneToMany(mappedBy="doctor", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Medicine> medicines;
+
 }

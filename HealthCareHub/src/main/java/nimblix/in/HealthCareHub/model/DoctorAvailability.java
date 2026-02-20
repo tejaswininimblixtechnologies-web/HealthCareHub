@@ -20,9 +20,8 @@ public class DoctorAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    @Column(name = "doctor_id")
+    private Long doctor;
 
     private LocalDate availableDate;
 

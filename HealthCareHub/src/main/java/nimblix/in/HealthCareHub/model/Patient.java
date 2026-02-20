@@ -12,17 +12,24 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="patient")
+@Table(name="patients")
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String patientName;
+    private String disease;
     private Integer age;
 
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
 
+
+
+//    @ManyToMany
+//    @JoinTable(
+//            name="patient_medicines",
+//            joinColumns=@JoinColumn(name="patient_id"),
+//            inverseJoinColumns = @JoinColumn(name="medicine_id")
+//    )
+//    private List<Medicine> medicines;
 }
