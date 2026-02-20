@@ -1,10 +1,7 @@
 package nimblix.in.HealthCareHub.service;
 
-import nimblix.in.HealthCareHub.dto.DoctorRegisterRequest;
-import nimblix.in.HealthCareHub.model.Doctor;
+import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 
 public interface DoctorService {
-
-    Doctor registerDoctor(DoctorRegisterRequest request);
-
+    String RegisterDoctor(DoctorRegistrationRequest doctorRegistrationRequest);
 }
