@@ -22,9 +22,6 @@ public class Specialization {
 
     private String name;
 
-    @OneToMany(mappedBy = "specialization")
-    @JsonManagedReference
-    private List<Doctor> doctors;
 
     @Column(name = "created_time")
     private String createdTime;
