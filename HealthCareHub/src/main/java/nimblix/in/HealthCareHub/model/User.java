@@ -46,6 +46,5 @@ public class User {
     protected void onUpdate(){
         this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
-
     }
 }
