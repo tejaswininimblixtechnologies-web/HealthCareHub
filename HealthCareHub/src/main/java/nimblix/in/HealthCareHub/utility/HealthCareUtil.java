@@ -64,5 +64,4 @@ public class HealthCareUtil {
                 LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
         return ChronoUnit.DAYS.between(now, end);
     }
-
 }

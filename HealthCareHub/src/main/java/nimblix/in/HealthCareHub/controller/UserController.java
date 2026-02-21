@@ -14,11 +14,6 @@ public class UserController {
 
     private final UserService userService;
 
-//    @PostMapping
-//    public User saveUser(@RequestBody User user) {
-//        return userService.saveUser(user);
-//    }
-
     @GetMapping
     public PaginatedUserResponse getAllUsers(
 
@@ -31,7 +26,6 @@ public class UserController {
             @RequestParam(required = false) Role role,
             @RequestParam(required = false) Boolean enabled
     ) {
-
         return userService.getAllUsers(
                 page,
                 size,
@@ -43,28 +37,3 @@ public class UserController {
         );
     }
 }
-
-
-
-//Basic Pagination
-//GET http://localhost:9092/api/users?page=0&size=5
-
-
-//Sorting
-//GET http://localhost:9092/api/users?page=0&size=5&sortBy=email&sortDir=desc
-
-
-//Filter by Email
-//GET http://localhost:9092/api/users?email=gmail
-
-
-//Filter by Role
-//GET http://localhost:9092/api/users?role=ADMIN
-
-
-//Filter by Enabled
-//GET http://localhost:9092/api/users?enabled=true
-
-
-//Combined Filtering
-//GET http://localhost:9092/api/users?email=gmail&role=ADMIN&enabled=true

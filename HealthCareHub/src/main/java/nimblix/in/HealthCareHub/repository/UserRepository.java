@@ -1,6 +1,5 @@
 package nimblix.in.HealthCareHub.repository;
 
-//import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import nimblix.in.HealthCareHub.model.Role;
 import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.utility.BeanUtil;
@@ -29,7 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             Pageable pageable
     );
 
-    // STATIC WRAPPER METHOD
     static Optional<User> findByEmailStatic(String email) {
         return BeanUtil.getBean(UserRepository.class)
                 .findByEmail(email);
