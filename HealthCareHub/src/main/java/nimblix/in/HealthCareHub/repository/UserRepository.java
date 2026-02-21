@@ -27,7 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             boolean enabled,
             Pageable pageable
     );
-
     static Optional<User> findByEmailStatic(String email) {
         return BeanUtil.getBean(UserRepository.class)
                 .findByEmail(email);

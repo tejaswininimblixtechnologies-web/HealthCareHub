@@ -5,7 +5,6 @@ import nimblix.in.HealthCareHub.response.PaginatedUserResponse;
 
 public interface UserService {
 
-
     PaginatedUserResponse getAllUsers(
             int page,
             int size,

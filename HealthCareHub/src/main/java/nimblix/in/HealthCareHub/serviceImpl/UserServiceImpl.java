@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
         } else {
             userPage = userRepository.findAll(pageable);
         }
-
         return PaginatedUserResponse.builder()
                 .users(userPage.getContent())
                 .currentPage(userPage.getNumber())
