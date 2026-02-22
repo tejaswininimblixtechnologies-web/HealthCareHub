@@ -7,5 +7,10 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    // For login API
     Optional<User> findByEmail(String email);
+
+    // For Spring Security authentication (username = email)
+    Optional<User> findByEmailIgnoreCase(String email);
+
 }
