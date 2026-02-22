@@ -10,6 +10,7 @@ import nimblix.in.HealthCareHub.repository.PurchaseOrderRepository;
 import nimblix.in.HealthCareHub.repository.VendorRepository;
 import nimblix.in.HealthCareHub.service.PurchaseOrderService;
 import org.springframework.stereotype.Service;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -56,11 +57,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
 
-        if (!order.getStatus().equals("PENDING")) {
+        if (!order.getStatus().equals(HealthCareConstants.STATUS_PENDING)) {
             throw new RuntimeException("Only PENDING orders can be approved");
         }
 
-        order.setStatus("APPROVED");
+        order.setStatus(HealthCareConstants.STATUS_APPROVED);
 
         return purchaseOrderRepository.save(order);
     }
@@ -71,12 +72,12 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         PurchaseOrder order = purchaseOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
 
-        if (!order.getStatus().equals("PENDING")) {
+        if (!order.getStatus().equals(HealthCareConstants.STATUS_PENDING))
+        {
             throw new RuntimeException("Only PENDING orders can be rejected");
         }
 
-        order.setStatus("REJECTED");
-
+        order.setStatus(HealthCareConstants.STATUS_REJECTED);
         return purchaseOrderRepository.save(order);
     }
 
@@ -107,8 +108,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         medicineRepository.save(medicine);
 
         // Update order status
-        order.setStatus("COMPLETED");
-
+        order.setStatus(HealthCareConstants.STATUS_COMPLETED);
         return purchaseOrderRepository.save(order);
     }
 
