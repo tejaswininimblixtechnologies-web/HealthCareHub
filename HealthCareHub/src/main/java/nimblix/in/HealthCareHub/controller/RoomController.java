@@ -9,12 +9,9 @@ import nimblix.in.HealthCareHub.dto.RoomRequest;
 import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.service.RoomService;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
 @RestController
 @RequestMapping("/rooms")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "bearerAuth") // 🔐 This enables Swagger lock authorization
 public class RoomController {
 
     private final RoomService roomService;

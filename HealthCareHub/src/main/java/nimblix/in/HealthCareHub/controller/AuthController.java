@@ -1,4 +1,3 @@
-// JWT Authentication implemented
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -7,6 +6,8 @@ import nimblix.in.HealthCareHub.repository.UserRepository;
 import nimblix.in.HealthCareHub.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,30 +22,39 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestBody User user) {
 
-        // encode password
+        // 🔹 Check duplicate email
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("User already exists with this email");
+        }
+
+        // 🔹 Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // enable user
+        // 🔹 Enable user
         user.setEnabled(true);
 
         userRepository.save(user);
+
         return "User Registered Successfully";
     }
 
     // LOGIN USER
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public Map<String, String> login(@RequestBody User user) {
 
-        // find user by email (NOT username)
+        // 🔹 Find user by email
         User dbUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // check password
+        // 🔹 Check password
         if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
             throw new RuntimeException("Invalid Password");
         }
 
-        // generate token using email
-        return jwtUtil.generateToken(dbUser.getEmail());
+        // 🔹 Generate JWT token
+        String token = jwtUtil.generateToken(dbUser.getEmail());
+
+        // 🔹 Return token as JSON
+        return Map.of("token", token);
     }
 }
