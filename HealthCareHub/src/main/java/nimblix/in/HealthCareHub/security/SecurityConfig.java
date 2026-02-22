@@ -1,8 +1,10 @@
+
 package nimblix.in.HealthCareHub.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -30,12 +32,15 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/auth/**",
-                                "/v3/api-docs/**",
+                                "/",                  // ✅ Allow root
+                                "/auth/**",           // ✅ Allow auth APIs
+                                "/api/**",            // ✅ Allow your medicine API (for now)
+                                "/v3/api-docs/**",    // ✅ Swagger
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/doctors/**"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -54,3 +59,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

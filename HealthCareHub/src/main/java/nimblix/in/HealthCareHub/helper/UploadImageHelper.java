@@ -22,61 +22,95 @@ public class UploadImageHelper {
     @Value("${assignment.upload.path}")
     private String uploadPath;
 
-    public MultipleImageResponse uploadImages(List<MultipartFile> pictures) throws Exception {
+    public MultipleImageResponse uploadImages(List<MultipartFile> pictures) {
+
         List<String> uploadedFileNames = new ArrayList<>();
         List<String> failedFileNames = new ArrayList<>();
 
         if (pictures == null || pictures.isEmpty()) {
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "No files provided", Collections.emptyList());
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERROR,
+                    "No files provided",
+                    Collections.emptyList()
+            );
+        }
+
+        // Prepare directory path safely
+        String basePath = uploadPath;
+
+        if (!basePath.endsWith(File.separator)) {
+            basePath = basePath + File.separator;
+        }
+
+        File directory = new File(basePath);
+
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs();
+
+            if (created) {
+                log.info("Directory created at: {}", basePath);
+            } else {
+                log.error("Failed to create directory at: {}", basePath);
+            }
         }
 
         for (MultipartFile file : pictures) {
+
             if (file == null || file.isEmpty()) {
-                failedFileNames.add(file != null ? file.getOriginalFilename() : "Unknown file");
+                failedFileNames.add(
+                        file != null ? file.getOriginalFilename() : "Unknown file"
+                );
                 continue;
             }
 
-            String fileName = System.currentTimeMillis() + "_"+file.getOriginalFilename();
-            // Optional: sanitize file name
-            // fileName = fileName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
+            String fileName =
+                    System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
-            // Ensure upload directory exists
-            if (!uploadPath.endsWith(File.separator)) {
-                uploadPath += File.separator;
-            }
-
-            File directory = new File(uploadPath);
-            if (!directory.exists()) {
-                boolean created = directory.mkdirs();
-                if (created) {
-                    log.info("Directory created at: {}", uploadPath);
-                } else {
-                    log.error("Failed to create directory at: {}", uploadPath);
-                }
-            }
-
-            Path path = Paths.get(uploadPath + fileName);
-            byte[] fileData = file.getBytes();
+            Path path = Paths.get(basePath + fileName);
 
             try {
-                // ✅ Save file in original (non-encrypted) format
+                byte[] fileData = file.getBytes();
+
+                // Save file
                 Files.write(path, fileData);
 
                 log.info("File saved successfully: {}", fileName);
+
                 uploadedFileNames.add(fileName);
 
             } catch (Exception e) {
-                log.error("Error saving file: {}, error: {}", fileName, e.getMessage(), e);
+
+                log.error(
+                        "Error saving file: {}",
+                        fileName,
+                        e
+                );
+
                 failedFileNames.add(fileName);
             }
         }
 
         if (uploadedFileNames.isEmpty()) {
-            String failedFilesMessage = "Image upload failed for the following files: " + String.join(", ", failedFileNames);
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, failedFilesMessage, Collections.emptyList());
+
+            String failedFilesMessage =
+                    "Image upload failed for: " +
+                            String.join(", ", failedFileNames);
+
+            return new MultipleImageResponse(
+                    HealthCareConstants.STATUS_ERROR,
+                    failedFilesMessage,
+                    Collections.emptyList()
+            );
         }
 
-        return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);
+        return new MultipleImageResponse(
+                HealthCareConstants.STATUS_SUCCESS,
+                "Image upload successful",
+                uploadedFileNames
+        );
     }
-
 }
+
+
+
+
