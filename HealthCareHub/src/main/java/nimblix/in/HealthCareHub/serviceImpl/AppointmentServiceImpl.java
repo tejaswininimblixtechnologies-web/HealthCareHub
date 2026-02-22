@@ -1,6 +1,7 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.exception.AppointmentNotFoundException;
 import nimblix.in.HealthCareHub.exception.SlotNotAvailableException;
 import nimblix.in.HealthCareHub.model.Appointment;
@@ -26,28 +27,28 @@ public class AppointmentServiceImpl implements AppointmentService {
                                 "Appointment not found with id: " + appointmentId
                         )
                 );
-        if (!"SCHEDULED".equalsIgnoreCase(appointment.getStatus())) {
+        if (!HealthCareConstants.APPOINTMENT_SCHEDULED
+                .equalsIgnoreCase(appointment.getStatus())) {
             throw new IllegalStateException(
                     "Only SCHEDULED appointments can be rescheduled"
             );
         }
-
         Long doctorId = appointment.getDoctor().getId();
+
         List<Appointment> existingAppointments =
                 appointmentRepository.findByDoctorIdAndAppointmentDateTime(
                         doctorId,
                         newDateTime
                 );
-
         boolean conflict = existingAppointments.stream()
                 .anyMatch(a -> !a.getId().equals(appointmentId));
+
         if (conflict) {
             throw new SlotNotAvailableException(
                     "Slot not available for selected time"
             );
         }
         appointment.setAppointmentDateTime(newDateTime);
-
         return appointmentRepository.save(appointment);
     }
 }

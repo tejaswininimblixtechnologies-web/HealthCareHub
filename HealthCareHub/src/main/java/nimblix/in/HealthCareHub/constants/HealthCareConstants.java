@@ -38,4 +38,7 @@ public class HealthCareConstants {
     public static final String PRESENT = "PRESENT";
     public static final String ABSENT = "ABSENT";
     public static final String TARDY = "TARDY";
+    public static final String APPOINTMENT_SCHEDULED = "SCHEDULED";
+    public static final String APPOINTMENT_CANCELLED = "CANCELLED";
+    public static final String APPOINTMENT_COMPLETED = "COMPLETED";
 }
