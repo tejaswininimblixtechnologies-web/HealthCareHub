@@ -34,7 +34,7 @@ public class DoctorServiceImpl implements DoctorService {
                 );
 
         // 2 Allow only SCHEDULED appointments
-        if (!"SCHEDULED".equalsIgnoreCase(appointment.getStatus())) {
+        if (!HealthCareConstants.APPOINTMENT_SCHEDULED.equalsIgnoreCase(appointment.getStatus())) {
             throw new IllegalStateException(
                     "Only SCHEDULED appointments can be rescheduled"
             );
