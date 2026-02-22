@@ -1,8 +1,8 @@
 package nimblix.in.HealthCareHub.controller;
 
+import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import nimblix.in.HealthCareHub.service.RoomService;
-import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
