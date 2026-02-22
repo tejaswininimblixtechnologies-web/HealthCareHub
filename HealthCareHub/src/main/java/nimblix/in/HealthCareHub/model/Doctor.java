@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 @Entity
@@ -28,6 +29,8 @@ public class Doctor {
 
     @Column(name = "qualification")
     private String qualification;
+    @Column(name = "status")
+    private String status;
 
     // Login User (Doctor Account)
     @OneToOne
@@ -52,9 +55,12 @@ public class Doctor {
 
     @PrePersist
     protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
+        if (status == null) {
+            status = HealthCareConstants.PENDING;
+        }
     }
 
     @PreUpdate
