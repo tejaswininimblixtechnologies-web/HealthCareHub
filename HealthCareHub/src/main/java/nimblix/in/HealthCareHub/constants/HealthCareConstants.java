@@ -6,7 +6,7 @@ public class HealthCareConstants {
     public static final String DAYS_REMAINING = "Days remaining";
     public static final String SUBSCRIPTION_PAID ="Subscription paid" ;
     public static final int PAID_PLAN_DAYS = 30;
-    public static final String STATUS_ERORR ="erorr" ;
+    public static final String STATUS_ERROR ="ERROR" ;
     public static final String ASSIGNMENT_CREATED_SUCCESSFULLY ="Assignment created successfully" ;
     public static final String ASSIGNMENT_ID ="assignmentId" ;
     public static final String PARENT = "PARENT";
