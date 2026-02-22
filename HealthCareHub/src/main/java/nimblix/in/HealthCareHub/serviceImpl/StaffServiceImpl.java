@@ -16,4 +16,21 @@ public class StaffServiceImpl implements StaffService {
     public Staff addStaff(Staff staff) {
         return staffRepository.save(staff);
     }
+    public Staff updateStaffRole(Long id, String designation, String department) {
+
+        Staff staff = staffRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Staff not found with id: " + id));
+
+        if (designation != null) {
+            staff.setDesignation(designation);
+        }
+
+        if (department != null) {
+            staff.setDepartment(department);
+        }
+
+        return staffRepository.save(staff);
+    }
 }
+
+
