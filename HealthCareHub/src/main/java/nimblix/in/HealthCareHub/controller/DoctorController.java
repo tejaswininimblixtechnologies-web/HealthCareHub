@@ -13,17 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class DoctorController {
 
 
-    /*
-Json object:
-key and value pair
-
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
-}
-
-*/
-
 
 }
