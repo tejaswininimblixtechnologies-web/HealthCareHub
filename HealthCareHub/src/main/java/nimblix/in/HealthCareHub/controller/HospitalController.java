@@ -1,35 +1,23 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.model.Review;
-import nimblix.in.HealthCareHub.request.ReviewRequest;
-import nimblix.in.HealthCareHub.service.ReviewService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.service.HospitalService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/hospitals")
+@RequestMapping("api/hospital")
+@RequiredArgsConstructor
 public class HospitalController {
 
-    private final ReviewService reviewService;
+    private final HospitalService hospitalService;
 
-    // constructor injection (correct way)
-    public HospitalController(ReviewService reviewService) {
-        this.reviewService = reviewService;
+    @PostMapping("/register")
+    public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
+        return hospitalService.registerHospital(request);
     }
-
-    @PostMapping("/{id}/reviews")
-    public ResponseEntity<?> addReview(
-            @PathVariable Long id,
-            @RequestBody ReviewRequest request,
-            Principal principal) {
-
-        // logged user id from token/session
-        Long userId = Long.parseLong(principal.getName());
-
-        Review review = reviewService.addReview(id, request, userId);
-
-        return ResponseEntity.ok(review);
-    }
+    
 }

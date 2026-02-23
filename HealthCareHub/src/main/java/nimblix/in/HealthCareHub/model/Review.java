@@ -17,21 +17,18 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer rating; // 1 to 5
-
+    private Integer rating;
     private String comment;
 
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 
-    @Column(name = "patient_id")
-    private Long patientId;
-
+    @ManyToOne
     @JoinColumn(name = "doctor_id")
-    private Long doctorId;
+    private Doctor doctor;
 
-    @Column(name = "created_time")
     private String createdTime;
-
-    @Column(name = "updated_time")
     private String updatedTime;
     @Column(name = "hospital_id")
     private Long hospitalId;
@@ -39,18 +36,14 @@ public class Review {
     @Column(name = "is_verified")
     private Boolean verified;
 
-
     @PrePersist
     protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = createdTime;
     }
 
     @PreUpdate
     protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
-
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }

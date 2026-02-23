@@ -1,14 +1,12 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.model.Patient;
-import nimblix.in.HealthCareHub.serviceImpl.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/patients")
+@RequestMapping("api/patient")
+@RequiredArgsConstructor
 public class PatientController {
     @Autowired
     private PatientService service;
