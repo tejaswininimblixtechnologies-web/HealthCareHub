@@ -15,19 +15,6 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
-
-    /*
-Json object:
-key and value pair
-
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
-}
-
-*/
-
     @PostMapping("/register")
     public String registerDoctor(@RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
         return doctorService.RegisterDoctor(doctorRegistrationRequest);
