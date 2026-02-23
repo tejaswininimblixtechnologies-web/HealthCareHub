@@ -1,60 +1,24 @@
 package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
-
-import java.util.List;
 
 @Entity
-@Table(name = "hospitals")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "hospital")
 public class Hospital {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
-    private String address;
+    // getters & setters
+    public Long getId() { return id; }
 
-    private String city;
+    public void setId(Long id) { this.id = id; }
 
-    private String state;
+    public String getName() { return name; }
 
-    private String phone;
-
-    private String email;
-
-    private Integer totalBeds;
-
-    // One Hospital → Many Doctors
-    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
-    private List<Doctor> doctors;
-
-    // One Hospital → Many Patients
-    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
-    private List<Patient> patients;
-
-    @Column(name = "created_time", updatable = false)
-    private String createdTime;
-
-    @Column(name = "updated_time")
-    private String updatedTime;
-
-    @PrePersist
-    protected void onCreate() {
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-    }
+    public void setName(String name) { this.name = name; }
 }
