@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.controller;
 
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,4 +21,14 @@ public class PatientController {
     public String viewReports() {
         return "Patient medical reports";
     }
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("api/patient")
+@RequiredArgsConstructor
+public class PatientController {
+
 }
