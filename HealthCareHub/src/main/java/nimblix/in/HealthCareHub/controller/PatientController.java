@@ -1,35 +1,29 @@
 package nimblix.in.HealthCareHub.controller;
 
 import nimblix.in.HealthCareHub.model.Patient;
-import nimblix.in.HealthCareHub.serviceImpl.PatientService;
+import nimblix.in.HealthCareHub.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/patients")
+@RequestMapping("/api/patients")
 public class PatientController {
+
     @Autowired
-    private PatientService service;
-    @PostMapping("/add")
-    public Patient addPatient(@RequestBody Patient patient)
-    {
-        return service.savePatient(patient);
+    private PatientService patientService;
+
+    @GetMapping("/search")
+    public List<Patient> searchPatients(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String bloodGroup
+    ) {
+
+        return patientService.searchPatients(name, phone, bloodGroup);
+
     }
-
-    // Get all non-deleted patients
-    @GetMapping("/patients")
-
-    public List<Patient> getAllPatients() {
-
-        return service.getAllPatients();
-    }
-
-    // Soft delete by ID
-    @DeleteMapping("patients/{id}")
-    public String deletePatient(@PathVariable Long id) {
-        return service.softDeletePatient(id);
-    }
+}
 
 
