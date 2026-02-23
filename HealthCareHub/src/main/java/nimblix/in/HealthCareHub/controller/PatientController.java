@@ -1,35 +1,24 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.model.Patient;
-import nimblix.in.HealthCareHub.serviceImpl.PatientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.service.PaymentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 @RestController
-@RequestMapping("/patients")
+@RequestMapping("/api/patient")
+@RequiredArgsConstructor
 public class PatientController {
-    @Autowired
-    private PatientService service;
-    @PostMapping("/add")
-    public Patient addPatient(@RequestBody Patient patient)
-    {
-        return service.savePatient(patient);
+
+    private final PaymentService paymentService;
+
+    /**
+      Notify a patient about a pending payment.
+     Looks up the payment by ID and sends a reminder email if status is PENDING.
+      POST /api/patient/payment/{id}/notify
+     */
+    @PostMapping("/payment/{id}/notify")
+    public ResponseEntity<String> notifyPendingPayment(@PathVariable Long id) {
+        paymentService.notifyPendingPayment(id);
+        return ResponseEntity.ok("Payment reminder sent successfully!");
     }
-
-    // Get all non-deleted patients
-    @GetMapping("/patients")
-
-    public List<Patient> getAllPatients() {
-
-        return service.getAllPatients();
-    }
-
-    // Soft delete by ID
-    @DeleteMapping("patients/{id}")
-    public String deletePatient(@PathVariable Long id) {
-        return service.softDeletePatient(id);
-    }
-
-
+}

@@ -41,14 +41,14 @@ public class Patient {
     private String disease;
 
     // Login User
-
-    @Column(name = "user_id")
-    private Long userId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // Hospital Relationship
-
-    @Column(name = "hospital_id")
-    private Long hospitalId;
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 
     @Column(name = "created_time")
     private String createdTime;
