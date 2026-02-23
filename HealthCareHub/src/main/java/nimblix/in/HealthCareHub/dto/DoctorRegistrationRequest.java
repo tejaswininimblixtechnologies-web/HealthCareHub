@@ -11,8 +11,10 @@ public class DoctorRegistrationRequest {
         return name;
     }
 
+
     public String getMobileNumber() {
         return mobileNumber;
+
     }
 
     public String getSpecialization() {

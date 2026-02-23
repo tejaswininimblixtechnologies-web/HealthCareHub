@@ -38,9 +38,12 @@ public class AuthController {
                 )
         );
 
+
+
         UserDetails userDetails =
                 customUserDetailsService.loadUserByUsername(request.getEmail());
 
         return jwtUtil.generateToken(userDetails);
     }
+
 }
