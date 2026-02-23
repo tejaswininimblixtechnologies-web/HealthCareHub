@@ -23,18 +23,18 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String registerDoctor(DoctorRegisterRequest request) {
 
-        // ✅ Validate request
+        // Validate request
         if (request.getEmail() == null || request.getPassword() == null) {
             throw new RuntimeException("Email or Password cannot be null");
         }
 
-        // ✅ Check email exists
+        // Check email exists
         userRepository.findByEmail(request.getEmail())
                 .ifPresent(existingUser -> {
                     throw new RuntimeException("Email already registered");
                 });
 
-        // ✅ Create User
+        // Create User
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -44,17 +44,17 @@ public class AuthServiceImpl implements AuthService {
 
         user = userRepository.save(user);
 
-        // ✅ Validate Hospital Exists
+        // Validate Hospital Exists
         hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() ->
                         new RuntimeException("Hospital not found"));
 
-        // ✅ Validate Specialization Exists
+        // Validate Specialization Exists
         specializationRepository.findById(request.getSpecializationId())
                 .orElseThrow(() ->
                         new RuntimeException("Specialization not found"));
 
-        // ✅ Create Doctor (SET IDS — NOT OBJECTS)
+        // Create Doctor (SET IDS — NOT OBJECTS)
         Doctor doctor = Doctor.builder()
                 .name(request.getName())
                 .experienceYears(request.getExperienceYears())
@@ -62,9 +62,9 @@ public class AuthServiceImpl implements AuthService {
                 .qualification(request.getQualification())
                 .EmailId(request.getEmail())
                 .password(user.getPassword())
-                .userId(user.getId())                     // ⭐ IMPORTANT
-                .hospitalId(request.getHospitalId())     // ⭐ IMPORTANT
-                .specializationId(request.getSpecializationId()) // ⭐ IMPORTANT
+                .userId(user.getId())                     
+                .hospitalId(request.getHospitalId())     
+                .specializationId(request.getSpecializationId()) 
                 .build();
 
         doctorRepository.save(doctor);
