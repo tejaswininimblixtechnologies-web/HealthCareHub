@@ -12,10 +12,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())   // disable csrf
+                .csrf(csrf -> csrf.disable())   // Disable CSRF for Postman testing
+
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()  // allow all APIs
-                );
+                        .requestMatchers("/api/users/create").permitAll()  // Allow create API
+                        .anyRequest().authenticated()  // Secure other APIs
+                )
+
+                .formLogin(form -> form.disable())   // Disable default login page
+                .httpBasic(basic -> basic.disable()); // Disable basic auth (optional)
 
         return http.build();
     }
