@@ -46,5 +46,10 @@ public class DoctorServiceImpl implements DoctorService {
 
         return "Doctor Registration Successful";
     }
+
+    @Override
+    public String registerDoctor(DoctorRegistrationRequest doctorRegistrationRequest) {
+        return "";
+    }
 }
 

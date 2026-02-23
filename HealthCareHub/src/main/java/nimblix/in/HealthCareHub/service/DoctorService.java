@@ -4,4 +4,6 @@ import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 
 public interface DoctorService {
     String RegisterDoctor(DoctorRegistrationRequest doctorRegistrationRequest);
+
+    String registerDoctor(DoctorRegistrationRequest doctorRegistrationRequest);
 }
