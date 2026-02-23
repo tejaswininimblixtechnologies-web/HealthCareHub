@@ -15,13 +15,13 @@ public class HospitalController {
 
     private final HospitalRepository hospitalRepository;
 
-    // ✅ Create Hospital
+    // Create Hospital
     @PostMapping
     public Hospital createHospital(@RequestBody Hospital hospital) {
         return hospitalRepository.save(hospital);
     }
 
-    // ✅ Get All Hospitals
+    // Get All Hospitals
     @GetMapping
     public List<Hospital> getAllHospitals() {
         return hospitalRepository.findAll();
