@@ -14,20 +14,17 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Specialization {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-
     @Column(name = "created_time")
     private String createdTime;
 
     @Column(name = "updated_time")
     private String updatedTime;
-
 
     @PrePersist
     protected void onCreate(){
@@ -39,7 +36,6 @@ public class Specialization {
     @PreUpdate
     protected void onUpdate(){
         this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
 
     }
 }

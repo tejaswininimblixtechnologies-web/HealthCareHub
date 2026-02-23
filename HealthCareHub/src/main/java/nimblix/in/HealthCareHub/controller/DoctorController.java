@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/doctors")
+@RequestMapping("api/user")
 @RequiredArgsConstructor
 public class DoctorController {
 
@@ -23,10 +23,11 @@ public class DoctorController {
 
     }
 
-    @GetMapping("/getDoctorDetails")
-    public ResponseEntity<?> getDoctorDetails(@RequestParam Long  doctorId,@RequestParam Long  hospitalId){
-        return  doctorService.getDoctorDetails(doctorId,hospitalId);
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(
+            @RequestParam Long doctorId) {
 
+        return doctorService.getDoctorProfile(doctorId);
     }
 
 

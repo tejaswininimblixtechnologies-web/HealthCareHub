@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
@@ -38,11 +39,13 @@ public class Doctor {
 
     // ✅ Many Doctors → One Hospital
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
 
     // ✅ Many Doctors → One Specialization
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
 

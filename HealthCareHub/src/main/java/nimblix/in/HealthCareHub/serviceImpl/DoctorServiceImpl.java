@@ -56,8 +56,14 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
-        return null;
+    public ResponseEntity<?> getDoctorProfile(Long doctorId) {
+
+        Doctor doctor = doctorRepository
+                .findById(doctorId)
+                .orElseThrow(() ->
+                        new RuntimeException("Doctor not found"));
+
+        return ResponseEntity.ok(doctor);
     }
 
 }
