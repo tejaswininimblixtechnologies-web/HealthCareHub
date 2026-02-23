@@ -13,9 +13,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // ===============================
     // DOCTOR REGISTER API
-    // ===============================
     @PostMapping("/doctor/register")
     public String registerDoctor(
             @RequestBody DoctorRegisterRequest request) {
