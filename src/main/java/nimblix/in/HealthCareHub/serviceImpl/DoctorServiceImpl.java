@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
+<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.repository.DoctorRepository;
@@ -67,3 +68,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 }
 
+=======
+public class DoctorServiceImpl {
+}
+>>>>>>> origin/main

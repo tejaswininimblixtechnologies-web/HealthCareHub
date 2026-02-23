@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.helper.UploadImageHelper;
+<<<<<<< HEAD
 import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.response.MultipleImageResponse;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
@@ -27,10 +28,25 @@ public class DoctorController {
     }
 
     // Multiple File Upload API
+=======
+import nimblix.in.HealthCareHub.response.MultipleImageResponse;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+
+@RestController
+@RequestMapping("/doctor")
+@RequiredArgsConstructor
+public class DoctorController {
+
+    private final UploadImageHelper uploadImageHelper;
+
+>>>>>>> origin/main
     @PostMapping("/upload")
     public MultipleImageResponse uploadFiles(@RequestParam("files") List<MultipartFile> files) throws Exception {
         return uploadImageHelper.uploadImages(files);
     }
+<<<<<<< HEAD
 
     // Get All Doctors with Search and Filter
     @GetMapping
@@ -39,4 +55,6 @@ public class DoctorController {
             @RequestParam(required = false) Long specializationId) {
         return doctorService.getAllDoctors(search, specializationId);
     }
+=======
+>>>>>>> origin/main
 }

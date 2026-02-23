@@ -20,6 +20,7 @@ public class DoctorAvailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
 
     @Column(name = "doctor_id")
     private Long doctorId;
@@ -28,6 +29,16 @@ public class DoctorAvailability {
 
     private String startTime;
     private String endTime;
+=======
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    private LocalDate availableDate;
+
+    private LocalTime startTime;
+    private LocalTime endTime;
+>>>>>>> origin/main
 
     private boolean isAvailable;
 

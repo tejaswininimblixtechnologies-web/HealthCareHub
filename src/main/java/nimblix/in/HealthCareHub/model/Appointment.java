@@ -19,6 +19,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
 
     @Column(name = "patient_id")
     private Long patientId;
@@ -28,6 +29,17 @@ public class Appointment {
     private Long doctorId;
 
     private String appointmentDateTime;
+=======
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    private LocalDateTime appointmentDateTime;
+>>>>>>> origin/main
 
     private String status; // BOOKED, CANCELLED, COMPLETED
 

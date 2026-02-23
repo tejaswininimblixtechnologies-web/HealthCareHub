@@ -33,6 +33,7 @@ public class Patient {
     private String disease;
 
     // Login User
+<<<<<<< HEAD
 
     @Column(name = "user_id")
     private Long userId;
@@ -41,6 +42,16 @@ public class Patient {
 
     @Column(name = "hospital_id")
     private Long hospitalId;
+=======
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // Hospital Relationship
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+>>>>>>> origin/main
 
     @Column(name = "created_time")
     private String createdTime;

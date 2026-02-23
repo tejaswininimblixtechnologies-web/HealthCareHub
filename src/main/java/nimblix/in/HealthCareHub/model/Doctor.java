@@ -26,16 +26,20 @@ public class Doctor {
     @Column(name = "phoneNo")
     private String phone;
 
+<<<<<<< HEAD
     @Column(name = "EmailId")
     private String EmailId;
 
     @Column(name = "password")
     private String password;
 
+=======
+>>>>>>> origin/main
     @Column(name = "qualification")
     private String qualification;
 
     // Login User (Doctor Account)
+<<<<<<< HEAD
      @Column(name = "user_id")
     private Long userId;
 
@@ -46,6 +50,20 @@ public class Doctor {
 
     @Column(name = "specialization_id")
     private Long specializationId;
+=======
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // Many Doctors → One Hospital
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
+    @ManyToOne
+    @JoinColumn(name = "specialization_id")
+    private Specialization specialization;
+>>>>>>> origin/main
 
     @Column(name = "created_time")
     private String createdTime;

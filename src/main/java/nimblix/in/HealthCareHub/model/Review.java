@@ -21,12 +21,22 @@ public class Review {
 
     private String comment;
 
+<<<<<<< HEAD
 
     @Column(name = "patient_id")
     private Long patientId;
 
     @JoinColumn(name = "doctor_id")
     private Long doctorId;
+=======
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+>>>>>>> origin/main
 
     @Column(name = "created_time")
     private String createdTime;

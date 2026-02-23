@@ -21,6 +21,11 @@ public class Specialization {
 
     private String name;
 
+<<<<<<< HEAD
+=======
+    @OneToMany(mappedBy = "specialization")
+    private List<Doctor> doctors;
+>>>>>>> origin/main
 
     @Column(name = "created_time")
     private String createdTime;
