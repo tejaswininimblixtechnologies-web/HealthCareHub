@@ -2,9 +2,6 @@ package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
-
-import java.util.List;
 
 @Entity
 @Table(name = "hospitals")
@@ -12,42 +9,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Hospital {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    private String address;
+    private String location;
 
-    private String city;
+    private String specialization;
 
-    private String state;
-
-    private String phone;
-
-    private String email;
-
-    private Integer totalBeds;
-
-
-    @Column(name = "created_time", updatable = false)
-    private String createdTime;
-
-    @Column(name = "updated_time")
-    private String updatedTime;
-
-    @PrePersist
-    protected void onCreate() {
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-    }
+    private Double rating;
 }

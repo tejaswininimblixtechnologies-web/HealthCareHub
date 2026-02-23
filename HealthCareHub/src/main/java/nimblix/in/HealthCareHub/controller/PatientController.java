@@ -10,26 +10,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
+
     @Autowired
     private PatientService service;
+
+    // Add Patient
     @PostMapping("/add")
-    public Patient addPatient(@RequestBody Patient patient)
-    {
+    public Patient addPatient(@RequestBody Patient patient) {
         return service.savePatient(patient);
     }
 
     // Get all non-deleted patients
-    @GetMapping("/patients")
-
+    @GetMapping
     public List<Patient> getAllPatients() {
-
         return service.getAllPatients();
     }
 
     // Soft delete by ID
-    @DeleteMapping("patients/{id}")
+    @DeleteMapping("/{id}")
     public String deletePatient(@PathVariable Long id) {
         return service.softDeletePatient(id);
     }
-
-
+}
