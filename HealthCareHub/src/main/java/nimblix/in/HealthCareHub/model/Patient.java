@@ -17,14 +17,6 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
-
-    public void setDeleted() {
-        this.isDeleted = true;
-    }
-
-
     @Column(name = "name")
     private String name;
 
@@ -37,18 +29,21 @@ public class Patient {
     @Column(name = "phoneNo")
     private String phone;
 
+    @Column(name = "blood_group")
+    private String bloodGroup;
+
     @Column(name = "disease")
     private String disease;
 
     // Login User
-
-    @Column(name = "user_id")
-    private Long userId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // Hospital Relationship
-
-    @Column(name = "hospital_id")
-    private Long hospitalId;
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 
     @Column(name = "created_time")
     private String createdTime;
@@ -58,18 +53,16 @@ public class Patient {
 
 
     @PrePersist
-    protected void onCreate() {
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onCreate(){
+        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
     }
 
     @PreUpdate
-    protected void onUpdate() {
-        this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onUpdate(){
+        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
 
     }
-
-
 }
