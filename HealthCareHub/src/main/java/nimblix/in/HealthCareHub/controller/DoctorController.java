@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("api/doctors")
 @RequiredArgsConstructor
@@ -33,10 +32,4 @@ key and value pair
     public String registerDoctor(@RequestBody DoctorRegistrationRequest doctorRegistrationRequest) {
         return doctorService.RegisterDoctor(doctorRegistrationRequest);
     }
-
-
-
-
-
-
 }
