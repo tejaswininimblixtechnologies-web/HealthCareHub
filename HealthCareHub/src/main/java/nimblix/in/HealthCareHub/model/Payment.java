@@ -25,9 +25,9 @@ public class Payment {
 
     private LocalDateTime paymentDate;
 
-
-    @Column(name = "appointment_id")
-    private Long appointmentId;
+    @OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
 
     @Column(name = "created_time")
