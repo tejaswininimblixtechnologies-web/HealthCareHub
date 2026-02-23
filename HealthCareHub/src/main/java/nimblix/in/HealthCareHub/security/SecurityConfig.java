@@ -14,8 +14,17 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())   // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()   // Allow all requests
-                );
+                        .requestMatchers(
+                                "/auth/**",
+                                "/patients/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/api/doctors/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
