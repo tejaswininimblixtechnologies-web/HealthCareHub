@@ -1,5 +1,9 @@
 package nimblix.in.HealthCareHub.service;
 
-public interface HospitalService {
+import nimblix.in.HealthCareHub.response.LocationResponse;
 
+import java.util.List;
+
+public interface HospitalService {
+    List<LocationResponse> getAllLocations();
 }
