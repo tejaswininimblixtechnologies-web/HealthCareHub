@@ -29,6 +29,14 @@ public class DoctorController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllDoctors(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String specialization,
+            @RequestParam(required = false) Long hospitalId) {
+        return doctorService.getAllDoctors(name, specialization, hospitalId);
+    }
+
 
 
 

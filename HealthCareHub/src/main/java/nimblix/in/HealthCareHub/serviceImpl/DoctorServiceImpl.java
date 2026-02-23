@@ -13,6 +13,9 @@ import nimblix.in.HealthCareHub.model.Specialization;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +61,31 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getAllDoctors(String name, String specialization, Long hospitalId) {
+        List<Doctor> doctors = doctorRepository.findAll();
+
+        if (name != null && !name.isEmpty()) {
+            doctors = doctors.stream()
+                    .filter(d -> d.getName().toLowerCase().contains(name.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (specialization != null && !specialization.isEmpty()) {
+            doctors = doctors.stream()
+                    .filter(d -> d.getSpecialization().getName().equalsIgnoreCase(specialization))
+                    .collect(Collectors.toList());
+        }
+
+        if (hospitalId != null) {
+            doctors = doctors.stream()
+                    .filter(d -> d.getHospital().getId().equals(hospitalId))
+                    .collect(Collectors.toList());
+        }
+
+        return ResponseEntity.ok(doctors);
     }
 
 }

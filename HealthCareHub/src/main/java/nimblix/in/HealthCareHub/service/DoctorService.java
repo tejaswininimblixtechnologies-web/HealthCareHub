@@ -7,4 +7,6 @@ public interface DoctorService {
     String registerDoctor(DoctorRegistrationRequest request);
 
     ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId);
+
+    ResponseEntity<?> getAllDoctors(String name, String specialization, Long hospitalId);
 }
