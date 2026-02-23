@@ -33,6 +33,11 @@ public class Review {
 
     @Column(name = "updated_time")
     private String updatedTime;
+    @Column(name = "hospital_id")
+    private Long hospitalId;
+
+    @Column(name = "is_verified")
+    private Boolean verified;
 
 
     @PrePersist
