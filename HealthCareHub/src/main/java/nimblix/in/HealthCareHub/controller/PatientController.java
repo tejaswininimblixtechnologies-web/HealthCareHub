@@ -9,6 +9,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("api/patient")
+@RequiredArgsConstructor
 public class PatientController {
     @Autowired
     private PatientService service;
