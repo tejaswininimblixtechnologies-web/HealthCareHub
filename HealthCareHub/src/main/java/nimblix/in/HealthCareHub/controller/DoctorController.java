@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Prescription;
+import nimblix.in.HealthCareHub.response.PrescriptionResponse;
 import nimblix.in.HealthCareHub.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,23 +17,23 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/doctor")
+@RequestMapping("/doctor")
 @RequiredArgsConstructor
 public class DoctorController {
 
     private final PrescriptionService prescriptionService;
 
     @GetMapping("/{doctorId}/prescriptions")
-    public ResponseEntity<List<Prescription>> getPrescriptionsByDoctor(
+    public ResponseEntity<List<PrescriptionResponse>> getPrescriptionsByDoctor(
             @PathVariable Long doctorId) {
 
-        List<Prescription> prescriptions =
-                prescriptionService.getPrescriptionsByDoctor(doctorId);
-
-        return ResponseEntity.ok(prescriptions);
-
+        return ResponseEntity.ok(
+                prescriptionService.getPrescriptionsByDoctor(doctorId)
+        );
     }
 }
+
+
 
 
 
