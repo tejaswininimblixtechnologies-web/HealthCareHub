@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
@@ -33,6 +34,10 @@ public class Hospital {
 
     private Integer totalBeds;
 
+    // ADD THIS RELATIONSHIP
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Room> rooms;
 
     @Column(name = "created_time", updatable = false)
     private String createdTime;
