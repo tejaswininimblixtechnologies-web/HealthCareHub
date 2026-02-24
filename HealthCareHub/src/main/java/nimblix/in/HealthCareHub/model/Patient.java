@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 import java.util.List;
 
@@ -40,19 +41,12 @@ public class Patient {
 
 
     @PrePersist
-    protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onCreate() {
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
     }
-
-
-
-//    @ManyToMany
-//    @JoinTable(
-//            name="patient_medicines",
-//            joinColumns=@JoinColumn(name="patient_id"),
-//            inverseJoinColumns = @JoinColumn(name="medicine_id")
-//    )
-//    private List<Medicine> medicines;
 }
+
+
+

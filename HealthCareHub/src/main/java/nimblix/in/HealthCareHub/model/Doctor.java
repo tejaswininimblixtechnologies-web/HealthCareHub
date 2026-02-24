@@ -1,6 +1,6 @@
 package nimblix.in.HealthCareHub.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +20,12 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String doctorName;
-    private String specialization;
+    private String name;
+    private String phone;
+    private String emailId;
+    private String password;
+    private Long hospitalId;
+    private Long specializationId;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Medicine> medicines;
