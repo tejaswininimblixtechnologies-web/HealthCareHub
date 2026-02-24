@@ -1,29 +1,40 @@
 package nimblix.in.HealthCareHub.controller;
 
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Prescription;
+import nimblix.in.HealthCareHub.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RestController
-@RequestMapping("/doctor")
+@RequestMapping("api/doctor")
+@RequiredArgsConstructor
 public class DoctorController {
 
+    private final PrescriptionService prescriptionService;
 
-    /*
-Json object:
-key and value pair
+    @GetMapping("/{doctorId}/prescriptions")
+    public ResponseEntity<List<Prescription>> getPrescriptionsByDoctor(
+            @PathVariable Long doctorId) {
 
-{
-"name": "tejaswini",
-"mobile number":"8937483454",
-"date":"10-05-2026",
+        List<Prescription> prescriptions =
+                prescriptionService.getPrescriptionsByDoctor(doctorId);
+
+        return ResponseEntity.ok(prescriptions);
+
+    }
 }
 
-*/
 
 
-}
+
+
