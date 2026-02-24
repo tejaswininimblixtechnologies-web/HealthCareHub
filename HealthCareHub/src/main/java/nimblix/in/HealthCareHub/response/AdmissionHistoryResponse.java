@@ -1,4 +1,6 @@
-package nimblix.in.HealthCareHub.dto;
+package nimblix.in.HealthCareHub.response;
+
+
 
 import lombok.*;
 
@@ -28,3 +30,4 @@ public class AdmissionHistoryResponse {
     private Long hospitalId;
     private String hospitalName;
 }
+

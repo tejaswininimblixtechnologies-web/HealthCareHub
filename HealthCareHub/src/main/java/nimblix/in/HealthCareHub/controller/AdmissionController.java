@@ -1,7 +1,7 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.dto.AdmissionHistoryResponse;
+import nimblix.in.HealthCareHub.response.AdmissionHistoryResponse;
 import nimblix.in.HealthCareHub.service.AdmissionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

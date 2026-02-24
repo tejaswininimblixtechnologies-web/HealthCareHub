@@ -3,7 +3,7 @@
 
     package nimblix.in.HealthCareHub.service;
 
-import nimblix.in.HealthCareHub.dto.AdmissionHistoryResponse;
+import nimblix.in.HealthCareHub.response.AdmissionHistoryResponse;
 
 import java.util.List;
 

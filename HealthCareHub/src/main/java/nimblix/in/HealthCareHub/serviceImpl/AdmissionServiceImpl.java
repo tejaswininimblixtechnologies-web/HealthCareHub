@@ -1,7 +1,7 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.dto.AdmissionHistoryResponse;
+import nimblix.in.HealthCareHub.response.AdmissionHistoryResponse;
 import nimblix.in.HealthCareHub.exception.ResourceNotFoundException;
 import nimblix.in.HealthCareHub.model.Admission;
 import nimblix.in.HealthCareHub.repository.AdmissionRepository;
