@@ -11,6 +11,7 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+    
 
     @PostMapping("/assign-permissions")
     public String assignPermissions(@RequestBody RolePermissionDTO dto) {
