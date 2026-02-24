@@ -1,0 +1,11 @@
+nimblix\in\HealthCareHub\model\Patient.class
+nimblix\in\HealthCareHub\config\MailConfig.class
+nimblix\in\HealthCareHub\model\DoctorAvailability.class
+nimblix\in\HealthCareHub\service\DoctorService.class
+nimblix\in\HealthCareHub\serviceImpl\DoctorServiceImpl.class
+nimblix\in\HealthCareHub\model\Specialization.class
+nimblix\in\HealthCareHub\model\Role.class
+nimblix\in\HealthCareHub\model\Doctor.class
+nimblix\in\HealthCareHub\exception\AdminNotFoundException.class
+nimblix\in\HealthCareHub\model\Hospital.class
+nimblix\in\HealthCareHub\model\User.class
