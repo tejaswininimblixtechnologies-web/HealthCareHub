@@ -23,12 +23,6 @@ public class Payment {
     private String paymentStatus;
     private LocalDateTime paymentDate;
 
-    @OneToOne
-    @JoinColumn(name = "appointment_id")
-    private Appointment appointment;
-
-    // explicit getter for static compiler/tools
-    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;

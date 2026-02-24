@@ -46,13 +46,10 @@ public class Doctor {
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
 
-    @Column(name = "specialization_id")
+    // read-only view of FK to avoid duplicate column mapping (no insert/update)
+    @Column(name = "specialization_id", insertable = false, updatable = false)
     private Long specializationId;
 
-    // Non-invasive helper so existing callers to getSpecialization() compile
-    public Long getSpecialization() {
-        return this.specializationId;
-    }
 
     @Column(name = "created_time")
     private String createdTime;

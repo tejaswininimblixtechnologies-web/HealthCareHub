@@ -3,6 +3,7 @@ package nimblix.in.HealthCareHub.model;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -29,13 +30,6 @@ public class Appointment {
 
     private String status; // BOOKED, CANCELLED, COMPLETED
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", insertable = false, updatable = false)
-    private Doctor doctor;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", insertable = false, updatable = false)
-    private Patient patient;
 
     @Column(name = "created_time")
     private String createdTime;

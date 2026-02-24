@@ -1,6 +1,9 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import nimblix.in.HealthCareHub.model.Payment;
+import nimblix.in.HealthCareHub.model.Appointment;
+import nimblix.in.HealthCareHub.model.Doctor;
+import nimblix.in.HealthCareHub.model.Patient;
 import nimblix.in.HealthCareHub.repository.PaymentRepository;
 import nimblix.in.HealthCareHub.response.BillingHistoryResponse;
 import nimblix.in.HealthCareHub.service.BillingService;
@@ -54,43 +57,51 @@ public class BillingServiceImpl implements BillingService {
     }
 
     /**
-     * Convert individual Payment to BillingHistoryResponse with null-safety checks
+     * Convert individual Payment to BillingHistoryResponse
      */
     private BillingHistoryResponse convertPaymentToBillingHistory(Payment payment) {
+        // Validate payment
         if (payment == null) {
-            throw new IllegalArgumentException("Payment is null");
+            throw new IllegalStateException("Payment record is null");
+        }
+        if (payment.getId() == null) {
+            throw new IllegalStateException("Payment record has null id");
         }
 
-        var appointment = payment.getAppointment();
-        if (appointment == null) {
-            throw new IllegalArgumentException("Appointment not found for payment id: " + payment.getId());
+        // Validate appointment
+        Appointment appointment = payment.getAppointment();
+        if (appointment == null || appointment.getId() == null) {
+            throw new IllegalStateException("No appointment found for payment id: " + payment.getId());
         }
 
-        var patient = appointment.getPatient();
-        if (patient == null) {
-            throw new IllegalArgumentException("Patient not found for appointment id: " + appointment.getId());
+        // Validate patient
+        Patient patient = appointment.getPatient();
+        if (patient == null || patient.getId() == null) {
+            throw new IllegalStateException("No patient found for appointment id: " + appointment.getId());
         }
 
-        var doctor = appointment.getDoctor();
-        if (doctor == null) {
-            throw new IllegalArgumentException("Doctor not found for appointment id: " + appointment.getId());
+        // Validate doctor
+        Doctor doctor = appointment.getDoctor();
+        if (doctor == null || doctor.getId() == null) {
+            throw new IllegalStateException("No doctor found for appointment id: " + appointment.getId());
         }
 
-        return BillingHistoryResponse.builder()
-                .paymentId(payment.getId())
-                .amount(payment.getAmount())
-                .paymentStatus(payment.getPaymentStatus())
-                .paymentDate(payment.getPaymentDate())
-                .createdTime(payment.getCreatedTime())
-                .updatedTime(payment.getUpdatedTime())
-                .appointmentId(appointment.getId())
-                .appointmentDateTime(appointment.getAppointmentDateTime())
-                .appointmentStatus(appointment.getStatus())
-                .doctorId(doctor.getId())
-                .doctorName(doctor.getName())
-                .doctorSpecialization(doctor.getSpecialization() != null ? String.valueOf(doctor.getSpecialization()) : null)
-                .patientId(patient.getId())
-                .patientName(patient.getName())
-                .build();
+        // Build using all-args constructor to avoid builder method mismatch
+        return new BillingHistoryResponse(
+                payment.getId(),
+                payment.getAmount(),
+                payment.getPaymentStatus(),
+                payment.getPaymentDate(),
+                payment.getCreatedTime(),
+                payment.getUpdatedTime(),
+                appointment.getId(),
+                appointment.getAppointmentDateTime(),
+                appointment.getStatus(),
+                doctor.getId(),
+                doctor.getName(),
+                doctor.getSpecialization() != null ? String.valueOf(doctor.getSpecialization()) : null,
+                patient.getId(),
+                patient.getName()
+        );
     }
 }
