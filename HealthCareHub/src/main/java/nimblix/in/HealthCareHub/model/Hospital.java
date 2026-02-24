@@ -46,6 +46,9 @@ public class Hospital {
         updatedTime = createdTime;
     }
 
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
     @PreUpdate
     protected void onUpdate() {
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();

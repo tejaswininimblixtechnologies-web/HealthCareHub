@@ -28,6 +28,10 @@ public class Review {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
     private String createdTime;
     private String updatedTime;
 
