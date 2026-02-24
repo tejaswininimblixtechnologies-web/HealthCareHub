@@ -5,6 +5,7 @@ import nimblix.in.HealthCareHub.service.RevenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api/revenue")
 public class RevenueController {
@@ -16,4 +17,11 @@ public class RevenueController {
     public RevenueSummaryDTO getSummary() {
         return revenueService.getRevenueSummary();
     }
+
+    @PostMapping("/save")
+    public String saveRevenue(@RequestBody RevenueSummaryDTO revenuesummaryDTO){
+        revenueService.saveRevenue(revenuesummaryDTO);
+        return "Revenue saved successfully";
+    }
 }
+

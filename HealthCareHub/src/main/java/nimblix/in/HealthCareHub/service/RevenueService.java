@@ -1,12 +1,13 @@
 package nimblix.in.HealthCareHub.service;
 
 import nimblix.in.HealthCareHub.dto.RevenueSummaryDTO;
-import nimblix.in.HealthCareHub.entity.Revenue;
+import nimblix.in.HealthCareHub.model.Revenue;
 import nimblix.in.HealthCareHub.repository.RevenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class RevenueService {
@@ -15,7 +16,6 @@ public class RevenueService {
     private RevenueRepository revenueRepository;
 
     public RevenueSummaryDTO getRevenueSummary() {
-
         List<Revenue> list = revenueRepository.findAll();
 
         double total = list.stream()
@@ -27,5 +27,14 @@ public class RevenueService {
         dto.setTotalDepartments(list.size());
 
         return dto;
+    }
+
+    // ✅ ADD THIS
+    public void saveRevenue(RevenueSummaryDTO revenueSummaryDTO) {
+
+        Revenue revenue = new Revenue();
+        revenue.setAmount(revenueSummaryDTO.getTotalRevenue());
+
+        revenueRepository.save(revenue);
     }
 }

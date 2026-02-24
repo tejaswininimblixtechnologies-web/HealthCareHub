@@ -1,6 +1,6 @@
 package nimblix.in.HealthCareHub.repository;
 
-import nimblix.in.HealthCareHub.entity.Revenue;
+import nimblix.in.HealthCareHub.model.Revenue;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RevenueRepository extends JpaRepository<Revenue, Long> {

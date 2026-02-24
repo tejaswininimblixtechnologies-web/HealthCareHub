@@ -1,4 +1,4 @@
-package nimblix.in.HealthCareHub.entity;
+package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
