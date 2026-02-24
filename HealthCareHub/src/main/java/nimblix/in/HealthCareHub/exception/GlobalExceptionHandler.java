@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AdminNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleAdminNotFound(UserNotFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleAdminNotFound(AdminNotFoundException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.NOT_FOUND.value());
         response.put("error", "Not Found");
@@ -45,6 +46,18 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+    // 401 - Login failure
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> handleBadCredentials(BadCredentialsException ex) {
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("status", HttpStatus.UNAUTHORIZED.value());
+        error.put("error", "Unauthorized");
+        error.put("message", "Invalid email or password");
+
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
 
     // 500 - Generic / fallback exception
     @ExceptionHandler(Exception.class)
@@ -55,4 +68,5 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

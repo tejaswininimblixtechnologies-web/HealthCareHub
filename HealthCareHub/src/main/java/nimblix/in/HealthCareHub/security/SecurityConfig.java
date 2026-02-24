@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,27 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final CustomUserDetailsService customUserDetailsService;
 
-    // ---------------- PASSWORD ENCODER ----------------
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    // ---------------- AUTHENTICATION PROVIDER (MAIN FIX) ----------------
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-
-        provider.setUserDetailsService(customUserDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-
-        return provider;
-    }
-
-    // ---------------- SECURITY FILTER ----------------
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -55,29 +34,27 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/auth/login",
                                 "/v3/api-docs/**",
+                                "/api/user/profile",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/doctors/**",
                                 "/api/hospital/**"
                         ).permitAll()
                         .anyRequest().authenticated()
-                );
-
-        // ⭐ IMPORTANT — register authentication provider
-        http.authenticationProvider(daoAuthenticationProvider());
-
-        // JWT filter
-        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // ---------------- AUTHENTICATION MANAGER ----------------
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 
-        return http.getSharedObject(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder.class)
-                .authenticationProvider(daoAuthenticationProvider())
-                .build();
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
