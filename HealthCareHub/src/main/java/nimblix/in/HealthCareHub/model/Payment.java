@@ -20,11 +20,12 @@ public class Payment {
     private Long id;
 
     private Double amount;
-
-    private String paymentStatus; // SUCCESS, FAILED, PENDING
-
+    private String paymentStatus;
     private LocalDateTime paymentDate;
 
+    @OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
     // explicit getter for static compiler/tools
     @Getter
@@ -35,22 +36,16 @@ public class Payment {
 
     @Column(name = "created_time")
     private String createdTime;
-
-    @Column(name = "updated_time")
     private String updatedTime;
-
 
     @PrePersist
     protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = createdTime;
     }
 
     @PreUpdate
     protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
-
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }
