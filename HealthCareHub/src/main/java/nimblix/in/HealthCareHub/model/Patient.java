@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
-
-import java.util.List;
-
-
-@Data
+@Entity
+@Table(name = "patients")
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,34 +19,34 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String patientName;
+
+    private String name;
+    private Integer age;
+    private String gender;
+    private String phone;
     private String disease;
     private Integer age;
 
-    // Login User
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 
-    // Hospital Relationship
-
-    @Column(name = "hospital_id")
-    private Long hospitalId;
-
-    @Column(name = "created_time")
     private String createdTime;
-
-    @Column(name = "updated_time")
     private String updatedTime;
 
-
     @PrePersist
-    protected void onCreate() {
+    protected void onCreate(){
         createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-
+        updatedTime = createdTime;
     }
 }
 
-
-
+    @PreUpdate
+    protected void onUpdate(){
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    }
+}
