@@ -39,13 +39,11 @@ public class Doctor {
 
     // ✅ Many Doctors → One Hospital
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
 
     // ✅ Many Doctors → One Specialization
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
 
