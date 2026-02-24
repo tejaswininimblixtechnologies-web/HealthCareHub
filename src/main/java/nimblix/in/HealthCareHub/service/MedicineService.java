@@ -16,6 +16,8 @@ public class MedicineService {
 
     public Page<Medicine> getAllMedicines(int page, int size)
 
+
+
     {
 
         return repository.findAll(PageRequest.of( page,size));
