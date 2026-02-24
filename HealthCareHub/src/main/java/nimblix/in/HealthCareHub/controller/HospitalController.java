@@ -1,8 +1,9 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.model.Hospital;
-import nimblix.in.HealthCareHub.repository.HospitalRepository;
+import nimblix.in.HealthCareHub.dto.HospitalRequestDTO;
+import nimblix.in.HealthCareHub.dto.HospitalResponseDTO;
+import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,17 +14,18 @@ import java.util.List;
 @CrossOrigin("*")
 public class HospitalController {
 
-    private final HospitalRepository hospitalRepository;
+    private final HospitalService hospitalService;
 
-    // ✅ Create Hospital
+    // Create Hospital
     @PostMapping
-    public Hospital createHospital(@RequestBody Hospital hospital) {
-        return hospitalRepository.save(hospital);
+    public HospitalResponseDTO createHospital(
+            @RequestBody HospitalRequestDTO request) {
+        return hospitalService.createHospital(request);
     }
 
-    // ✅ Get All Hospitals
+    // Get All Hospitals
     @GetMapping
-    public List<Hospital> getAllHospitals() {
-        return hospitalRepository.findAll();
+    public List<HospitalResponseDTO> getAllHospitals() {
+        return hospitalService.getAllHospitals();
     }
 }
