@@ -3,16 +3,14 @@ package nimblix.in.HealthCareHub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "appointments")
+@Table(name = "medical_reports")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Appointment {
+public class MedicalReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +18,6 @@ public class Appointment {
 
     private Long patientId;
 
-    private LocalDateTime appointmentDate;
+    private String fileName;
+    private String filePath;
 }
