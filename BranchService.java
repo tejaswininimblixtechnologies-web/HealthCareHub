@@ -2,12 +2,12 @@ package com.hospital.hospitalmanagement.Service;
 
 import com.hospital.hospitalmanagement.entity.Branch;
 import com.hospital.hospitalmanagement.repository.BranchRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/branches")
+@Service
 public class BranchService {
 
     private final BranchRepository branchRepository;
@@ -17,27 +17,21 @@ public class BranchService {
     }
 
     // Create Branch
-    @PostMapping
-    public Branch createBranch(@RequestBody Branch branch) {
+
+    public Branch createBranch(Branch branch) {
         return branchRepository.save(branch);
     }
 
     // Get All Branches
-    @GetMapping
+
     public List<Branch> getAllBranches() {
         return branchRepository.findAll();
     }
 
     // Get Branch By ID
-    @GetMapping("/{id}")
-    public Branch getBranchById(@PathVariable Long id) {
-        return branchRepository.findById(id).orElseThrow();
+
+    public Branch getBranchById( Long id) {
+        return branchRepository.findById(id).orElse(null);
     }
 
-    // Delete Branch
-    @DeleteMapping("/{id}")
-    public String deleteBranch(@PathVariable Long id) {
-        branchRepository.deleteById(id);
-        return "Branch deleted successfully";
-    }
 }

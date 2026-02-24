@@ -1,7 +1,9 @@
 package com.hospital.hospitalmanagement.Controller;
 
+import com.hospital.hospitalmanagement.Service.BranchService;
 import com.hospital.hospitalmanagement.entity.Branch;
 import com.hospital.hospitalmanagement.repository.BranchRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,34 +12,25 @@ import java.util.List;
 @RequestMapping("/api/branches")
 public class BranchController {
 
-    private final BranchRepository branchRepository;
+    private final BranchService branchService;
 
-    public BranchController(BranchRepository branchRepository) {
-        this.branchRepository = branchRepository;
+    public BranchController(BranchService branchService){
+    this.branchService = branchService;
     }
 
-    // Create Branch
     @PostMapping
-    public Branch createBranch(@RequestBody Branch branch) {
-        return branchRepository.save(branch);
+    public Branch createBranch(@RequestBody Branch branch){
+        return branchService.createBranch(branch);
     }
 
-    // Get All Branches
     @GetMapping
-    public List<Branch> getAllBranches() {
-        return branchRepository.findAll();
+    public List<Branch> getAllBranches(){
+        return branchService.getAllBranches();
     }
 
-    // Get Branch By ID
     @GetMapping("/{id}")
-    public Branch getBranchById(@PathVariable Long id) {
-        return branchRepository.findById(id).orElseThrow();
+    public Branch getBranchById(@PathVariable Long id){
+        return branchService.getBranchById(id);
     }
 
-    // Delete Branch
-    @DeleteMapping("/{id}")
-    public String deleteBranch(@PathVariable Long id) {
-        branchRepository.deleteById(id);
-        return "Branch deleted successfully";
-    }
 }

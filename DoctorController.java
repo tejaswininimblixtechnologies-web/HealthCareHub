@@ -11,10 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
-public class DoctorController {
+    public class DoctorController {
 
-    private final DoctorRepository doctorRepository;
-    private final BranchRepository branchRepository;
+    private DoctorRepository doctorRepository;
+    private BranchRepository branchRepository;
 
     public DoctorController(DoctorRepository doctorRepository,
                             BranchRepository branchRepository) {
@@ -40,9 +40,9 @@ public class DoctorController {
         return doctorRepository.save(doctor);
     }
 
-    // Get All Doctors
-    @GetMapping
-    public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
+    // Get All Doctor
+    @GetMapping("/branch/{branchId}")
+    public List<Doctor> getDoctorsByBranch(@PathVariable Long branchId) {
+        return doctorRepository.findByBranchId(branchId);
     }
 }

@@ -3,5 +3,11 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hopsitalmanagement" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hopsitalmanagement - Copy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hopsitalmanagement - Copy (2)" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/hopsitalmanagement" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/hopsitalmanagement - Copy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hopsitalmanagement - Copy/hopsitalmanagement" vcs="Git" />
   </component>
 </project>
