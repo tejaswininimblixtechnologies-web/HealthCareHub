@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.repository.DoctorRepository;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
+import nimblix.in.HealthCareHub.request.DoctorSearchRequest;
+import nimblix.in.HealthCareHub.response.DoctorResponse;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -64,28 +66,45 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public ResponseEntity<?> getAllDoctors(String name, String specialization, Long hospitalId) {
+    public List<DoctorResponse> getAllDoctors(DoctorSearchRequest request) {
         List<Doctor> doctors = doctorRepository.findAll();
 
-        if (name != null && !name.isEmpty()) {
+        if (request.getName() != null && !request.getName().isEmpty()) {
             doctors = doctors.stream()
-                    .filter(d -> d.getName().toLowerCase().contains(name.toLowerCase()))
+                    .filter(d -> d.getName().toLowerCase().contains(request.getName().toLowerCase()))
                     .collect(Collectors.toList());
         }
 
-        if (specialization != null && !specialization.isEmpty()) {
+        if (request.getSpecialization() != null && !request.getSpecialization().isEmpty()) {
             doctors = doctors.stream()
-                    .filter(d -> d.getSpecialization().getName().equalsIgnoreCase(specialization))
+                    .filter(d -> d.getSpecialization().getName().equalsIgnoreCase(request.getSpecialization()))
                     .collect(Collectors.toList());
         }
 
-        if (hospitalId != null) {
+        if (request.getHospitalId() != null) {
             doctors = doctors.stream()
-                    .filter(d -> d.getHospital().getId().equals(hospitalId))
+                    .filter(d -> d.getHospital().getId().equals(request.getHospitalId()))
                     .collect(Collectors.toList());
         }
 
-        return ResponseEntity.ok(doctors);
+        return doctors.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private DoctorResponse mapToResponse(Doctor doctor) {
+        return DoctorResponse.builder()
+                .id(doctor.getId())
+                .name(doctor.getName())
+                .experienceYears(doctor.getExperienceYears())
+                .phone(doctor.getPhone())
+                .emailId(doctor.getEmailId())
+                .qualification(doctor.getQualification())
+                .hospitalName(doctor.getHospital().getName())
+                .hospitalId(doctor.getHospital().getId())
+                .specializationName(doctor.getSpecialization().getName())
+                .specializationId(doctor.getSpecialization().getId())
+                .build();
     }
 
 }
