@@ -23,6 +23,11 @@ public class DoctorServiceImpl implements DoctorService {
     private final SpecializationRepository specializationRepository;
 
     @Override
+    public String RegisterDoctor(DoctorRegistrationRequest request) {
+        return "";
+    }
+
+    @Override
     public String registerDoctor(DoctorRegistrationRequest request) {
 
         // Check if email already exists
