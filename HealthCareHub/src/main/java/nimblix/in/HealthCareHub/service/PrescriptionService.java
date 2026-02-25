@@ -54,4 +54,7 @@ public class PrescriptionService {
                 .orElseThrow(() -> new RuntimeException("Prescription not found with id: " + id));
         prescriptionRepository.delete(prescription);
     }
-}
+        public List<Prescription> getAllPrescriptions() {
+            return prescriptionRepository.findAll();
+        }
+    }

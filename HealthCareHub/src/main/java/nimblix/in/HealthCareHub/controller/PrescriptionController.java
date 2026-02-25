@@ -17,6 +17,23 @@ public class PrescriptionController {
     @Autowired
     private PrescriptionService prescriptionService;
 
+    // GET all prescriptions for all patients in ONE call
+    @GetMapping("/prescriptions/all")
+    public ResponseEntity<?> getAllPrescriptions() {
+        try {
+            List<Prescription> prescriptions = prescriptionService.getAllPrescriptions();
+            if (prescriptions.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No prescriptions found");
+            }
+            return ResponseEntity.ok(prescriptions);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
+        }
+    }
+
+    // GET prescriptions by patient ID
     @GetMapping("/{patientId}/prescriptions")
     public ResponseEntity<?> getAllPrescriptionsByPatient(@PathVariable Long patientId) {
         try {
@@ -34,6 +51,7 @@ public class PrescriptionController {
         }
     }
 
+    // POST create prescription for a patient
     @PostMapping("/{patientId}/prescriptions")
     public ResponseEntity<?> createPrescription(
             @PathVariable Long patientId,
@@ -49,6 +67,7 @@ public class PrescriptionController {
         }
     }
 
+    // GET prescription by ID
     @GetMapping("/prescriptions/{id}")
     public ResponseEntity<?> getPrescriptionById(@PathVariable Long id) {
         try {
@@ -61,6 +80,7 @@ public class PrescriptionController {
         }
     }
 
+    // PUT update prescription
     @PutMapping("/prescriptions/{id}")
     public ResponseEntity<?> updatePrescription(
             @PathVariable Long id,
@@ -76,6 +96,7 @@ public class PrescriptionController {
         }
     }
 
+    // DELETE prescription
     @DeleteMapping("/prescriptions/{id}")
     public ResponseEntity<?> deletePrescription(@PathVariable Long id) {
         try {
