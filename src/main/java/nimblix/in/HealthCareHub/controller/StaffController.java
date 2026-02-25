@@ -30,3 +30,4 @@ public class StaffController {
         return staffService.markAttendance(id, present);
     }
 }
+

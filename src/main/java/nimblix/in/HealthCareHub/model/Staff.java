@@ -25,3 +25,4 @@ public class Staff {
     // Attendance field
     private boolean presentToday;
 }
+
