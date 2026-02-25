@@ -6,4 +6,5 @@ import nimblix.in.HealthCareHub.response.UserResponse;
 public interface UserService {
 
     UserResponse createUser(UserRequest request);
+
 }

@@ -11,7 +11,6 @@ import nimblix.in.HealthCareHub.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,44 +22,36 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Override
     public UserResponse createUser(UserRequest request) {
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
+        // 1️⃣ Map role names from request to Role entities
+        Set<Role> roles = request.getRoles().stream()
+                .map(roleName -> roleRepository.findByName(roleName)
+                        .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
+                .collect(Collectors.toSet());
 
-        if (userRepository.existsByPhone(request.getPhone())) {
-            throw new RuntimeException("Phone already exists");
-        }
-
-        Set<Role> roles = new HashSet<>();
-
-        for (String roleName : request.getRoles()) {
-            Role role = (Role) roleRepository.findByName(roleName)
-                    .orElseThrow(() -> new RuntimeException("Role not found"));
-            roles.add(role);
-        }
-
+        // 2️⃣ Build User entity
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(roles)
+                .enabled(true)
                 .build();
 
-        User savedUser = userRepository.save(user);
+        // 3️⃣ Save user
+        userRepository.save(user);
 
+        // 4️⃣ Return response
         return UserResponse.builder()
-                .id(savedUser.getId())
-                .name(savedUser.getName())
-                .email(savedUser.getEmail())
-                .phone(savedUser.getPhone())
-                .roles(savedUser.getRoles()
-                        .stream()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .roles(user.getRoles().stream()
                         .map(Role::getName)
                         .collect(Collectors.toSet()))
                 .build();
     }
-
 }

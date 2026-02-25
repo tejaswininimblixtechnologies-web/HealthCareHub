@@ -4,10 +4,11 @@ import lombok.*;
 
 import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserResponse {
 
     private Long id;

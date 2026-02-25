@@ -1,10 +1,21 @@
 package nimblix.in.HealthCareHub.model;
 
-public enum Role {
-    DOCTOR,
-    PATIENT;
+import jakarta.persistence.*;
+import lombok.*;
 
-    public String getName() {
-        return this.name();
-    }
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "roles")
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String name; // e.g., "ADMIN", "USER"
 }

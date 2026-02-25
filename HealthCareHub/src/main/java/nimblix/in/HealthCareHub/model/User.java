@@ -28,9 +28,21 @@ public class User {
 
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
+    private boolean enabled = true; // Track if user is active
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles;
 
-    private boolean enabled = true;
+    /**
+     * Indicates whether the user account is enabled.
+     * @return true if the user is enabled, false otherwise
+     */
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 }
