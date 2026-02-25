@@ -1,2 +1,12 @@
-# Auto detect text files and perform LF normalization
+# Auto detect text files and normalize line endings
 * text=auto
+
+# Force LF for shell scripts
+*.sh text eol=lf
+
+# Force CRLF for Windows scripts
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Keep Maven wrapper executable
+mvnw text eol=lf
