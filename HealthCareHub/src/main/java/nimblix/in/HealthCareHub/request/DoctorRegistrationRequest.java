@@ -11,6 +11,9 @@ public class DoctorRegistrationRequest {
     private String doctorEmail;
     private String password;
     private String phoneNo;
-    private String hospitalName;
-    private String specializationName;
+    private Long hospitalId;
+    private Long specializationId;
+    private Double consultationFee;
+    private String Qualification;
+    private Integer ExperienceYears;
 }
