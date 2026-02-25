@@ -20,19 +20,19 @@ public class DoctorController {
     private final DoctorService doctorService;
     private final AppointmentService appointmentService;
 
-    // 🔹 Get All Doctors
+    //  Get All Doctors
     @GetMapping("/doctors")
     public ResponseEntity<List<Doctor>> getAllDoctors() {
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
-    // 🔹 Create Doctor
+    //  Create Doctor
     @PostMapping("/doctors")
     public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) {
         return ResponseEntity.ok(doctorService.saveDoctor(doctor));
     }
 
-    // 🔹 OLD Reschedule API (Works Like Before)
+    //  OLD Reschedule API (Works Like Before)
     @PutMapping("/appointments/reschedule/{appointmentId}")
     public ResponseEntity<Appointment> rescheduleAppointment(
             @PathVariable Long appointmentId,
