@@ -1,11 +1,14 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
-import nimblix.in.HealthCareHub.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.exception.SlotNotAvailableException;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.exception.AppointmentNotFoundException;
+import nimblix.in.HealthCareHub.exception.SlotNotAvailableException;
 import nimblix.in.HealthCareHub.model.Appointment;
+import nimblix.in.HealthCareHub.model.Doctor;
+import nimblix.in.HealthCareHub.repository.AppointmentRepository;
 import nimblix.in.HealthCareHub.repository.DoctorAvailabilityRepository;
+import nimblix.in.HealthCareHub.repository.DoctorRepository;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +21,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
+    private final DoctorRepository doctorRepository;
     private final AppointmentRepository appointmentRepository;
     private final DoctorAvailabilityRepository doctorAvailabilityRepository;
 
+    //  Get all doctors
+    @Override
+    public List<Doctor> getAllDoctors() {
+        return doctorRepository.findAll();
+    }
+
+    //  Create doctor
+    @Override
+    public Doctor saveDoctor(Doctor doctor) {
+        return doctorRepository.save(doctor);
+    }
+
+    //  Reschedule Appointment
     @Override
     public Appointment rescheduleAppointment(Long appointmentId,
                                              LocalDateTime newDateTime) {
@@ -34,13 +51,15 @@ public class DoctorServiceImpl implements DoctorService {
                 );
 
         // 2 Allow only SCHEDULED appointments
-        if (!HealthCareConstants.APPOINTMENT_SCHEDULED.equalsIgnoreCase(appointment.getStatus())) {
+        if (!HealthCareConstants.APPOINTMENT_SCHEDULED
+                .equalsIgnoreCase(appointment.getStatus())) {
+
             throw new IllegalStateException(
                     "Only SCHEDULED appointments can be rescheduled"
             );
         }
 
-        // 3 Prevent past date rescheduling
+        // 3 Prevent past date
         if (newDateTime.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException(
                     "Cannot reschedule to past date/time"
@@ -48,7 +67,6 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         Long doctorId = appointment.getDoctor().getId();
-
         LocalDate newDate = newDateTime.toLocalDate();
         LocalTime newTime = newDateTime.toLocalTime();
 
@@ -66,7 +84,7 @@ public class DoctorServiceImpl implements DoctorService {
                         )
                 );
 
-        // 5 Check if slot already booked (IMPORTANT BLOCK)
+        // 5 Check slot conflict
         List<Appointment> existingAppointments =
                 appointmentRepository.findByDoctorIdAndAppointmentDateTime(
                         doctorId,
