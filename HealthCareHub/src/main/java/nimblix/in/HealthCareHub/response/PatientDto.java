@@ -1,9 +1,13 @@
-package nimblix.in.HealthCareHub.dto;
+package nimblix.in.HealthCareHub.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PatientDto {
+
+    private Long id;
 
     private String name;
     private Integer age;

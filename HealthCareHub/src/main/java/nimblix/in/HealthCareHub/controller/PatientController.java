@@ -1,8 +1,8 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.dto.FeedbackDto;
-import nimblix.in.HealthCareHub.dto.PatientDto;
+import nimblix.in.HealthCareHub.response.FeedbackDto;
+import nimblix.in.HealthCareHub.response.PatientDto;
 import nimblix.in.HealthCareHub.service.PatientService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    // 🔹 Task 56 — Patient Self Registration
+    // 🔹 Task 56 — Patient Registration
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody PatientDto dto) {
         return ResponseEntity.ok(patientService.registerPatient(dto));
@@ -27,7 +27,7 @@ public class PatientController {
         return patientService.downloadMedicalReport(patientId);
     }
 
-    // 🔹 Task 58 — View Upcoming Appointments
+    // 🔹 Task 58 — Upcoming Appointments
     @GetMapping("/{patientId}/appointments")
     public ResponseEntity<?> upcomingAppointments(@PathVariable Long patientId) {
         return ResponseEntity.ok(
@@ -44,12 +44,9 @@ public class PatientController {
                 patientService.updateProfile(patientId, dto));
     }
 
-    // 🔹 Task 60 — Feedback & Rating
+    // 🔹 Task 60 — Feedback
     @PostMapping("/feedback")
-    public ResponseEntity<?> submitFeedback(
-            @RequestBody FeedbackDto dto) {
-
-        return ResponseEntity.ok(
-                patientService.submitFeedback(dto));
+    public ResponseEntity<?> submitFeedback(@RequestBody FeedbackDto dto) {
+        return ResponseEntity.ok(patientService.submitFeedback(dto));
     }
 }

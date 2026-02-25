@@ -3,6 +3,7 @@ package nimblix.in.HealthCareHub.model;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+
 @Entity
 @Table(name = "patients")
 @Getter
@@ -21,6 +22,10 @@ public class Patient {
     private String gender;
     private String phone;
     private String disease;
+
+    // ✅ NEW FIELD for medical report file path
+    @Column(name = "C:/reports/sample_medical_report.pdf")
+    private String medicalReportPath;
 
     @OneToOne
     @JoinColumn(name = "user_id")

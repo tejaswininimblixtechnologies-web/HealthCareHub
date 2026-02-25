@@ -1,8 +1,7 @@
 package nimblix.in.HealthCareHub.service;
 
-import nimblix.in.HealthCareHub.dto.FeedbackDto;
-import nimblix.in.HealthCareHub.dto.PatientDto;
-import nimblix.in.HealthCareHub.model.Appointment;
+import nimblix.in.HealthCareHub.response.FeedbackDto;
+import nimblix.in.HealthCareHub.response.PatientDto;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
@@ -10,17 +9,21 @@ import java.util.List;
 
 public interface PatientService {
 
-    String registerPatient(PatientDto dto);
+    // 🔹 Task 56 — Patient Self Registration
+    PatientDto registerPatient(PatientDto dto);
 
+    // 🔹 Task 57 — Download Medical Report
     ResponseEntity<Resource> downloadMedicalReport(Long patientId);
 
-    List<Appointment> getUpcomingAppointments(Long patientId);
+    // 🔹 Task 58 — View Upcoming Appointments
+    List<String> getUpcomingAppointments(Long patientId);
 
-    String updateProfile(Long patientId, PatientDto dto);
+    // 🔹 Task 59 — Update Profile
+    PatientDto updateProfile(Long patientId, PatientDto dto);
 
+    // 🔹 Task 60 — Feedback & Rating
     String submitFeedback(FeedbackDto dto);
 }
-
 
 
 

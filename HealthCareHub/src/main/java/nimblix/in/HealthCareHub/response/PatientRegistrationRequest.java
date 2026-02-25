@@ -1,7 +1,7 @@
-package nimblix.in.HealthCareHub.dto;
+package nimblix.in.HealthCareHub.response;
 
 
-
+import nimblix.in.HealthCareHub.response.PatientRegistrationRequest;
 import lombok.Data;
 
 @Data

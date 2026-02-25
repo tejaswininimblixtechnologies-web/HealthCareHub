@@ -2,7 +2,6 @@ package nimblix.in.HealthCareHub.helper;
 
 import lombok.extern.slf4j.Slf4j;
 import nimblix.in.HealthCareHub.constants.HealthCareConstants;
-import nimblix.in.HealthCareHub.response.MultipleImageResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

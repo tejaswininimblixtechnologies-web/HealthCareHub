@@ -1,19 +1,17 @@
-package nimblix.in.HealthCareHub.response;
+package nimblix.in.HealthCareHub.helper;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class MultipleImageResponse {
 
     private String status;
     private String message;
-    private List<String> uploadedFileNames;
+    private List<String> fileNames;
 }
