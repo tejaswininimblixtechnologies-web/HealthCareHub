@@ -1,7 +1,7 @@
 package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
@@ -13,6 +13,5 @@ public class Prescription {
 
     private String medicine;
 
-    @ManyToOne
-    private Doctor doctor;
+    private Long doctorId;
 }
