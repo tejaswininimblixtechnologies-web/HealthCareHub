@@ -16,4 +16,6 @@ public class MultipleImageResponse {
     private String status;
     private String message;
     private List<String> uploadedFileNames;
+
+
 }
