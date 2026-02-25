@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/api/doctors/**",
                                 "/api/hospital/**"
                         ).permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

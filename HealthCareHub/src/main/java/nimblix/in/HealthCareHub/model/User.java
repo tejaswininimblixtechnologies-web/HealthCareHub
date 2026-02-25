@@ -48,4 +48,17 @@ public class User {
 
 
     }
+
+    // Add this field inside your User class
+    private boolean active;  // stores active/inactive status
+
+    // Correct setter
+    public void setActive(boolean active) {
+        this.active = active;  // set the value to the field
+    }
+
+    // Correct getter
+    public boolean isActive() {
+        return this.active;    // return the value of the field
+    }
 }
