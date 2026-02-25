@@ -43,4 +43,14 @@ public class Patient {
     protected void onUpdate(){
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
-}
+
+    private String bloodGroup;  // this stores the value
+
+    public String getBloodGroup() {
+        return this.bloodGroup;  // return the actual stored value
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;  // set the value
+    }
+    }
