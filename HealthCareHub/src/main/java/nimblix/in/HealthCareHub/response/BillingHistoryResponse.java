@@ -2,8 +2,6 @@ package nimblix.in.HealthCareHub.response;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,13 +12,13 @@ public class BillingHistoryResponse {
     private Long paymentId;
     private Double amount;
     private String paymentStatus;
-    private LocalDateTime paymentDate;
+    private String paymentDate;
     private String createdTime;
     private String updatedTime;
 
     // Appointment Details
     private Long appointmentId;
-    private LocalDateTime appointmentDateTime;
+    private String appointmentDateTime;
     private String appointmentStatus;
 
     // Doctor Details
@@ -32,4 +30,3 @@ public class BillingHistoryResponse {
     private Long patientId;
     private String patientName;
 }
-

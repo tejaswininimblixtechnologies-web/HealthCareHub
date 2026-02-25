@@ -10,6 +10,7 @@ import nimblix.in.HealthCareHub.service.BillingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,8 @@ public class BillingServiceImpl implements BillingService {
 
     @Autowired
     private PaymentRepository paymentRepository;
+
+    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @Override
     public List<BillingHistoryResponse> getBillingHistoryByPatientId(Long patientId) {
@@ -86,16 +89,27 @@ public class BillingServiceImpl implements BillingService {
             throw new IllegalStateException("No doctor found for appointment id: " + appointment.getId());
         }
 
+        // Convert LocalDateTime fields to String safely
+        String paymentDateStr = null;
+        if (payment.getPaymentDate() != null) {
+            paymentDateStr = payment.getPaymentDate().format(ISO_FORMATTER);
+        }
+
+        String appointmentDateTimeStr = null;
+        if (appointment.getAppointmentDateTime() != null) {
+            appointmentDateTimeStr = appointment.getAppointmentDateTime().format(ISO_FORMATTER);
+        }
+
         // Build using all-args constructor to avoid builder method mismatch
         return new BillingHistoryResponse(
                 payment.getId(),
                 payment.getAmount(),
                 payment.getPaymentStatus(),
-                payment.getPaymentDate(),
+                paymentDateStr,
                 payment.getCreatedTime(),
                 payment.getUpdatedTime(),
                 appointment.getId(),
-                appointment.getAppointmentDateTime(),
+                appointmentDateTimeStr,
                 appointment.getStatus(),
                 doctor.getId(),
                 doctor.getName(),
