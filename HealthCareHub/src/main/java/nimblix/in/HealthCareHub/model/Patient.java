@@ -3,7 +3,6 @@ package nimblix.in.HealthCareHub.model;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
-
 @Entity
 @Table(name = "patients")
 @Getter
@@ -28,11 +27,7 @@ public class Patient {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "age")
     private Integer age;
-
-    @Column(name = "gender")
     private String gender;
 
     @Column(name = "phoneNo")
@@ -41,22 +36,16 @@ public class Patient {
     @Column(name = "disease")
     private String disease;
 
-    // Login User
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 
-    // Hospital Relationship
-
-    @Column(name = "hospital_id")
-    private Long hospitalId;
-
-    @Column(name = "created_time")
     private String createdTime;
-
-    @Column(name = "updated_time")
     private String updatedTime;
-
 
     @PrePersist
     protected void onCreate() {
