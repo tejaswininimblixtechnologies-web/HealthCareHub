@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 
 import nimblix.in.HealthCareHub.dto.DoctorPerformanceReport;
 
+
+import nimblix.in.HealthCareHub.response.DoctorPerformanceReportResponse;
+
 import java.util.List;
 
 public interface DoctorService {
@@ -16,7 +19,8 @@ public interface DoctorService {
 
     String deleteDoctorDetails(Long doctorId);
 
-    List<DoctorPerformanceReport> getDoctorPerformanceReport();
+    List<DoctorPerformanceReportResponse> getDoctorPerformanceReport();
+    DoctorPerformanceReportResponse getDoctorPerformanceById(Long doctorId);
 
 
 }

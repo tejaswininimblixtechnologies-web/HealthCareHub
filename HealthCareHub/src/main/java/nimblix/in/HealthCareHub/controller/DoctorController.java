@@ -1,5 +1,10 @@
 package nimblix.in.HealthCareHub.controller;
 
+import nimblix.in.HealthCareHub.response.DoctorPerformanceReportResponse;
+import nimblix.in.HealthCareHub.service.DoctorService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import nimblix.in.HealthCareHub.service.DoctorService;
@@ -12,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
 @RequiredArgsConstructor
 public class DoctorController {
 
+    private final DoctorService doctorService;
     private final DoctorService doctorService;
 
     @PostMapping("/register")
@@ -32,11 +39,23 @@ public class DoctorController {
         return doctorService.getDoctorDetails(doctorId, hospitalId);
     }
 
+    // All doctors performance
+    @GetMapping("/performance-report")
+    public ResponseEntity<List<DoctorPerformanceReportResponse>> getDoctorPerformanceReport() {
+        List<DoctorPerformanceReportResponse> report = doctorService.getDoctorPerformanceReport();
+        return ResponseEntity.ok(report);
+    }
     @PutMapping("/updateDoctorDetails")
      public String updateDoctorDetails(@RequestBody DoctorRegistrationRequest request){
         return doctorService.updateDoctorDetails(request);
     }
 
+    // Particular doctor performance by ID
+    @GetMapping("/performance-report/{doctorId}")
+    public ResponseEntity<DoctorPerformanceReportResponse> getDoctorPerformanceById(@PathVariable Long doctorId) {
+        DoctorPerformanceReportResponse report = doctorService.getDoctorPerformanceById(doctorId);
+        return ResponseEntity.ok(report);
+    }
 
 
 
