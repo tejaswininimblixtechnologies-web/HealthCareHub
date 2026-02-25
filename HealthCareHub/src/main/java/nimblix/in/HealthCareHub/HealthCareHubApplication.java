@@ -11,5 +11,6 @@ public class HealthCareHubApplication {
         SpringApplication.run(HealthCareHubApplication.class, args);
 
 	}
+	}
 
-}
+

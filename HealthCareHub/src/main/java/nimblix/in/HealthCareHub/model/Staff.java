@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "staff")
+
 public class Staff {
 
     @Id
@@ -15,7 +16,8 @@ public class Staff {
     private String phone;
     private String designation;  // Nurse, Lab Tech, Receptionist
     private String department;
-
+    @Column(name = "base_salary")
+    private double baseSalary;
     public Staff() {
     }
 
@@ -62,5 +64,12 @@ public class Staff {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
     }
 }
