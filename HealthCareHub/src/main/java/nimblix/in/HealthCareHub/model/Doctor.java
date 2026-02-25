@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "doctors")
 @Getter
@@ -12,6 +15,8 @@ import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 @AllArgsConstructor
 @Builder
 public class Doctor {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +50,15 @@ public class Doctor {
     @ManyToOne
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "doctor_prescriptions",
+            joinColumns = @JoinColumn(name = "doctor_id")
+    )
+    @Column(name = "medicine")
+    private List<String> prescriptions = new ArrayList<>();
+
 
     private String createdTime;
     private String updatedTime;

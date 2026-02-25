@@ -13,6 +13,8 @@ import nimblix.in.HealthCareHub.model.Specialization;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -55,10 +57,39 @@ public class DoctorServiceImpl implements DoctorService {
         return "Doctor Registered Successfully";
     }
 
+
     @Override
-    public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
-        return null;
+    public Doctor getDoctorDetails(Long doctorId, Long hospitalId) {
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        if (!doctor.getHospital().getId().equals(hospitalId)) {
+            throw new RuntimeException("Doctor does not belong to this hospital");
+        }
+
+        return doctor;
     }
 
-}
+    @Override
+    public String addPrescription(Long doctorId, List<String> medicines) {
 
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        doctor.getPrescriptions().addAll(medicines);
+
+        doctorRepository.save(doctor);
+
+        return "Prescription added successfully";
+    }
+
+    @Override
+    public List<String> getPrescriptions(Long doctorId) {
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        return doctor.getPrescriptions();
+    }
+}
