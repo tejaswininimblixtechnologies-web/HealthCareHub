@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.response.RevenueSummaryResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +36,16 @@ public class HospitalServiceImpl implements HospitalService {
 
         return "Hospital Registered Successfully";
     }
+
+    @Override
+    public RevenueSummaryResponse getRevenueSummary() {
+
+        Double totalRevenue = hospitalRepository.getTotalRevenue();
+
+        RevenueSummaryResponse response = new RevenueSummaryResponse();
+        response.setTotalRevenue(totalRevenue);
+
+        return response;
+    }
+
 }
