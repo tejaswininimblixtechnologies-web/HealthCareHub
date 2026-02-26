@@ -54,16 +54,4 @@ public class Patient {
 
 
     }
-
-
-}
-    protected void onCreate(){
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-    }
 }

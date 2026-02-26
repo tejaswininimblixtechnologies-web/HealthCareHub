@@ -9,8 +9,6 @@ import java.util.Optional;
 @Repository
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
-    // ADD THIS METHOD
-
-public interface HospitalRepository extends JpaRepository<Hospital,Long> {
+    // Find hospital using hospital name
     Optional<Hospital> findByName(String name);
 }

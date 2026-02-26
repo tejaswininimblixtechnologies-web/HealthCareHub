@@ -10,7 +10,11 @@ public class DoctorRegistrationRequest {
     private String doctorName;
     private String doctorEmail;
     private String password;
+
     private String phoneNo;
+    private Integer experienceYears;
+    private String qualification;
+
     private String hospitalName;
     private String specializationName;
 }

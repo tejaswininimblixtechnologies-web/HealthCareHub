@@ -1,8 +1,10 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.dto.HospitalRequestDTO;
-import nimblix.in.HealthCareHub.dto.HospitalResponseDTO;
+import nimblix.in.HealthCareHub.model.Specialization;
+import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.response.HospitalResponse;
+import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,37 +17,34 @@ import java.util.List;
 public class HospitalController {
 
     private final HospitalService hospitalService;
+    private final SpecializationRepository specializationRepository;
 
     // Create Hospital
     @PostMapping
-    public HospitalResponseDTO createHospital(
-            @RequestBody HospitalRequestDTO request) {
+    public HospitalResponse createHospital(
+            @RequestBody HospitalRegistrationRequest request) {
+
         return hospitalService.createHospital(request);
     }
 
     // Get All Hospitals
     @GetMapping
-    public List<HospitalResponseDTO> getAllHospitals() {
+    public List<HospitalResponse> getAllHospitals() {
         return hospitalService.getAllHospitals();
     }
 
-import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
-import nimblix.in.HealthCareHub.service.HospitalService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+    // SPECIALIZATION APIs (ADDED)
+    // Create Specialization
+    @PostMapping("/specializations")
+    public Specialization createSpecialization(
+            @RequestBody Specialization specialization) {
 
-@RestController
-@RequestMapping("api/hospital")
-@RequiredArgsConstructor
-public class HospitalController {
-
-    private final HospitalService hospitalService;
-
-    @PostMapping("/register")
-    public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
-        return hospitalService.registerHospital(request);
+        return specializationRepository.save(specialization);
     }
 
+    // Get All Specializations
+    @GetMapping("/specializations")
+    public List<Specialization> getAllSpecializations() {
+        return specializationRepository.findAll();
+    }
 }
