@@ -1,6 +1,7 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.repository.DoctorRepository;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
@@ -27,22 +28,14 @@ public class DoctorServiceImpl implements DoctorService {
     public ResponseEntity<DoctorRegistrationResponse> registerDoctor(DoctorRegistrationRequest request) {
 
         if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
-            throw new RuntimeException(
-                    "Doctor already exists with this email");
+            throw new RuntimeException(HealthCareConstants.DOCTOR_ALREADY_EXISTS);
         }
 
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId()).orElseThrow(() ->
+                        new RuntimeException(HealthCareConstants.HOSPITAL_NOT_FOUND));
 
-        Hospital hospital = hospitalRepository
-                .findById(request.getHospitalId())
-                .orElseThrow(() ->
-                        new RuntimeException("Hospital not found"));
-
-        Specialization specialization =
-                specializationRepository
-                        .findById(request.getSpecializationId())
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Specialization not found"));
+        Specialization specialization = specializationRepository.findById(request.getSpecializationId()).
+                orElseThrow(() -> new RuntimeException(HealthCareConstants.SPECIALIZATION_NOT_FOUND));
 
         Doctor doctor = new Doctor();
 
@@ -54,11 +47,8 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setQualification(request.getQualification());
         doctor.setExperienceYears(request.getExperienceYears());
 
-
-        // Set relationships
         doctor.setHospital(hospital);
         doctor.setSpecialization(specialization);
-
         Doctor savedDoctor = doctorRepository.save(doctor);
 
         DoctorRegistrationResponse response = new DoctorRegistrationResponse();
@@ -73,26 +63,32 @@ public class DoctorServiceImpl implements DoctorService {
         response.setQualification(savedDoctor.getQualification());
         response.setExperienceYears(savedDoctor.getExperienceYears());
 
-
-
-        response.setMessage("Doctor Registered Successfully");
+        response.setMessage(HealthCareConstants.DOCTOR_REGISTERED_SUCCESS);
 
         return ResponseEntity.ok(response);
     }
     @Override
-    public ResponseEntity<?> getDoctorDetails(Long doctorId,
-                                              Long hospitalId) {
+    public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
 
-        Doctor doctor = doctorRepository
-                .findById(doctorId)
-                .orElseThrow(() ->
-                        new RuntimeException("Doctor not found"));
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() ->
+                new RuntimeException(HealthCareConstants.DOCTOR_NOT_FOUND));
 
         if (!doctor.getHospital().getId().equals(hospitalId)) {
-            throw new RuntimeException("Doctor not belongs to hospital");
+            throw new RuntimeException(HealthCareConstants.DOCTOR_NOT_BELONG_TO_HOSPITAL);
         }
 
-        return ResponseEntity.ok(doctor);
+        DoctorRegistrationResponse response = new DoctorRegistrationResponse();
+
+        response.setDoctorId(doctor.getId());
+        response.setDoctorName(doctor.getName());
+        response.setDoctorEmail(doctor.getEmailId());
+        response.setHospitalId(doctor.getHospital().getId());
+        response.setHospitalName(doctor.getHospital().getName());
+        response.setSpecialization(doctor.getSpecialization().getName());
+        response.setConsultationFee(doctor.getConsultationFee());
+        response.setQualification(doctor.getQualification());
+        response.setExperienceYears(doctor.getExperienceYears());
+        return ResponseEntity.ok(response);
     }
 }
 

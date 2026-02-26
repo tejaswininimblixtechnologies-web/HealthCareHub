@@ -23,15 +23,4 @@ public class DoctorController {
         return doctorService.registerDoctor(request);
 
     }
-
-    @GetMapping("/getDoctorDetails")
-    public ResponseEntity<?> getDoctorDetails(@RequestParam Long  doctorId,@RequestParam Long  hospitalId){
-        return  doctorService.getDoctorDetails(doctorId,hospitalId);
-
-    }
-
-
-
-
-
 }
