@@ -2,37 +2,38 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Appointment;
-import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.service.AppointmentService;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 
 @RestController
+@RequestMapping("/api/doctors")
 @RequiredArgsConstructor
 public class DoctorController {
 
     private final DoctorService doctorService;
     private final AppointmentService appointmentService;
 
-    //  Get All Doctors
-    @GetMapping("/doctors")
-    public ResponseEntity<List<Doctor>> getAllDoctors() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
+    //  Register Doctor
+    @PostMapping("/register")
+    public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {
+        return doctorService.registerDoctor(request);
     }
 
-    //  Create Doctor
-    @PostMapping("/doctors")
-    public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) {
-        return ResponseEntity.ok(doctorService.saveDoctor(doctor));
+    //  Get Doctor Details
+    @GetMapping("/getDoctorDetails")
+    public ResponseEntity<?> getDoctorDetails(@RequestParam Long doctorId,
+                                              @RequestParam Long hospitalId) {
+        return doctorService.getDoctorDetails(doctorId, hospitalId);
     }
 
-    //  OLD Reschedule API (Works Like Before)
+    //  Reschedule Appointment
     @PutMapping("/appointments/reschedule/{appointmentId}")
     public ResponseEntity<Appointment> rescheduleAppointment(
             @PathVariable Long appointmentId,

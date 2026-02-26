@@ -1,106 +1,63 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.constants.HealthCareConstants;
-import nimblix.in.HealthCareHub.exception.AppointmentNotFoundException;
-import nimblix.in.HealthCareHub.exception.SlotNotAvailableException;
-import nimblix.in.HealthCareHub.model.Appointment;
 import nimblix.in.HealthCareHub.model.Doctor;
-import nimblix.in.HealthCareHub.repository.AppointmentRepository;
-import nimblix.in.HealthCareHub.repository.DoctorAvailabilityRepository;
 import nimblix.in.HealthCareHub.repository.DoctorRepository;
+import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import nimblix.in.HealthCareHub.service.DoctorService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
+import nimblix.in.HealthCareHub.model.Hospital;
+import nimblix.in.HealthCareHub.model.Specialization;
+import nimblix.in.HealthCareHub.repository.HospitalRepository;
+import nimblix.in.HealthCareHub.repository.SpecializationRepository;
+
 
 @Service
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final DoctorAvailabilityRepository doctorAvailabilityRepository;
+    private final HospitalRepository hospitalRepository;
+    private final SpecializationRepository specializationRepository;
 
-    //  Get all doctors
     @Override
-    public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
-    }
+    public String registerDoctor(DoctorRegistrationRequest request) {
 
-    //  Create doctor
-    @Override
-    public Doctor saveDoctor(Doctor doctor) {
-        return doctorRepository.save(doctor);
-    }
-
-    //  Reschedule Appointment
-    @Override
-    public Appointment rescheduleAppointment(Long appointmentId,
-                                             LocalDateTime newDateTime) {
-
-        // 1 Check appointment exists
-        Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() ->
-                        new AppointmentNotFoundException(
-                                "Appointment not found with id: " + appointmentId
-                        )
-                );
-
-        // 2 Allow only SCHEDULED appointments
-        if (!HealthCareConstants.APPOINTMENT_SCHEDULED
-                .equalsIgnoreCase(appointment.getStatus())) {
-
-            throw new IllegalStateException(
-                    "Only SCHEDULED appointments can be rescheduled"
-            );
+        // Check if email already exists
+        if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
+            return "Doctor already exists with this email";
         }
 
-        // 3 Prevent past date
-        if (newDateTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException(
-                    "Cannot reschedule to past date/time"
-            );
-        }
+        // Fetch Hospital
+        Hospital hospital = hospitalRepository.findByName(request.getHospitalName())
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
-        Long doctorId = appointment.getDoctor().getId();
-        LocalDate newDate = newDateTime.toLocalDate();
-        LocalTime newTime = newDateTime.toLocalTime();
+        // Fetch Specialization
+        Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
+                .orElseThrow(() -> new RuntimeException("Specialization not found"));
 
-        // 4 Check doctor availability
-        doctorAvailabilityRepository
-                .findByDoctorIdAndAvailableDateAndStartTimeAndEndTimeAndIsAvailableTrue(
-                        doctorId,
-                        newDate,
-                        newTime,
-                        newTime
-                )
-                .orElseThrow(() ->
-                        new SlotNotAvailableException(
-                                "Doctor not available for selected slot"
-                        )
-                );
+        // Create Doctor
+        Doctor doctor = new Doctor();
 
-        // 5 Check slot conflict
-        List<Appointment> existingAppointments =
-                appointmentRepository.findByDoctorIdAndAppointmentDateTime(
-                        doctorId,
-                        newDateTime
-                );
+        doctor.setName(request.getDoctorName());
+        doctor.setEmailId(request.getDoctorEmail());
+        doctor.setPassword(request.getPassword());
+        doctor.setPhone(request.getPhoneNo());
 
-        boolean conflict = existingAppointments.stream()
-                .anyMatch(a -> !a.getId().equals(appointmentId));
+        // ✅ CORRECT WAY (Set Objects, not IDs)
+        doctor.setHospital(hospital);
+        doctor.setSpecialization(specialization);
 
-        if (conflict) {
-            throw new SlotNotAvailableException("Slot already booked");
-        }
+        doctorRepository.save(doctor);
 
-        // 6 Update appointment
-        appointment.setAppointmentDateTime(newDateTime);
-
-        return appointmentRepository.save(appointment);
+        return "Doctor Registered Successfully";
     }
+
+    @Override
+    public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
+        return null;
+    }
+
 }
