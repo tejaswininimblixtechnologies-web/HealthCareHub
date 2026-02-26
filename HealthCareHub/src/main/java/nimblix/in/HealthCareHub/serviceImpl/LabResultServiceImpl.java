@@ -23,12 +23,46 @@ public class LabResultServiceImpl implements LabResultService {
     @Override
     public LabResultResponse uploadLabResult(LabResultRequest request) {
 
+        // 🔹 1. Validate required fields
+        if (request.getTestName() == null || request.getTestName().isBlank()) {
+            throw new RuntimeException("Test Name is required");
+        }
+
+        if (request.getResultValue() == null || request.getResultValue().isBlank()) {
+            throw new RuntimeException("Result Value is required");
+        }
+
+        if (request.getStatus() == null || request.getStatus().isBlank()) {
+            throw new RuntimeException("Status is required");
+        }
+
+        if (request.getPatientId() == null) {
+            throw new RuntimeException("Patient Id is required");
+        }
+
+        if (request.getDoctorId() == null) {
+            throw new RuntimeException("Doctor Id is required");
+        }
+
+        // 🔹 2. Fetch Patient
         Patient patient = patientRepository.findById(request.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
 
+        // 🔹 3. Fetch Doctor
         Doctor doctor = doctorRepository.findById(request.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
 
+        // 🔥 4. Hospital Mismatch Validation (Important Edge Case)
+        if (patient.getHospital() == null || doctor.getHospital() == null) {
+            throw new RuntimeException("Hospital details missing for Doctor or Patient");
+        }
+
+        if (!doctor.getHospital().getId()
+                .equals(patient.getHospital().getId())) {
+            throw new RuntimeException("Doctor and Patient hospital mismatch");
+        }
+
+        // 🔹 5. Create LabResult Entity
         LabResult labResult = LabResult.builder()
                 .testName(request.getTestName())
                 .resultValue(request.getResultValue())
@@ -37,9 +71,10 @@ public class LabResultServiceImpl implements LabResultService {
                 .doctor(doctor)
                 .build();
 
+        // 🔹 6. Save to Database
         LabResult saved = labResultRepository.save(labResult);
 
-        // 🔥 Mapping Entity → Response DTO
+        // 🔹 7. Map Entity → Response DTO
         return LabResultResponse.builder()
                 .id(saved.getId())
                 .testName(saved.getTestName())
