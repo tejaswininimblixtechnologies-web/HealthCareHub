@@ -9,12 +9,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// comment audit
-
-
-
-
-
 
 @RestController
 @RequestMapping("api/doctors")
@@ -30,13 +24,8 @@ public class DoctorController {
     }
 
     @GetMapping("/getDoctorDetails")
-    public ResponseEntity<?> getDoctorDetails(@RequestParam Long  doctorId,@RequestParam Long  hospitalId){
-        return  doctorService.getDoctorDetails(doctorId,hospitalId);
+    public ResponseEntity<?> getDoctorDetails(@RequestParam Long doctorId, @RequestParam Long hospitalId) {
+        return doctorService.getDoctorDetails(doctorId, hospitalId);
 
     }
-
-
-
-
-
 }
