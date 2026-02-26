@@ -8,7 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserStatusResponse {
+
     private Long userId;
-    private boolean active;
+    private boolean enabled;
     private String message;
 }

@@ -36,29 +36,17 @@ public class User {
 
 
     @PrePersist
-    protected void onCreate(){
-        createdTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onCreate() {
+        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        this.updatedTime= HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onUpdate() {
+        this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
 
 
-    }
-
-    // Add this field inside your User class
-    private boolean active;  // stores active/inactive status
-
-    // Correct setter
-    public void setActive(boolean active) {
-        this.active = active;  // set the value to the field
-    }
-
-    // Correct getter
-    public boolean isActive() {
-        return this.active;    // return the value of the field
     }
 }
+

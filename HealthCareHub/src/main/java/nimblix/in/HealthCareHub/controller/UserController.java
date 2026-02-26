@@ -15,7 +15,9 @@ public class UserController {
     private UserService userService;
 
     @PutMapping("/status")
-    public ResponseEntity<UserStatusResponse> updateUserStatus(@RequestBody UserStatusRequest request) {
+    public ResponseEntity<UserStatusResponse> updateUserStatus(
+            @RequestBody UserStatusRequest request) {
+
         UserStatusResponse response = userService.updateUserStatus(request);
         return ResponseEntity.ok(response);
     }

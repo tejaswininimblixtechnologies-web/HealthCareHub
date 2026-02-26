@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserStatusRequest {
+
     private Long userId;
-    private boolean active; // true = activate, false = deactivate
+    private boolean active;  // true = activate, false = deactivate
 }
