@@ -1,14 +1,12 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.repository.UserRepository;
 import nimblix.in.HealthCareHub.request.UserStatusRequest;
 import nimblix.in.HealthCareHub.response.UserStatusResponse;
 import nimblix.in.HealthCareHub.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,26 +16,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserStatusResponse updateUserStatus(UserStatusRequest request) {
-        UserStatusResponse response = new UserStatusResponse();
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Fetch user by ID
-        Optional<User> optionalUser = userRepository.findById(request.getUserId());
+        user.setActive(request.isActive()); // set active/inactive
+        userRepository.save(user);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setActive(request.isActive());  // Update active/inactive flag
-            userRepository.save(user);           // Save changes
+        String msg = request.isActive() ? "User activated successfully" : "User deactivated successfully";
 
-            response.setUserId(user.getId());
-            response.setActive(user.isActive());
-            response.setMessage("User status updated successfully.");
-        } else {
-            // User not found case
-            response.setUserId(request.getUserId());
-            response.setActive(false);
-            response.setMessage("User not found.");
-        }
-
-        return response;
+        return UserStatusResponse.builder()
+                .userId(user.getId())
+                .active(user.isActive())
+                .message(msg)
+                .build();
     }
 }

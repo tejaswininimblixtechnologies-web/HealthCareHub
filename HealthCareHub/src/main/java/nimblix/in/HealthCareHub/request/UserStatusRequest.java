@@ -1,15 +1,13 @@
 package nimblix.in.HealthCareHub.request;
 
+import lombok.*;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserStatusRequest {
     private Long userId;
-    private boolean active;
-
-    // Getters & Setters
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    private boolean active; // true = activate, false = deactivate
 }
