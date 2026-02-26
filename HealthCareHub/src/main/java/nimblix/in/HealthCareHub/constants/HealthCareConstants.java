@@ -38,4 +38,20 @@ public class HealthCareConstants {
     public static final String PRESENT = "PRESENT";
     public static final String ABSENT = "ABSENT";
     public static final String TARDY = "TARDY";
+    // Lab Result Validations
+    public static final String TEST_NAME_REQUIRED = "Test Name is required";
+    public static final String RESULT_VALUE_REQUIRED = "Result Value is required";
+    public static final String LAB_STATUS_REQUIRED = "Status is required";
+    public static final String PATIENT_ID_REQUIRED = "Patient Id is required";
+    public static final String DOCTOR_ID_REQUIRED = "Doctor Id is required";
+
+    // Not Found
+    public static final String PATIENT_NOT_FOUND = "Patient not found";
+    public static final String DOCTOR_NOT_FOUND = "Doctor not found";
+
+    // Hospital Validation
+    public static final String HOSPITAL_DETAILS_MISSING =
+            "Hospital details missing for Doctor or Patient";
+    public static final String HOSPITAL_MISMATCH =
+            "Doctor and Patient hospital mismatch";
 }

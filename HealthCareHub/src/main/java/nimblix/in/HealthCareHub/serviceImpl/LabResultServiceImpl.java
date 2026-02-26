@@ -1,6 +1,7 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.model.LabResult;
 import nimblix.in.HealthCareHub.model.Patient;
@@ -25,41 +26,45 @@ public class LabResultServiceImpl implements LabResultService {
 
         // 🔹 1. Validate required fields
         if (request.getTestName() == null || request.getTestName().isBlank()) {
-            throw new RuntimeException("Test Name is required");
+            throw new RuntimeException(HealthCareConstants.TEST_NAME_REQUIRED);
         }
 
         if (request.getResultValue() == null || request.getResultValue().isBlank()) {
-            throw new RuntimeException("Result Value is required");
+            throw new RuntimeException(HealthCareConstants.RESULT_VALUE_REQUIRED);
         }
 
         if (request.getStatus() == null || request.getStatus().isBlank()) {
-            throw new RuntimeException("Status is required");
+            throw new RuntimeException(HealthCareConstants.LAB_STATUS_REQUIRED);
         }
 
         if (request.getPatientId() == null) {
-            throw new RuntimeException("Patient Id is required");
+            throw new RuntimeException(HealthCareConstants.PATIENT_ID_REQUIRED);
         }
 
         if (request.getDoctorId() == null) {
-            throw new RuntimeException("Doctor Id is required");
+            throw new RuntimeException(HealthCareConstants.DOCTOR_ID_REQUIRED);
         }
 
         // 🔹 2. Fetch Patient
         Patient patient = patientRepository.findById(request.getPatientId())
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
+                .orElseThrow(() ->
+                        new RuntimeException(HealthCareConstants.PATIENT_NOT_FOUND)
+                );
 
         // 🔹 3. Fetch Doctor
         Doctor doctor = doctorRepository.findById(request.getDoctorId())
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+                .orElseThrow(() ->
+                        new RuntimeException(HealthCareConstants.DOCTOR_NOT_FOUND)
+                );
 
-        // 🔥 4. Hospital Mismatch Validation (Important Edge Case)
+        // 🔥 4. Hospital Validation
         if (patient.getHospital() == null || doctor.getHospital() == null) {
-            throw new RuntimeException("Hospital details missing for Doctor or Patient");
+            throw new RuntimeException(HealthCareConstants.HOSPITAL_DETAILS_MISSING);
         }
 
         if (!doctor.getHospital().getId()
                 .equals(patient.getHospital().getId())) {
-            throw new RuntimeException("Doctor and Patient hospital mismatch");
+            throw new RuntimeException(HealthCareConstants.HOSPITAL_MISMATCH);
         }
 
         // 🔹 5. Create LabResult Entity
