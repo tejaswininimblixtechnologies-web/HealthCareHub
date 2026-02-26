@@ -27,7 +27,7 @@ public class UploadImageHelper {
         List<String> failedFileNames = new ArrayList<>();
 
         if (pictures == null || pictures.isEmpty()) {
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "No files provided", Collections.emptyList());
+            return new MultipleImageResponse(HealthCareConstants.STATUS_ERROR, "No files provided", Collections.emptyList());
         }
 
         for (MultipartFile file : pictures) {
@@ -73,7 +73,7 @@ public class UploadImageHelper {
 
         if (uploadedFileNames.isEmpty()) {
             String failedFilesMessage = "Image upload failed for the following files: " + String.join(", ", failedFileNames);
-            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, failedFilesMessage, Collections.emptyList());
+            return new MultipleImageResponse(HealthCareConstants.STATUS_ERROR, failedFilesMessage, Collections.emptyList());
         }
 
         return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);

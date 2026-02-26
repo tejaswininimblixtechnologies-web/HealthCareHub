@@ -18,7 +18,7 @@ public class DoctorController {
 
 
     /*
-Json object:
+Jason object:
 key and value pair
 
 {
