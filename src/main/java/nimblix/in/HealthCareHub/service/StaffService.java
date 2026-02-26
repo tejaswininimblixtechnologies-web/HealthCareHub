@@ -8,6 +8,7 @@ public interface StaffService {
     List<Staff> getAllStaff();
     Staff markAttendance(Long staffId, boolean isPresent);
 }
+// added staff management service to the file
 
 
 
