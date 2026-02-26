@@ -1,7 +1,7 @@
 package nimblix.in.HealthCareHub.service;
 
-import nimblix.in.HealthCareHub.dto.RolePermissionDTO;
+import nimblix.in.HealthCareHub.request.RolePermissionRequest;
 
 public interface RoleService {
-    void assignPermissions(RolePermissionDTO dto);
+    void assignPermissions(RolePermissionRequest request);
 }
