@@ -1,15 +1,11 @@
 package nimblix.in.HealthCareHub.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 @Entity
-@Table(name = "patients")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Patient {
 
     @Id
@@ -17,30 +13,16 @@ public class Patient {
     private Long id;
 
     private String name;
-    private Integer age;
-    private String gender;
-    private String phone;
     private String disease;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    public Patient() {}
 
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    private String createdTime;
-    private String updatedTime;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    @PrePersist
-    protected void onCreate(){
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-    }
+    public String getDisease() { return disease; }
+    public void setDisease(String disease) { this.disease = disease; }
 }

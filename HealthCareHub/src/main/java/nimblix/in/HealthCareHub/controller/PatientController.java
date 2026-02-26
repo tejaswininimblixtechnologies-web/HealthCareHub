@@ -1,11 +1,27 @@
 package nimblix.in.HealthCareHub.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import nimblix.in.HealthCareHub.model.Patient;
+import nimblix.in.HealthCareHub.repository.PatientRepository;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.List;
+
 @RequestMapping("api/patient")
-@RequiredArgsConstructor
 public class PatientController {
+    private final PatientRepository patientRepository;
+
+    public PatientController(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    @PostMapping
+    public Patient savePatient(@RequestBody Patient patient) {
+        return patientRepository.save(patient);
+    }
+
+    @GetMapping
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
+    }
+
 }

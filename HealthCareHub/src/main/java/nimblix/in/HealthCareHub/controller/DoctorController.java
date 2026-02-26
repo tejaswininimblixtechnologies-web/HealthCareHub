@@ -9,17 +9,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-@RestController
 @RequestMapping("api/doctors")
 @RequiredArgsConstructor
 public class DoctorController {
 
     private final DoctorService doctorService;
-
-    //comment
-
-
 
     @PostMapping("/register")
     public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {

@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@Component
+//@Component
 public class UploadImageHelper {
 
     @Value("${assignment.upload.path}")

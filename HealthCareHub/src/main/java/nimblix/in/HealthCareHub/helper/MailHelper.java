@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import java.util.regex.Matcher;
+
 import java.util.regex.Pattern;
 
 @Component
@@ -17,37 +17,24 @@ public class MailHelper {
 
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.username}")
+    @Value("${spring.mail.username:dummy@mail.com}")
     private String fromEmail;
 
-    @Value("${mail.template.reset-password-otp}")
+    @Value("${mail.template.reset-password-otp:Hello {name}, your OTP is {otp}}")
     private String otpHtmlTemplate;
 
-
-    private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9_+&-]+(?:\\.[a-zA-Z0-9_+&-]+)*@" +
-                    "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
-    private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
+    private static final Pattern pattern =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
     public boolean isValidEmail(String email) {
-        if (email == null) return false;
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        return email != null && pattern.matcher(email).matches();
     }
 
-
-
     @Async
-    public void sendOtpMail(
-            String toEmail,
-            String name,
-            String otp,
-            String subject
-    ) {
-        if (!isValidEmail(toEmail)) return;
-
+    public void sendOtpMail(String toEmail, String name, String otp, String subject) {
         try {
+            if (!isValidEmail(toEmail)) return;
+
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper =
                     new MimeMessageHelper(message, true, "UTF-8");
@@ -56,40 +43,19 @@ public class MailHelper {
             helper.setTo(toEmail);
             helper.setSubject(subject);
 
-            String body = otpHtmlTemplate;
+            String body = otpHtmlTemplate
+                    .replace("{name}", name == null ? "User" : name)
+                    .replace("{otp}", otp == null ? "XXXXXX" : otp);
 
-            body = body.replace("{name}", name != null ? name : "User");
-            body = body.replace("{otp}", otp != null ? otp : "XXXXXX");
-
-            helper.setText(body, true); // HTML enabled
+            helper.setText(body, true);
             mailSender.send(message);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Mail disabled: " + e.getMessage());
         }
-    }
-
-
-    @Async
-    public void sendTextMail(
-            String toEmail,
-            String subject,
-            String body
-    ) {
-        if (!isValidEmail(toEmail)) return;
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
-
-        mailSender.send(message);
     }
 
     public static int getSixDigitRandomNumber() {
         return 100000 + new java.util.Random().nextInt(900000);
     }
 }
-
-
