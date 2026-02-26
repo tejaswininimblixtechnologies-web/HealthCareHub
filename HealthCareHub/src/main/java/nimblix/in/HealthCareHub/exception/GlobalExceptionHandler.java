@@ -1,58 +1,99 @@
 package nimblix.in.HealthCareHub.exception;
 
-import org.springframework.http.HttpStatus;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 404 - Resource not found
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("error", "Not Found");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    private String getTraceId() {
+        return MDC.get("traceId");
     }
 
-    @ExceptionHandler(AdminNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleAdminNotFound(UserNotFoundException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("error", "Not Found");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    //CUSTOM EXCEPTIONS
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ApiError> handleBaseException(BaseException ex, HttpServletRequest request) {
+
+        log.error("Business exception occurred", ex);
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(ex.getStatus().value())
+                .error(ex.getStatus().getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .traceId(getTraceId())
+                .errorCode(ex.getErrorCode())
+                .build();
+
+        return new ResponseEntity<>(error, ex.getStatus());
     }
 
+    //VALIDATION ERRORS (@Valid)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
 
-    // 400 - Bad request (invalid inputs)
-    @ExceptionHandler({
-            IllegalArgumentException.class,
-            PaymentException.class,
-            MissingServletRequestParameterException.class
-    })
-    public ResponseEntity<Map<String, Object>> handleBadRequest(Exception ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Bad Request");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        String message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(400)
+                .error("Bad Request")
+                .message(message)
+                .path(request.getRequestURI())
+                .traceId(getTraceId())
+                .errorCode(ErrorCode.VALIDATION_FAILED)
+                .build();
+
+        return ResponseEntity.badRequest().body(error);
     }
 
-    // 500 - Generic / fallback exception
+    // Access denied (403)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiError> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(403)
+                .error("Forbidden")
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .traceId(getTraceId())
+                .errorCode(ErrorCode.FORBIDDEN)
+                .build();
+
+        return ResponseEntity.status(403).body(error);
+    }
+
+    // Generic exception fallback
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.put("error", "Internal Server Error");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest request) {
+
+        log.error("Unexpected error occurred", ex);
+
+        ApiError error = ApiError.builder()
+                .timestamp(LocalDateTime.now())
+                .status(500)
+                .error("Internal Server Error")
+                .message("Something went wrong")
+                .path(request.getRequestURI())
+                .traceId(getTraceId())
+                .errorCode(ErrorCode.INTERNAL_SERVER_ERROR)
+                .build();
+
+        return ResponseEntity.status(500).body(error);
     }
 }
