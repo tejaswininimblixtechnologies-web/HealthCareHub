@@ -3,6 +3,7 @@ package nimblix.in.HealthCareHub.model;
 import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +23,8 @@ public class Payment {
     private Double amount;
     private String paymentStatus;
     private LocalDateTime paymentDate;
-
+    private long patientId;
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
