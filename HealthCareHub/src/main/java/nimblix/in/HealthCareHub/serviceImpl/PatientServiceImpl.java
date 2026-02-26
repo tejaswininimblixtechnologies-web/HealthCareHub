@@ -1,17 +1,16 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
-import nimblix.in.HealthCareHub.exception.UserNotFoundException;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.helper.UploadImageHelper;
-import nimblix.in.HealthCareHub.model.User;
+import nimblix.in.HealthCareHub.model.Patient;
 import nimblix.in.HealthCareHub.model.PatientDocument;
 import nimblix.in.HealthCareHub.repository.PatientDocumentRepository;
-import nimblix.in.HealthCareHub.repository.UserRepository;
+import nimblix.in.HealthCareHub.repository.PatientRepository;
 import nimblix.in.HealthCareHub.request.PatientDocumentUploadRequest;
 import nimblix.in.HealthCareHub.response.MultipleImageResponse;
 import nimblix.in.HealthCareHub.response.PatientDocumentUploadResponse;
 import nimblix.in.HealthCareHub.service.PatientService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,39 +21,50 @@ import java.util.List;
 @Service
 public class PatientServiceImpl implements PatientService {
 
-    @Autowired
-    private PatientDocumentRepository patientDocumentRepository;
-
-    @Autowired
-    private UploadImageHelper uploadImageHelper;
-
-    @Autowired
-    private UserRepository userRepository;
-
+    private final PatientDocumentRepository patientDocumentRepository;
+    private final UploadImageHelper uploadImageHelper;
+    private final PatientRepository patientRepository;
+    public PatientServiceImpl(PatientDocumentRepository patientDocumentRepository,
+                              UploadImageHelper uploadImageHelper,
+                              PatientRepository patientRepository) {
+        this.patientDocumentRepository = patientDocumentRepository;
+        this.uploadImageHelper = uploadImageHelper;
+        this.patientRepository = patientRepository;
+    }
 
     @Override
     public PatientDocumentUploadResponse uploadPatientDocument(PatientDocumentUploadRequest request) {
 
-        // Validate patient (user) exists
-        User patient = userRepository.findById(request.getPatientId())
-                .orElseThrow(() ->
-                        new UserNotFoundException("Patient not found with ID: " + request.getPatientId()));
+        //  Validate patient exists
+        Patient patient = patientRepository.findById(request.getPatientId())
+                .orElseThrow(() -> new RuntimeException(HealthCareConstants.PATIENT_NOT_FOUND));
 
-        // 2. Validate File
+        //  Validate file
         MultipartFile file = request.getFile();
 
         if (file == null || file.isEmpty()) {
-            throw new RuntimeException("Uploaded file is empty.");
+            throw new RuntimeException(HealthCareConstants.FILE_EMPTY);
         }
 
-        // file type validation
-        String fileName = file.getOriginalFilename();
-        if (fileName == null ||
-                !(fileName.endsWith(".pdf") || fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))) {
-            throw new RuntimeException("Only PDF, JPG, JPEG, PNG files are allowed.");
+        // Validate filename
+        String originalFileName = file.getOriginalFilename();
+
+        if (originalFileName == null || !originalFileName.contains(".")) {
+            throw new RuntimeException(HealthCareConstants.INVALID_FILE_TYPE);
         }
 
-        // convert single file to list (because helper accepts list)
+        // Extract extension
+        String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+
+        if (!(extension.equals(HealthCareConstants.FILE_TYPE_PDF) ||
+                extension.equals(HealthCareConstants.FILE_TYPE_JPG) ||
+                extension.equals(HealthCareConstants.FILE_TYPE_JPEG) ||
+                extension.equals(HealthCareConstants.FILE_TYPE_PNG))) {
+
+            throw new RuntimeException(HealthCareConstants.INVALID_FILE_TYPE);
+        }
+
+        //  Upload file using helper
         List<MultipartFile> files = new ArrayList<>();
         files.add(file);
 
@@ -63,36 +73,40 @@ public class PatientServiceImpl implements PatientService {
         try {
             uploadResponse = uploadImageHelper.uploadImages(files);
         } catch (Exception e) {
-            throw new RuntimeException("File upload failed: " + e.getMessage());
+            throw new RuntimeException(HealthCareConstants.FILE_UPLOAD_FAILED);
         }
 
-// check upload success
-        if (!"SUCCESS".equalsIgnoreCase(uploadResponse.getStatus())) {
-            throw new RuntimeException("File upload failed");
+        // Validate upload success
+        if (uploadResponse == null ||
+                uploadResponse.getUploadedFileNames() == null ||
+                uploadResponse.getUploadedFileNames().isEmpty()) {
+            throw new RuntimeException(HealthCareConstants.FILE_UPLOAD_FAILED);
         }
 
-// helper returns file names list
         String savedFileName = uploadResponse.getUploadedFileNames().get(0);
 
-        //4. Save Metadata
+        //  Store metadata in DB
         PatientDocument document = new PatientDocument();
         document.setPatient(patient);
-        document.setFileName(savedFileName);
-        document.setFilePath(savedFileName);
+        document.setFileName(originalFileName);
+
+        // IMPORTANT: store full metadata path
+        String storedPath = HealthCareConstants.DOCUMENT_UPLOAD_DIR + savedFileName;
+        document.setFilePath(storedPath);
+
         document.setDocumentType(request.getDocumentType());
         document.setDescription(request.getDescription());
         document.setUploadedAt(LocalDateTime.now());
 
         PatientDocument savedDocument = patientDocumentRepository.save(document);
 
-        //5. Prepare Response
+        //  Prepare response (NOT entity)
         PatientDocumentUploadResponse response = new PatientDocumentUploadResponse();
         response.setDocumentId(savedDocument.getId());
         response.setFileName(savedDocument.getFileName());
         response.setDocumentType(savedDocument.getDocumentType());
         response.setUploadedAt(savedDocument.getUploadedAt());
-
-        response.setMessage("Patient document uploaded successfully");
+        response.setMessage(HealthCareConstants.FILE_UPLOAD_SUCCESS);
 
         return response;
     }
