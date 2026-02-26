@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 
 public class AppointmentController {
+    
 
     private final AppointmentService appointmentService;
 
