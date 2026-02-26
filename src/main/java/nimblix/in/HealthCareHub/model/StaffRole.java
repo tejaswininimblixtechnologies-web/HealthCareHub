@@ -5,3 +5,4 @@ public enum StaffRole {
     RECEPTIONIST,
     LAB_TECHNICIAN
 }
+
