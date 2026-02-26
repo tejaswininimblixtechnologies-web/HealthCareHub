@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,9 @@ public class Hospital {
 
     private Integer totalBeds;
 
+    //--Mapping hospital to medicine--
+    @OneToMany(mappedBy = "hospital")
+    private List<Medicine> medicines = new ArrayList<>();
 
     @Column(name = "created_time", updatable = false)
     private String createdTime;
