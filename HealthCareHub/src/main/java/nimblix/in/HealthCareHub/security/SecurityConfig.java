@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
@@ -37,9 +36,12 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/api/vendors/**",
                                 "/api/purchase-orders/**",
-                                "/api/medicines/**"
+                                "/api/medicines/**",
 
 
+                                "/swagger-ui.html",
+                                "/api/doctors/**",
+                                "/api/hospital/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
