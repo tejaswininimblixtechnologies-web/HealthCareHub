@@ -2,6 +2,7 @@ package com.hospital.hospitalmanagement.Service;
 
 import com.hospital.hospitalmanagement.entity.Branch;
 import com.hospital.hospitalmanagement.repository.BranchRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 public class BranchService {
+
 
     private final BranchRepository branchRepository;
 

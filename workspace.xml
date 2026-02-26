@@ -4,35 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2505303-e709-44a3-b4cb-e648f94dd5c9" name="Changes" comment="added hospital,branch,patient,doctor API's">
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/Controller/BranchController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/Controller/DoctorController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/Controller/InventoryController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/Controller/PatientController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/HopsitalmanagementApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/Service/BranchService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/entity.rar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/entity/Branch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/entity/Doctor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/entity/Inventory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/entity/Patient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/repository/BranchRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/repository/DoctorRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/repository/InventoryRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/java/com/hospital/hospitalmanagement/repository/PatientRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy (2)/src/test/java/com/hospital/hopsitalmanagement/HopsitalmanagementApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/Controller/BranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/Controller/BranchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/Controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/Controller/DoctorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/Service/BranchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/Service/BranchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/repository/DoctorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/main/java/com/hospital/hospitalmanagement/repository/DoctorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/test/java/com/hospital/hopsitalmanagement/HopsitalmanagementApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/hopsitalmanagement - Copy/src/test/java/com/hospital/hopsitalmanagement/HopsitalmanagementApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/Controller/BranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/Controller/BranchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/Controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/Controller/DoctorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/Service/BranchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/Service/BranchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/repository/DoctorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hospital/hospitalmanagement/repository/DoctorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/hospital/hopsitalmanagement/HopsitalmanagementApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/hospital/hopsitalmanagement/HopsitalmanagementApplicationTests.java" afterDir="false" />
+    <list default="true" id="c2505303-e709-44a3-b4cb-e648f94dd5c9" name="Changes" comment="added api changes hospital,branch,patient,doctor API's">
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,16 +21,13 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_COMMON_BRANCH" value="master" />
+    <option name="RECENT_COMMON_BRANCH" value="Multi-Hospital/branch" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;spandanagowda2299-glitch&quot;
-  }
-}</component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {}
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/spandanagowda2299-glitch/Multi-Hospital-Branch212.git&quot;,
@@ -82,17 +52,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.com.hospital.hospitalmanagement in hopsitalmanagement.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.HopsitalmanagementApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;hospital-feature&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/OneDrive/Desktop/hopsitalmanagement/hopsitalmanagement&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.com.hospital.hospitalmanagement in hopsitalmanagement.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.HopsitalmanagementApplication.executor": "Run",
+    "git-widget-placeholder": "Multi-Hospital/Branch1",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/user/OneDrive/Desktop/hopsitalmanagement/hopsitalmanagement",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Spring Boot.HopsitalmanagementApplication">
     <configuration name="com.hospital.hospitalmanagement in hopsitalmanagement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="hopsitalmanagement" />
@@ -160,7 +133,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771486139044</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added hospital,branch,patient,doctor API's">
+      <option name="closed" value="true" />
+      <created>1772089672609</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1772089672609</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
