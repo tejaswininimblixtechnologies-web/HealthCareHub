@@ -26,6 +26,9 @@ public class Doctor {
     @Column(name = "phoneNo")
     private String phone;
 
+    @Column(unique = true)
+    private String emailId;
+
     @Column(name = "qualification")
     private String qualification;
 
