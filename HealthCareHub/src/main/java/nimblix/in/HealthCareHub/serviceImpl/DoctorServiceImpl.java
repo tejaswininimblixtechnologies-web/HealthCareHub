@@ -1,64 +1,91 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.model.Doctor;
-import nimblix.in.HealthCareHub.repository.DoctorRepository;
+import nimblix.in.HealthCareHub.model.*;
+import nimblix.in.HealthCareHub.repository.*;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
+import nimblix.in.HealthCareHub.response.DoctorResponse;
 import nimblix.in.HealthCareHub.service.DoctorService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import nimblix.in.HealthCareHub.model.Hospital;
-import nimblix.in.HealthCareHub.model.Specialization;
-import nimblix.in.HealthCareHub.repository.HospitalRepository;
-import nimblix.in.HealthCareHub.repository.SpecializationRepository;
-
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final DoctorRepository doctorRepository;
     private final HospitalRepository hospitalRepository;
     private final SpecializationRepository specializationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public String registerDoctor(DoctorRegistrationRequest request) {
+    public DoctorResponse registerDoctor(DoctorRegistrationRequest request) {
 
-        // Check if email already exists
-        if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
-            return "Doctor already exists with this email";
-        }
+        // 1️⃣ Fetch DOCTOR role
+        Role doctorRole = roleRepository.findByName("DOCTOR")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        // Fetch Hospital
-        Hospital hospital = hospitalRepository.findByName(request.getHospitalName())
+        // 2️⃣ Fetch Hospital
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
-        // Fetch Specialization
-        Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
+        // 3️⃣ Fetch Specialization
+        Specialization specialization = specializationRepository
+                .findById(request.getSpecializationId())
                 .orElseThrow(() -> new RuntimeException("Specialization not found"));
 
-        // Create Doctor
-        Doctor doctor = new Doctor();
+        // 4️⃣ Create User
+        User user = User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .phone(request.getPhone())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(Set.of(doctorRole))
+                .enabled(true)
+                .build();
 
-        doctor.setName(request.getDoctorName());
-        doctor.setEmailId(request.getDoctorEmail());
-        doctor.setPassword(request.getPassword());
-        doctor.setPhone(request.getPhoneNo());
+        userRepository.save(user);
 
-        // ✅ CORRECT WAY (Set Objects, not IDs)
-        doctor.setHospital(hospital);
-        doctor.setSpecialization(specialization);
+        // 5️⃣ Create Doctor
+        Doctor doctor = Doctor.builder()
+                .name(request.getName())
+                .specialization(specialization)
+                .hospital(hospital)
+                .user(user)
+                .build();
 
         doctorRepository.save(doctor);
 
-        return "Doctor Registered Successfully";
+        // 6️⃣ Return Response
+        return DoctorResponse.builder()
+                .doctorId(doctor.getId())
+                .name(doctor.getName())
+                .specialization(specialization.getName())
+                .email(user.getEmail())
+                .hospitalId(hospital.getId())
+                .build();
     }
 
     @Override
-    public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
-        return null;
+    public DoctorResponse getDoctorDetails(Long doctorId, Long hospitalId) {
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        if (!doctor.getHospital().getId().equals(hospitalId)) {
+            throw new RuntimeException("Doctor does not belong to this hospital");
+        }
+
+        return DoctorResponse.builder()
+                .doctorId(doctor.getId())
+                .name(doctor.getName())
+                .specialization(doctor.getSpecialization().getName())
+                .email(doctor.getUser().getEmail())
+                .hospitalId(doctor.getHospital().getId())
+                .build();
     }
-
 }
-

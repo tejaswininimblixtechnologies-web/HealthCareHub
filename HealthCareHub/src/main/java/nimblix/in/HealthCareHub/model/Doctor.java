@@ -32,8 +32,8 @@ public class Doctor {
     private String qualification;
 
     // ✅ Doctor login account
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     // ✅ Many Doctors → One Hospital
