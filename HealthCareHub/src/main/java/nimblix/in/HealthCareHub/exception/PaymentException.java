@@ -1,14 +1,12 @@
 package nimblix.in.HealthCareHub.exception;
 
-import org.springframework.http.HttpStatus;
-
-public class PaymentException extends BaseException {
+public class PaymentException extends RuntimeException {
 
     public PaymentException(String message) {
-        super(message, HttpStatus.BAD_REQUEST, ErrorCode.PAYMENT_FAILED);
+        super(message);
     }
 
-    public PaymentException(String message, ErrorCode errorCode) {
-        super(message, HttpStatus.BAD_REQUEST, errorCode);
+    public PaymentException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
