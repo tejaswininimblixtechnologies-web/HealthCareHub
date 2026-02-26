@@ -20,18 +20,20 @@ public class Hospital {
     private Long id;
 
     private String name;
-
     private String address;
-
     private String city;
-
     private String state;
-
     private String phone;
-
     private String email;
-
     private Integer totalBeds;
+
+
+    @ElementCollection
+    @CollectionTable(
+            name = "hospital_rooms",
+            joinColumns = @JoinColumn(name = "hospital_id")
+    )
+    private List<RoomInfo> rooms;
 
 
     @Column(name = "created_time", updatable = false)
@@ -49,5 +51,18 @@ public class Hospital {
     @PreUpdate
     protected void onUpdate() {
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    }
+
+
+    @Embeddable
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RoomInfo {
+
+        private String roomNumber;
+        private String roomType;
+        private boolean available;
     }
 }

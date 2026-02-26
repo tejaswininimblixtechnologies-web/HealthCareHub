@@ -7,6 +7,9 @@ import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class HospitalServiceImpl implements HospitalService {
@@ -34,5 +37,19 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalRepository.save(hospital);
 
         return "Hospital Registered Successfully";
+    }
+
+    /* ---------- ROOM LOGIC (ADDED ONLY) ---------- */
+
+    @Override
+    public List<Hospital.RoomInfo> getAvailableRooms(Long hospitalId) {
+
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
+        return hospital.getRooms()
+                .stream()
+                .filter(Hospital.RoomInfo::isAvailable)
+                .collect(Collectors.toList());
     }
 }

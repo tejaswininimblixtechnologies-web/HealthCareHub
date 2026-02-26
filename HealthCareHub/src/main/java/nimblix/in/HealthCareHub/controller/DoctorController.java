@@ -1,14 +1,9 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.service.DoctorService;
-import nimblix.in.HealthCareHub.service.RoomService;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -16,7 +11,6 @@ import java.util.List;
 public class DoctorController {
 
     private final DoctorService doctorService;
-    private final RoomService roomService;
 
     /*
      Json object:
@@ -38,18 +32,4 @@ public class DoctorController {
         return doctorService.RegisterDoctor(doctorRegistrationRequest);
     }
 
-    // -----------------------------
-    // Get Available Rooms API
-    // -----------------------------
-    @GetMapping("/available-rooms")
-    public ResponseEntity<List<Room>> getAvailableRooms() {
-
-        List<Room> availableRooms = roomService.getAvailableRooms();
-
-        if (availableRooms.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(availableRooms);
-    }
 }
