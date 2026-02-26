@@ -1,9 +1,10 @@
 package nimblix.in.HealthCareHub.service;
 
-import nimblix.in.HealthCareHub.request.PatientSearchRequest;
 import nimblix.in.HealthCareHub.response.PatientResponse;
 import java.util.List;
 
 public interface PatientService {
-    List<PatientResponse> searchPatients(PatientSearchRequest request);
+
+    // Search patients by GET or POST
+    List<PatientResponse> searchPatients(String name, String bloodGroup, String phone);
 }

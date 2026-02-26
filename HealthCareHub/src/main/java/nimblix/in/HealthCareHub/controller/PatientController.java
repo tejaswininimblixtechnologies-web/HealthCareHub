@@ -1,30 +1,37 @@
 package nimblix.in.HealthCareHub.controller;
 
-import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.PatientSearchRequest;
 import nimblix.in.HealthCareHub.response.PatientResponse;
 import nimblix.in.HealthCareHub.service.PatientService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/patient")   // keep singular as in your base code
-@RequiredArgsConstructor
+@RequestMapping("/api/patients")
 public class PatientController {
 
-    private final PatientService patientService;  // injected via Lombok
+    @Autowired
+    private PatientService patientService;
 
-    /**
-     * Search patients with optional filters: name, phone, blood group
-     * POST request because filters are sent in the body
-     */
+    // GET search (URL params)
+    @GetMapping("/search")
+    public List<PatientResponse> searchPatientsGet(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String bloodGroup,
+            @RequestParam(required = false) String phone
+    ) {
+        return patientService.searchPatients(name, bloodGroup, phone);
+    }
+
+    // POST search (JSON body)
     @PostMapping("/search")
-    public ResponseEntity<List<PatientResponse>> searchPatients(
-            @RequestBody PatientSearchRequest request) {
-
-        List<PatientResponse> result = patientService.searchPatients(request);
-        return ResponseEntity.ok(result);
+    public List<PatientResponse> searchPatientsPost(@RequestBody PatientSearchRequest request) {
+        return patientService.searchPatients(
+                request.getName(),
+                request.getBloodGroup(),
+                request.getPhone()
+        );
     }
 }
