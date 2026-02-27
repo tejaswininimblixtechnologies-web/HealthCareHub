@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SpecializationRepository extends JpaRepository<Specialization, Long> {
+
+    // Fetch specialization using name
     Optional<Specialization> findByName(String name);
 }

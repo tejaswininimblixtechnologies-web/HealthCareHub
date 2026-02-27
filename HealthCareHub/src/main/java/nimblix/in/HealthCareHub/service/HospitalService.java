@@ -1,8 +1,9 @@
 package nimblix.in.HealthCareHub.service;
 
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.response.HospitalResponse;
 
 public interface HospitalService {
 
-    String registerHospital(HospitalRegistrationRequest request);
+    HospitalResponse registerHospital(HospitalRegistrationRequest request);
 }

@@ -27,41 +27,40 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String registerDoctor(DoctorRegistrationRequest request) {
-     try {
-         // Check if email already exists
-         if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
-             return "Doctor already exists with this email";
-         }
+     try{
+        // Check email already exists
+        if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
+            return "Doctor already exists with this email";
+        }
 
-         // Fetch Hospital
-         Hospital hospital = hospitalRepository.findById(request.getHospitalId())
-                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
+        // Fetch Hospital
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
-         // Fetch Specialization
-         Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
-                 .orElseThrow(() -> new RuntimeException("Specialization not found"));
+        // Fetch Specialization
+        Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
+                .orElseThrow(() -> new RuntimeException("Specialization not found"));
+        // Create Doctor
+        Doctor doctor = new Doctor();
+        doctor.setName(request.getDoctorName());
+        doctor.setEmailId(request.getDoctorEmail());
+        doctor.setPassword(request.getPassword());
+        doctor.setPhone(request.getPhoneNo());
+        doctor.setQualification(request.getQualification());
+        doctor.setExperienceYears(request.getExperience());
+        doctor.setDescription(request.getDescription());
 
-         // Create Doctor
-         Doctor doctor = new Doctor();
+        // set relations
+        doctor.setHospital(hospital);
+        doctor.setSpecialization(specialization);
 
-         doctor.setName(request.getDoctorName());
-         doctor.setEmailId(request.getDoctorEmail());
-         doctor.setPassword(request.getPassword());
-         doctor.setPhone(request.getPhoneNo());
-         doctor.setQualification(request.getQualification());
-         doctor.setExperienceYears(request.getExperience());
-         doctor.setDescription(request.getDescription());
-         doctor.setHospital(hospital);
+        doctor.setIsActive(HealthCareConstants.ACTIVE);
 
-         // ✅ CORRECT WAY (Set Objects, not IDs)
-         doctor.setHospital(hospital);
-         doctor.setSpecialization(specialization);
+        doctorRepository.save(doctor);
 
-         doctorRepository.save(doctor);
-
-         return "Doctor Registered Successfully";
-      }catch (UserNotFoundException e){
-         return  "User not found";
+        return "Doctor Registered Successfully";
+    }catch (UserNotFoundException e){
+        return "User not found";
      }
     }
 
@@ -134,8 +133,4 @@ public class DoctorServiceImpl implements DoctorService {
 
         return "Doctor deleted successfully (Hard Delete)";
     }
-
-
-
 }
-

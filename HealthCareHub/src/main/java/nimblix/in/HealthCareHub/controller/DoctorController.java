@@ -3,15 +3,10 @@ package nimblix.in.HealthCareHub.controller;
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import nimblix.in.HealthCareHub.service.DoctorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.PublicKey;
-
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -20,30 +15,39 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
+    // Register Doctor
     @PostMapping("/register")
-    public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {
-        return doctorService.registerDoctor(request);
+    public ResponseEntity<?> registerDoctor(
+            @Validated @RequestBody DoctorRegistrationRequest request) {
 
+        String response = doctorService.registerDoctor(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    // Get Doctor Details
     @GetMapping("/getDoctorDetails/{doctorId}/{hospitalId}")
-    public ResponseEntity<?> getDoctorDetails(@PathVariable Long doctorId,
-                                              @PathVariable Long hospitalId) {
+    public ResponseEntity<?> getDoctorDetails(
+            @PathVariable Long doctorId,
+            @PathVariable Long hospitalId) {
+
         return doctorService.getDoctorDetails(doctorId, hospitalId);
     }
 
+    // Update Doctor Details
     @PutMapping("/updateDoctorDetails")
-     public String updateDoctorDetails(@RequestBody DoctorRegistrationRequest request){
-        return doctorService.updateDoctorDetails(request);
+    public ResponseEntity<?> updateDoctorDetails(
+            @Validated @RequestBody DoctorRegistrationRequest request) {
+
+        String response = doctorService.updateDoctorDetails(request);
+        return ResponseEntity.ok(response);
     }
 
-
-
-
+    // Delete Doctor
     @DeleteMapping("/deleteDoctorDetails")
-    public String deleteDoctorDetails(@RequestParam Long doctorId){
-        return doctorService.deleteDoctorDetails(doctorId);
+    public ResponseEntity<?> deleteDoctorDetails(
+            @RequestParam Long doctorId) {
+
+        String response = doctorService.deleteDoctorDetails(doctorId);
+        return ResponseEntity.ok(response);
     }
-
-
 }
