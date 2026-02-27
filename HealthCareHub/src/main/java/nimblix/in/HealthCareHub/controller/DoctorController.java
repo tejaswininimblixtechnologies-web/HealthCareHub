@@ -1,35 +1,49 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import nimblix.in.HealthCareHub.service.DoctorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.security.PublicKey;
+
 
 @RestController
-@RequestMapping("api/doctor")
+@RequestMapping("/api/doctors")
 @RequiredArgsConstructor
 public class DoctorController {
 
     private final DoctorService doctorService;
 
-    @PostMapping("/{doctorId}/prescriptions")
-    public ResponseEntity<String> addPrescription(
-            @PathVariable Long doctorId,
-            @RequestBody List<String> medicines) {
+    @PostMapping("/register")
+    public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {
+        return doctorService.registerDoctor(request);
 
-        return ResponseEntity.ok(
-                doctorService.addPrescription(doctorId, medicines)
-        );
     }
 
-    @GetMapping("/{doctorId}/prescriptions")
-    public ResponseEntity<List<String>> getPrescriptions(
-            @PathVariable Long doctorId) {
-
-        return ResponseEntity.ok(
-                doctorService.getPrescriptions(doctorId)
-        );
+    @GetMapping("/getDoctorDetails/{doctorId}/{hospitalId}")
+    public ResponseEntity<?> getDoctorDetails(@PathVariable Long doctorId,
+                                              @PathVariable Long hospitalId) {
+        return doctorService.getDoctorDetails(doctorId, hospitalId);
     }
+
+    @PutMapping("/updateDoctorDetails")
+     public String updateDoctorDetails(@RequestBody DoctorRegistrationRequest request){
+        return doctorService.updateDoctorDetails(request);
+    }
+
+
+
+
+    @DeleteMapping("/deleteDoctorDetails")
+    public String deleteDoctorDetails(@RequestParam Long doctorId){
+        return doctorService.deleteDoctorDetails(doctorId);
+    }
+
+
 }
