@@ -31,6 +31,13 @@ public class Doctor {
 
     private String qualification;
 
+    private String experience;
+
+    private String description;
+
+    @Column(unique = true)
+    private String doctorId;
+
     // ✅ Doctor login account
     @OneToOne
     @JoinColumn(name = "user_id")

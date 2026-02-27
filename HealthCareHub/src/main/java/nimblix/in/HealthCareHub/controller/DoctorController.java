@@ -17,6 +17,14 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
+    @GetMapping
+    public ResponseEntity<?> searchDoctors(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long specializationId,
+            @RequestParam(required = false) Long hospitalId) {
+        return ResponseEntity.ok(doctorService.searchDoctors(name, specializationId, hospitalId));
+    }
+
     @PostMapping("/register")
     public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {
         return doctorService.registerDoctor(request);
