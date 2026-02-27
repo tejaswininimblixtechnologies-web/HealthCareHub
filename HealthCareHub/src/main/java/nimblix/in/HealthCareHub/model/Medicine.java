@@ -54,4 +54,6 @@ public class Medicine {
     protected void onUpdate() {
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
+
+
 }
