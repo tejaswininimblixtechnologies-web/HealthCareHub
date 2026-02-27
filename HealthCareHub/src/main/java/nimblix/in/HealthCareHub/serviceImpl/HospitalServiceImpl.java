@@ -2,21 +2,26 @@ package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Hospital;
+import nimblix.in.HealthCareHub.model.Role;
+import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
+import nimblix.in.HealthCareHub.repository.UserRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class HospitalServiceImpl implements HospitalService {
 
     private final HospitalRepository hospitalRepository;
+    private final UserRepository userRepository;
 
     @Override
     public String registerHospital(HospitalRegistrationRequest request) {
 
-        // Check if hospital already exists
         if (hospitalRepository.findByName(request.getName()).isPresent()) {
             return "Hospital already exists";
         }
@@ -34,5 +39,34 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalRepository.save(hospital);
 
         return "Hospital Registered Successfully";
+    }
+
+    @Override
+    public User addStaff(User user) {
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        if (user.getRole() == Role.NURSE ||
+                user.getRole() == Role.RECEPTIONIST ||
+                user.getRole() == Role.LAB_TECHNICIAN) {
+
+            return userRepository.save(user);
+        }
+
+        throw new RuntimeException("Invalid role for staff");
+    }
+
+    @Override
+    public List<User> getAllStaff() {
+
+        return userRepository.findAll()
+                .stream()
+                .filter(user ->
+                        user.getRole() == Role.NURSE ||
+                                user.getRole() == Role.RECEPTIONIST ||
+                                user.getRole() == Role.LAB_TECHNICIAN)
+                .toList();
     }
 }

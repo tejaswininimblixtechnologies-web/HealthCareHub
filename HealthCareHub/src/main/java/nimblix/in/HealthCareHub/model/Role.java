@@ -2,5 +2,11 @@ package nimblix.in.HealthCareHub.model;
 
 public enum Role {
     DOCTOR,
-    PATIENT
+    PATIENT,
+    NURSE,
+    RECEPTIONIST,
+    LAB_TECHNICIAN,
+    ADMIN
 }
+
+
