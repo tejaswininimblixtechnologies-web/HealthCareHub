@@ -23,10 +23,12 @@ public class Payment {
     private String paymentStatus;
     private LocalDateTime paymentDate;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
+
+    @Column(name = "created_time")
     private String createdTime;
     private String updatedTime;
 

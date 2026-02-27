@@ -51,6 +51,12 @@ public class Doctor {
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
 
+    // read-only view of FK to avoid duplicate column mapping (no insert/update)
+    @Column(name = "specialization_id", insertable = false, updatable = false)
+    private Long specializationId;
+
+
+    @Column(name = "created_time")
     private String createdTime;
     private String updatedTime;
 
