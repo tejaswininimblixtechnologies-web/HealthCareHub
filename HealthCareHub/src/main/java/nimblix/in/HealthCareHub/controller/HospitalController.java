@@ -22,14 +22,7 @@ public class HospitalController {
     public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
         return hospitalService.registerHospital(request);
     }
-    @PostMapping("/staff")
-    public User addStaff(@RequestBody User user) {
-        return hospitalService.addStaff(user);
-    }
-
-    @GetMapping("/staff")
-    public List<User> getAllStaff() {
-        return hospitalService.getAllStaff();
-    }
     
 }
+
+

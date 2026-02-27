@@ -9,8 +9,4 @@ public interface HospitalService {
 
     String registerHospital(HospitalRegistrationRequest request);
 
-    User addStaff(User user);
-
-    List<User> getAllStaff();
-
 }
