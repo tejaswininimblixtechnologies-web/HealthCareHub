@@ -2,17 +2,17 @@ package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Doctor;
+import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.repository.DoctorRepository;
+import nimblix.in.HealthCareHub.repository.HospitalRepository;
+import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
+import nimblix.in.HealthCareHub.response.ApiResponse;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import nimblix.in.HealthCareHub.model.Hospital;
-import nimblix.in.HealthCareHub.model.Specialization;
-import nimblix.in.HealthCareHub.repository.HospitalRepository;
-import nimblix.in.HealthCareHub.repository.SpecializationRepository;
-
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -24,29 +24,21 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String registerDoctor(DoctorRegistrationRequest request) {
-
-        // Check if email already exists
         if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
             return "Doctor already exists with this email";
         }
 
-        // Fetch Hospital
-        Hospital hospital = hospitalRepository.findByName(request.getHospitalName())
+        var hospital = hospitalRepository.findByName(request.getHospitalName())
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
-        // Fetch Specialization
-        Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
+        var specialization = specializationRepository.findByName(request.getSpecializationName())
                 .orElseThrow(() -> new RuntimeException("Specialization not found"));
 
-        // Create Doctor
         Doctor doctor = new Doctor();
-
         doctor.setName(request.getDoctorName());
         doctor.setEmailId(request.getDoctorEmail());
         doctor.setPassword(request.getPassword());
         doctor.setPhone(request.getPhoneNo());
-
-        // ✅ CORRECT WAY (Set Objects, not IDs)
         doctor.setHospital(hospital);
         doctor.setSpecialization(specialization);
 
@@ -57,8 +49,45 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId) {
+        // implement your logic if needed
         return null;
     }
 
-}
+    @Override
+    public ResponseEntity<ApiResponse> activateDoctor(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
 
+        User user = doctor.getUser();
+        if (user == null)
+            return ResponseEntity.badRequest().body(
+                    new ApiResponse("error", "No associated user for doctor", LocalDateTime.now())
+            );
+
+        user.setEnabled(true);
+        doctorRepository.save(doctor);
+
+        return ResponseEntity.ok(
+                new ApiResponse("success", "Doctor activated successfully", LocalDateTime.now())
+        );
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> deactivateDoctor(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        User user = doctor.getUser();
+        if (user == null)
+            return ResponseEntity.badRequest().body(
+                    new ApiResponse("error", "No associated user for doctor", LocalDateTime.now())
+            );
+
+        user.setEnabled(false);
+        doctorRepository.save(doctor);
+
+        return ResponseEntity.ok(
+                new ApiResponse("success", "Doctor deactivated successfully", LocalDateTime.now())
+        );
+    }
+}

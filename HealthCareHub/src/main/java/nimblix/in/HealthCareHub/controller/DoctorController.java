@@ -28,9 +28,20 @@ public class DoctorController {
         return  doctorService.getDoctorDetails(doctorId,hospitalId);
 
     }
+    //  Activate Doctor
+    @PutMapping("/{doctorId}/activate")
+    public ResponseEntity<?> activateDoctor(@PathVariable Long doctorId) {
+        return doctorService.activateDoctor(doctorId);
+    }
 
-
-
-
-
+    //  Deactivate Doctor
+    @PutMapping("/{doctorId}/deactivate")
+    public ResponseEntity<?> deactivateDoctor(@PathVariable Long doctorId) {
+        return doctorService.deactivateDoctor(doctorId);
+    }
 }
+
+
+
+
+
