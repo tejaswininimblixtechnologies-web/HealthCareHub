@@ -19,7 +19,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<DailyVisitReportResponse> getDailyVisits(LocalDate date) {
-        // Validate input
+        // ✅ Validate input
         if (date == null) {
             throw new IllegalArgumentException("Date parameter is required");
         }
@@ -30,22 +30,14 @@ public class PatientServiceImpl implements PatientService {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.atTime(23, 59, 59);
 
-        // Query appointments between start and end of day
+        // ✅ Query appointments between start and end of day
         Long count = appointmentRepository.countByAppointmentDateTimeBetween(startOfDay, endOfDay);
-
-
-
-
 
         if (count == null || count == 0) {
             throw new UserNotFoundException("No visits found for date: " + date);
         }
 
-        // Return a DTO with the date and count
-        return List.of(new DailyVisitReportResponse(date, count));
-    }
-}
-
+        // ✅ Return a DTO with the date and count
         return List.of(new DailyVisitReportResponse(date, count));
     }
 }

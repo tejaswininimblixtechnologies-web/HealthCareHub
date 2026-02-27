@@ -1,24 +1,11 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.response.DoctorPerformanceReportResponse;
-import nimblix.in.HealthCareHub.service.DoctorService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
+import nimblix.in.HealthCareHub.response.DoctorPerformanceReportResponse;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import nimblix.in.HealthCareHub.response.DoctorPerformanceReportResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.PublicKey;
 
 import java.util.List;
 
@@ -28,20 +15,16 @@ import java.util.List;
 public class DoctorController {
 
     private final DoctorService doctorService;
-    private final DoctorService doctorService;
 
+    // Register a new doctor
     @PostMapping("/register")
-    public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {
-        return doctorService.registerDoctor(request);
+    public ResponseEntity<String> registerDoctor(@RequestBody DoctorRegistrationRequest request) {
+        String result = doctorService.registerDoctor(request);
+        return ResponseEntity.ok(result);
     }
 
-    }
-
-    @GetMapping("/getDoctorDetails")
-    public ResponseEntity<?> getDoctorDetails(@RequestParam Long doctorId,
-                                              @RequestParam Long hospitalId) {
-        return doctorService.getDoctorDetails(doctorId, hospitalId);
-    @GetMapping("/getDoctorDetails/{doctorId}/{hospitalId}")
+    // Get doctor details by ID and hospital
+    @GetMapping("/details/{doctorId}/{hospitalId}")
     public ResponseEntity<?> getDoctorDetails(@PathVariable Long doctorId,
                                               @PathVariable Long hospitalId) {
         return doctorService.getDoctorDetails(doctorId, hospitalId);
@@ -54,9 +37,11 @@ public class DoctorController {
         return ResponseEntity.ok(report);
     }
 
-    @PutMapping("/updateDoctorDetails")
-     public String updateDoctorDetails(@RequestBody DoctorRegistrationRequest request){
-        return doctorService.updateDoctorDetails(request);
+    // Update doctor details
+    @PutMapping("/update")
+    public ResponseEntity<String> updateDoctorDetails(@RequestBody DoctorRegistrationRequest request) {
+        String result = doctorService.updateDoctorDetails(request);
+        return ResponseEntity.ok(result);
     }
 
     // Particular doctor performance by ID
@@ -66,12 +51,10 @@ public class DoctorController {
         return ResponseEntity.ok(report);
     }
 
-
-
-    @DeleteMapping("/deleteDoctorDetails")
-    public String deleteDoctorDetails(@RequestParam Long doctorId){
-        return doctorService.deleteDoctorDetails(doctorId);
+    // Delete doctor details
+    @DeleteMapping("/delete/{doctorId}")
+    public ResponseEntity<String> deleteDoctorDetails(@PathVariable Long doctorId) {
+        String result = doctorService.deleteDoctorDetails(doctorId);
+        return ResponseEntity.ok(result);
     }
-
-
 }

@@ -31,14 +31,11 @@ public class Doctor {
 
     private String password;
 
-    @Column(name = "qualification")
-    @Column(unique = true)
-    private String emailId;
+
 
     private String description;
 
-    private String password;
-
+    @Column(name = "qualification")
     private String qualification;
 
     // ✅ Doctor login account

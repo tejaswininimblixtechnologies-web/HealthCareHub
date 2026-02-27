@@ -1,14 +1,11 @@
 package nimblix.in.HealthCareHub.service;
 
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
-import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import org.springframework.http.ResponseEntity;
 
-import nimblix.in.HealthCareHub.dto.DoctorPerformanceReport;
 
 
 import nimblix.in.HealthCareHub.response.DoctorPerformanceReportResponse;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
