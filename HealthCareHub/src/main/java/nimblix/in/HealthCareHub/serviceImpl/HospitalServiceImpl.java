@@ -67,6 +67,7 @@ public class HospitalServiceImpl implements HospitalService {
             }
 //            if review already exists
             else {
+                ratingList.add(rating);
                 double avg = ratingList.stream().mapToDouble(Double::doubleValue).average().orElseThrow(() ->new RuntimeException(HealthCareConstants.NO_REVIEWS_SUBMITTED));
                 h.setRating(avg);
             }
