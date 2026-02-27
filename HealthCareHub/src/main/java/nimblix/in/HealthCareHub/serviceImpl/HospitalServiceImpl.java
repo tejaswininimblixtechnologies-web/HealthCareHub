@@ -6,6 +6,7 @@ import nimblix.in.HealthCareHub.model.Room;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.RoomRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.request.RoomRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,11 @@ import org.springframework.stereotype.Service;
 public class HospitalServiceImpl implements HospitalService {
 
     private final HospitalRepository hospitalRepository;
-    private final RoomRepository roomRepository;  //  Added
+    private final RoomRepository roomRepository;
 
     @Override
     public String registerHospital(HospitalRegistrationRequest request) {
 
-        // Check if hospital already exists
         if (hospitalRepository.findByName(request.getName()).isPresent()) {
             return "Hospital already exists";
         }
@@ -39,16 +39,25 @@ public class HospitalServiceImpl implements HospitalService {
         return "Hospital Registered Successfully";
     }
 
-    // ADD ROOM METHOD IMPLEMENTATION
     @Override
-    public Room addRoom(Long hospitalId, Room room) {
+    public void addRoom(Long hospitalId, RoomRequest request) {
 
         Hospital hospital = hospitalRepository.findById(hospitalId)
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
-        room.setHospital(hospital);
+        Room room = new Room();
+
+        room.setRoomNumber(request.getRoomNumber());
+        room.setRoomType(request.getRoomType());
+        room.setBedCount(request.getBedCount());
+        room.setPricePerDay(request.getPricePerDay());
+        room.setFloor(request.getFloor());
+
+
         room.setAvailability("AVAILABLE");
 
-        return roomRepository.save(room);
+        room.setHospital(hospital);
+
+        roomRepository.save(room);
     }
 }
