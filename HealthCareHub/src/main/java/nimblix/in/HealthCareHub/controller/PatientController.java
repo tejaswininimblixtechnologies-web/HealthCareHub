@@ -4,6 +4,7 @@ import nimblix.in.HealthCareHub.request.PatientSearchRequest;
 import nimblix.in.HealthCareHub.response.PatientResponse;
 import nimblix.in.HealthCareHub.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,23 +16,16 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    // GET search (URL params)
-    @GetMapping("/search")
-    public List<PatientResponse> searchPatientsGet(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String bloodGroup,
-            @RequestParam(required = false) String phone
-    ) {
-        return patientService.searchPatients(name, bloodGroup, phone);
-    }
-
-    // POST search (JSON body)
+    // POST search endpoint
     @PostMapping("/search")
-    public List<PatientResponse> searchPatientsPost(@RequestBody PatientSearchRequest request) {
-        return patientService.searchPatients(
+    public ResponseEntity<List<PatientResponse>> searchPatients(@RequestBody PatientSearchRequest request) {
+
+        List<PatientResponse> patients = patientService.searchPatients(
                 request.getName(),
                 request.getBloodGroup(),
                 request.getPhone()
         );
+
+        return ResponseEntity.ok(patients);
     }
 }

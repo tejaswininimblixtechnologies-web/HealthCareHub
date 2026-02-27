@@ -32,25 +32,17 @@ public class Patient {
 
     private String createdTime;
     private String updatedTime;
+    private String bloodGroup;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
         updatedTime = createdTime;
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 
-    private String bloodGroup;  // this stores the value
-
-    public String getBloodGroup() {
-        return this.bloodGroup;  // return the actual stored value
-    }
-
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;  // set the value
-    }
-    }
+}
