@@ -41,4 +41,32 @@ public class HospitalServiceImpl implements HospitalService {
         return "Hospital Registered Successfully";
     }
 
+    @Override
+    public User addStaff(User user) {
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        if (user.getRole() == Role.NURSE ||
+                user.getRole() == Role.RECEPTIONIST ||
+                user.getRole() == Role.LAB_TECHNICIAN) {
+
+            return userRepository.save(user);
+        }
+
+        throw new RuntimeException("Invalid role for staff");
+    }
+
+    @Override
+    public List<User> getAllStaff() {
+
+        return userRepository.findAll()
+                .stream()
+                .filter(user ->
+                        user.getRole() == Role.NURSE ||
+                                user.getRole() == Role.RECEPTIONIST ||
+                                user.getRole() == Role.LAB_TECHNICIAN)
+                .toList();
+    }
 }
