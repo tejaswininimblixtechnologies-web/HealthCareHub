@@ -8,4 +8,5 @@ public class PurchaseOrderRequest {
     private String medicineName;
     private Integer quantity;
     private Long vendorId;
+    private Long hospitalId;
 }

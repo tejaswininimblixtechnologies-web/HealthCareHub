@@ -10,4 +10,5 @@ public class VendorRequest {
     private String phone;
     private String address;
     private String gstNumber;
+    private Long hospitalId;
 }

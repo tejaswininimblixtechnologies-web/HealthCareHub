@@ -1,7 +1,9 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.model.Vendor;
+import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.VendorRepository;
 import nimblix.in.HealthCareHub.request.VendorRequest;
 import nimblix.in.HealthCareHub.response.VendorResponse;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
+    private final HospitalRepository hospitalRepository;
 
     @Override
     public VendorResponse createVendor(VendorRequest request) {
@@ -24,12 +27,16 @@ public class VendorServiceImpl implements VendorService {
             throw new RuntimeException("Vendor already exists with this email");
         }
 
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
         Vendor vendor = new Vendor();
         vendor.setVendorName(request.getVendorName());
         vendor.setEmail(request.getEmail());
         vendor.setPhone(request.getPhone());
         vendor.setAddress(request.getAddress());
         vendor.setGstNumber(request.getGstNumber());
+        vendor.setHospital(hospital);
 
         vendor = vendorRepository.save(vendor);
 

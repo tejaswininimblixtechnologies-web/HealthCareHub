@@ -24,4 +24,8 @@ public class Medicine {
     private String manufacturer;
 
     private LocalDate expiryDate;
+
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }

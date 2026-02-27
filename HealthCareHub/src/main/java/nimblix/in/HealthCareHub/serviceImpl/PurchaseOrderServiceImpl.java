@@ -1,20 +1,23 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.request.PurchaseOrderRequest;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
+import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.model.Medicine;
 import nimblix.in.HealthCareHub.model.PurchaseOrder;
 import nimblix.in.HealthCareHub.model.Vendor;
+import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.MedicineRepository;
 import nimblix.in.HealthCareHub.repository.PurchaseOrderRepository;
 import nimblix.in.HealthCareHub.repository.VendorRepository;
+import nimblix.in.HealthCareHub.request.PurchaseOrderRequest;
 import nimblix.in.HealthCareHub.response.PurchaseOrderResponse;
 import nimblix.in.HealthCareHub.service.PurchaseOrderService;
 import org.springframework.stereotype.Service;
-import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 
 import java.time.LocalDate;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
@@ -22,6 +25,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final VendorRepository vendorRepository;
     private final MedicineRepository medicineRepository;
+    private final HospitalRepository hospitalRepository;
 
     @Override
     public PurchaseOrderResponse createPurchaseOrder(PurchaseOrderRequest request) {
@@ -29,12 +33,16 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         Vendor vendor = vendorRepository.findById(request.getVendorId())
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
 
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
         PurchaseOrder order = new PurchaseOrder();
         order.setMedicineName(request.getMedicineName());
         order.setQuantity(request.getQuantity());
         order.setOrderDate(LocalDate.now());
         order.setStatus(HealthCareConstants.STATUS_PENDING);
         order.setVendor(vendor);
+        order.setHospital(hospital);
 
         order = purchaseOrderRepository.save(order);
 
@@ -108,6 +116,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     Medicine m = new Medicine();
                     m.setName(order.getMedicineName());
                     m.setStockQuantity(0);
+                    m.setHospital(order.getHospital());
                     return m;
                 });
 

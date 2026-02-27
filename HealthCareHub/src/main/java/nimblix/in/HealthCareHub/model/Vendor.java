@@ -26,4 +26,8 @@ public class Vendor {
     private String address;
 
     private String gstNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }

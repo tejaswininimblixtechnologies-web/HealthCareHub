@@ -27,4 +27,8 @@ public class PurchaseOrder {
     @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
+
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }
