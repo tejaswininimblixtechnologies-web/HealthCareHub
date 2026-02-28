@@ -17,6 +17,8 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ================= RELATIONS =================
+
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -25,20 +27,41 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
+    // ================= APPOINTMENT DETAILS =================
+
     private String appointmentDateTime;
-    private String status; // BOOKED, CANCELLED, COMPLETED
+
+    // BOOKED, CANCELLED, COMPLETED
+    private String status;
 
     private String createdTime;
     private String updatedTime;
 
+    // =========================================================
+    // ✅ MEDICAL RECORD FIELDS (NEW - FOR TASK 203)
+    // =========================================================
+
+    @Column(length = 1000)
+    private String diagnosis;
+
+    @Column(length = 2000)
+    private String treatmentPlan;
+
+    @Column(length = 3000)
+    private String clinicalNotes;
+
+    // ================= TIMESTAMP HANDLING =================
+
     @PrePersist
-    protected void onCreate(){
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onCreate() {
+        createdTime =
+                HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
         updatedTime = createdTime;
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    protected void onUpdate() {
+        updatedTime =
+                HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }
