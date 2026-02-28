@@ -2,7 +2,7 @@ package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -25,20 +25,11 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    private String appointmentDateTime;
-    private String status; // BOOKED, CANCELLED, COMPLETED
+    @Column(name = "appointment_time")
+    private LocalDateTime appointmentTime;
+
+    private String status;
 
     private String createdTime;
     private String updatedTime;
-
-    @PrePersist
-    protected void onCreate(){
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-    }
 }
