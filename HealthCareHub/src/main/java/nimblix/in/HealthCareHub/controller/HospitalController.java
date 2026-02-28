@@ -19,5 +19,4 @@ public class HospitalController {
     public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
         return hospitalService.registerHospital(request);
     }
-    
 }
