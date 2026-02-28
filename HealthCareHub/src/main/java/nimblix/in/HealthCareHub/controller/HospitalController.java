@@ -24,14 +24,12 @@ public class HospitalController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-    // ADD ROOM
-    @PostMapping("/{hospitalId}/add-room")
+    
+    @PostMapping("/add-room")
     public ResponseEntity<String> addRoom(
-            @PathVariable Long hospitalId,
             @RequestBody RoomRequest request) {
 
-        hospitalService.addRoom(hospitalId, request);
+        hospitalService.addRoom(request);
 
         return new ResponseEntity<>("Room added successfully", HttpStatus.CREATED);
     }

@@ -39,12 +39,15 @@ public class HospitalServiceImpl implements HospitalService {
         return "Hospital Registered Successfully";
     }
 
-    @Override
-    public void addRoom(Long hospitalId, RoomRequest request) {
 
-        Hospital hospital = hospitalRepository.findById(hospitalId)
+    @Override
+    public void addRoom(RoomRequest request) {
+
+        // Get hospital using hospitalId from RoomRequest
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
+        // Create Room entity
         Room room = new Room();
 
         room.setRoomNumber(request.getRoomNumber());
@@ -53,11 +56,13 @@ public class HospitalServiceImpl implements HospitalService {
         room.setPricePerDay(request.getPricePerDay());
         room.setFloor(request.getFloor());
 
-
+        // Set default availability
         room.setAvailability("AVAILABLE");
 
+        // Set hospital reference
         room.setHospital(hospital);
 
+        // Save room
         roomRepository.save(room);
     }
 }

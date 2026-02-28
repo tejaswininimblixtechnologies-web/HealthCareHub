@@ -7,5 +7,6 @@ public interface HospitalService {
 
     String registerHospital(HospitalRegistrationRequest request);
 
-    void addRoom(Long hospitalId, RoomRequest request);
+
+    void addRoom(RoomRequest request);
 }

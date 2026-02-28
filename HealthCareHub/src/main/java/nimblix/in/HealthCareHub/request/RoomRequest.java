@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class RoomRequest {
 
+    private Long hospitalId;
+
     private String roomNumber;
     private String roomType;
     private int bedCount;
