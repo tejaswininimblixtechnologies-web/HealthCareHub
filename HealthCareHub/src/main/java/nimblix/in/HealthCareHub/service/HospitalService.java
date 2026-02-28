@@ -5,4 +5,5 @@ import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 public interface HospitalService {
 
     String registerHospital(HospitalRegistrationRequest request);
+
 }

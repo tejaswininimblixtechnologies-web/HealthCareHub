@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import nimblix.in.HealthCareHub.model.Role;
 
 @Getter
 @Setter
@@ -14,4 +15,8 @@ public class HospitalRegistrationRequest {
     private String phone;
     private String email;
     private Integer totalBeds;
+
+
+    private String password;
+    private Role role;
 }

@@ -1,12 +1,11 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.User;
+import nimblix.in.HealthCareHub.repository.UserRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/hospital")
@@ -14,10 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class HospitalController {
 
     private final HospitalService hospitalService;
+    private final UserRepository userRepository;
 
     @PostMapping("/register")
     public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
         return hospitalService.registerHospital(request);
     }
-    
+
+    @PostMapping("/create-user")
+    public String createUser(@RequestBody HospitalRegistrationRequest request) {
+        return hospitalService.registerHospital(request);
+    }
 }
