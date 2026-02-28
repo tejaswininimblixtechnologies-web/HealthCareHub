@@ -11,9 +11,6 @@ import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
-@Table(name = "medicines")
 public class Medicine {
 
     @Id
