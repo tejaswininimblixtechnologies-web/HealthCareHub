@@ -7,7 +7,7 @@ import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/hospital")
+@RequestMapping("/api/hospital")
 @RequiredArgsConstructor
 public class HospitalController {
 
