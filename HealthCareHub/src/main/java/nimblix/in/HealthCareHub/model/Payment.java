@@ -2,8 +2,6 @@ package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,25 +17,18 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Patient reference
+    private Long patientId;
+
+    // Bill amount
     private Double amount;
-    private String paymentStatus;
-    private LocalDateTime paymentDate;
 
-    @OneToOne
-    @JoinColumn(name = "appointment_id")
-    private Appointment appointment;
+    // UPI / CARD / CASH
+    private String paymentMode;
 
-    private String createdTime;
-    private String updatedTime;
+    // PAID / PENDING
+    private String status;
 
-    @PrePersist
-    protected void onCreate(){
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-    }
+    // Auto timestamp
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
