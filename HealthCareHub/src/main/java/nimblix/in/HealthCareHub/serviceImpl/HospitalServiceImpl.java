@@ -10,6 +10,8 @@ import nimblix.in.HealthCareHub.request.MedicineAddRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class HospitalServiceImpl implements HospitalService {
@@ -41,19 +43,41 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public String addMedicine(Long hospitalId, MedicineAddRequest request){
+    public String addMedicine(MedicineAddRequest request){
 
+        //-edge cases---
         //--Check Hospital Exists--
-        Hospital hospital = hospitalRepository.findById(hospitalId)
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() -> new RuntimeException("Hospital Not Found"));
+
+        if (request.getMedicineName()==null || request.getMedicineName().trim().isEmpty()){
+            throw new RuntimeException("medicine name is required");
+        }
+
+        if (request.getPrice()==null || request.getPrice()<=0){
+            throw new RuntimeException("price must be greater than 0");
+        }
+
+        if (request.getStockQuantity()==null || request.getStockQuantity()<0){
+            throw new RuntimeException("StockQuantity cannot be negative ");
+        }
+
+        Optional<Medicine> existing = medicineRepository.findByMedicineNameAndHospital(
+                request.getMedicineName(), hospital);
+        if (existing.isPresent()){
+            throw new RuntimeException("Medicine already exists in this hospital");
+        }
+
 
         //--Create Medicine--
         Medicine medicine = Medicine.builder()
                 .medicineName(request.getMedicineName())
                 .manufacturer(request.getManufacturer())
+                .description(request.getDescription())
+                .dosage(request.getDosage())
                 .price(request.getPrice())
-                .stock(request.getStock())
-                .expiryDate(request.getExpiryDate())
+                .stockQuantity(request.getStockQuantity())
+                .isActive("ACTIVE")
                 .hospital(hospital)
                 .build();
 

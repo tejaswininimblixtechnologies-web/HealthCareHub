@@ -9,8 +9,17 @@ import lombok.Setter;
 public class MedicineAddRequest {
 
     private String medicineName;
+
     private String manufacturer;
+
+    private String description;
+
+    private String dosage;
+
     private Double price;
-    private Integer stock;
-    private String expiryDate;
+
+    private Integer stockQuantity;
+
+    private Long hospitalId;
+
 }
