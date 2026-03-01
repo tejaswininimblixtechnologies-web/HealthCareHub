@@ -25,8 +25,13 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    private String appointmentDateTime;
-    private String status; // BOOKED, CANCELLED, COMPLETED
+    // Store in yyyy-MM-dd
+    private String appointmentDate;
+
+    // Store in HH:mm:ss
+    private String appointmentTime;
+
+    private String status;
 
     private String createdTime;
     private String updatedTime;
