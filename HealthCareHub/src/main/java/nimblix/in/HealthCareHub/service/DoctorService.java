@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DoctorService {
     String registerDoctor(DoctorRegistrationRequest request);
-
+    public DoctorProfileResponse getDoctorProfile(Long doctorId);
     ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId);
     
     List<DoctorResponse> getAllDoctors(Long specializationId, Long hospitalId, String city, String name);
