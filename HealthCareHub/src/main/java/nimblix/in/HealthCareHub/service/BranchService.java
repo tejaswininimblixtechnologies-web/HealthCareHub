@@ -14,7 +14,6 @@ public class BranchService {
     public BranchService(BranchRepository branchRepository) {
         this.branchRepository = branchRepository;
     }
-
     public Branch createBranch(Branch branch) {
         return branchRepository.save(branch);
     }
@@ -24,7 +23,8 @@ public class BranchService {
     }
 
     public Branch getBranchById(Long id) {
-        return branchRepository.findById(id).orElseThrow();
+        return branchRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
     }
 
     public void deleteBranch(Long id) {

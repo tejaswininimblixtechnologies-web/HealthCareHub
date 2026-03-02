@@ -1,7 +1,8 @@
 package nimblix.in.HealthCareHub.controller;
 
 import nimblix.in.HealthCareHub.Entity.Branch;
-import nimblix.in.HealthCareHub.repository.BranchRepository;
+import nimblix.in.HealthCareHub.service.BranchService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,35 +10,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/branches")
 public class BranchController {
+    private final BranchService branchService;
 
-    private final BranchRepository branchRepository;   // ✅ Declare variable
-
-    public BranchController(BranchRepository branchRepository) {
-        this.branchRepository = branchRepository;
+    public BranchController(BranchService branchService) {
+        this.branchService = branchService;
     }
 
-    // Create Branch
+
     @PostMapping
-    public Branch createBranch(@RequestBody Branch branch) {
-        return branchRepository.save(branch);
+    public ResponseEntity<Branch> createBranch(@RequestBody Branch branch) {
+        Branch savedBranch = branchService.createBranch(branch);
+        return ResponseEntity.status(201).body(savedBranch); // 201 Created
     }
 
-    // Get All Branches
+
     @GetMapping
-    public List<Branch> getAllBranches() {
-        return branchRepository.findAll();
+    public ResponseEntity<List<Branch>> getAllBranches() {
+        return ResponseEntity.ok(branchService.getAllBranches());
     }
 
-    // Get Branch By ID
+
     @GetMapping("/{id}")
-    public Branch getBranchById(@PathVariable Long id) {
-        return branchRepository.findById(id).orElseThrow();
+    public ResponseEntity<Branch> getBranchById(@PathVariable Long id) {
+        Branch branch = branchService.getBranchById(id);
+        return ResponseEntity.ok(branch);
     }
 
-    // Delete Branch
+
     @DeleteMapping("/{id}")
-    public String deleteBranch(@PathVariable Long id) {
-        branchRepository.deleteById(id);
-        return "Branch deleted successfully";
+    public ResponseEntity<String> deleteBranch(@PathVariable Long id) {
+        branchService.deleteBranch(id);
+        return ResponseEntity.ok("Branch deleted successfully");
     }
 }

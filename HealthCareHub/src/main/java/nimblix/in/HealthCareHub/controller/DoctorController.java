@@ -1,9 +1,7 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.Entity.Branch;
-import nimblix.in.HealthCareHub.Entity.Doctor;
+import nimblix.in.HealthCareHub.model.Doctor;
 import nimblix.in.HealthCareHub.repository.DoctorRepository;
-import nimblix.in.HealthCareHub.repository.BranchRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,29 +11,14 @@ import java.util.List;
 public class DoctorController {
 
     private final DoctorRepository doctorRepository;
-    private final BranchRepository branchRepository;
 
-    public DoctorController(DoctorRepository doctorRepository,
-                            BranchRepository branchRepository) {
+    public DoctorController(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
-        this.branchRepository = branchRepository;
     }
 
-    // Add Doctor
+    // Create Doctor
     @PostMapping
     public Doctor addDoctor(@RequestBody Doctor doctor) {
-        return doctorRepository.save(doctor);
-    }
-
-    // Assign Doctor to Branch
-    @PutMapping("/{doctorId}/assign/{branchId}")
-    public Doctor assignDoctor(@PathVariable Long doctorId,
-                               @PathVariable Long branchId) {
-
-        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
-        Branch branch = branchRepository.findById(branchId).orElseThrow();
-
-        doctor.setBranch(branch);
         return doctorRepository.save(doctor);
     }
 
@@ -43,5 +26,19 @@ public class DoctorController {
     @GetMapping
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
+    }
+
+    // Get Doctor by ID
+    @GetMapping("/{id}")
+    public Doctor getDoctorById(@PathVariable Long id) {
+        return doctorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+    }
+
+    // Delete Doctor
+    @DeleteMapping("/{id}")
+    public String deleteDoctor(@PathVariable Long id) {
+        doctorRepository.deleteById(id);
+        return "Doctor deleted successfully";
     }
 }

@@ -26,7 +26,9 @@ public class InventoryController {
     public Inventory addInventory(@PathVariable Long branchId,
                                   @RequestBody Inventory inventory) {
 
-        Branch branch = branchRepository.findById(branchId).orElseThrow();
+        Branch branch = branchRepository.findById(branchId)
+                .orElseThrow(() -> new RuntimeException("Branch not found"));
+
         inventory.setBranch(branch);
 
         return inventoryRepository.save(inventory);
@@ -34,7 +36,7 @@ public class InventoryController {
 
     // Get Inventory by Branch
     @GetMapping("/branch/{branchId}")
-    public List<Inventory> findByBranchId(Long branchId) {
+    public List<Inventory> findByBranchId(@PathVariable Long branchId) {
         return inventoryRepository.findByBranchId(branchId);
     }
 
@@ -43,7 +45,9 @@ public class InventoryController {
     public Inventory updateQuantity(@PathVariable Long inventoryId,
                                     @RequestBody Inventory updatedInventory) {
 
-        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
+        Inventory inventory = inventoryRepository.findById(inventoryId)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+
         inventory.setQuantity(updatedInventory.getQuantity());
 
         return inventoryRepository.save(inventory);

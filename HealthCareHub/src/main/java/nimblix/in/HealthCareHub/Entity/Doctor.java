@@ -5,16 +5,12 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Doctor {
 
+public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
+    private Long id; private String name;
     private String specialization;
-
     @ManyToOne
-    @JoinColumn(name = "branch_id")
-    private Branch branch;
+    @JoinColumn(name = "branch_id") private Branch branch;
 }
