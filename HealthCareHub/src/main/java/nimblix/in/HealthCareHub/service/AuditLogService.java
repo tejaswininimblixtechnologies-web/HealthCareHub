@@ -9,4 +9,5 @@ public interface AuditLogService {
     AuditLog saveAuditLog(AuditLog auditLog);
 
     List<AuditLog> getAllLogs();
+
 }

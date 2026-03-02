@@ -15,7 +15,7 @@ public class AuditLog {
 
     private LocalDateTime createdAt;  //  Add this field
 
-    // ===== GETTERS & SETTERS =====
+    // ------ GETTERS & SETTERS ------
 
     public Long getId() {
         return id;

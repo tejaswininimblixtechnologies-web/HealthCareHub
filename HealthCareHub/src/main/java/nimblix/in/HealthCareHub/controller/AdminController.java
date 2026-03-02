@@ -24,6 +24,7 @@ public class AdminController {
     @GetMapping("/audit")
     public String test() {
         return "Audit API Running!";
+
     }
 
     // Save Audit Log

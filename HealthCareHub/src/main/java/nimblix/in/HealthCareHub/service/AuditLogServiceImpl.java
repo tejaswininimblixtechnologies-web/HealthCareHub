@@ -12,7 +12,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     private final AuditLogRepository auditLogRepository;
 
-    // ✅ Constructor Injection
+    // Constructor Injection
     public AuditLogServiceImpl(AuditLogRepository auditLogRepository) {
         this.auditLogRepository = auditLogRepository;
     }
@@ -27,4 +27,5 @@ public class AuditLogServiceImpl implements AuditLogService {
     public List<AuditLog> getAllLogs() {
         return auditLogRepository.findAll();
     }
+
 }
