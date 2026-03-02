@@ -8,5 +8,4 @@ public interface AttendanceService {
 
     Attendance markAttendance(Long staffId, Attendance attendance);
 
-    List<Attendance> getAllAttendance();
 }
