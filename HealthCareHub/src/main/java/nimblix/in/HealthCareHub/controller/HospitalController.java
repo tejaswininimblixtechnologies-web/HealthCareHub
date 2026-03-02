@@ -18,8 +18,8 @@ public class HospitalController {
         return hospitalService.registerHospital(request);
     }
 
-    @PostMapping("/medicine/add")
-    public String addMedicine(@RequestBody MedicineAddRequest request){
-        return hospitalService.addMedicine(request);
+    @PostMapping("/{hospitalId}/medicine/add")
+    public String addMedicine(@PathVariable Long hospitalId, @RequestBody MedicineAddRequest request){
+        return hospitalService.addMedicine(hospitalId, request);
     }
 }
