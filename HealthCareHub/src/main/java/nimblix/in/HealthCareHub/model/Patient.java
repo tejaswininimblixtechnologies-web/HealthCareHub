@@ -22,6 +22,9 @@ public class Patient {
     private String phone;
     private String disease;
 
+    @Column(name = "blood_group")
+    private String bloodGroup;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

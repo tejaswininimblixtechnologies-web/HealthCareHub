@@ -31,17 +31,17 @@ public class Doctor {
 
     private String qualification;
 
-    // ✅ Doctor login account
+    //  Doctor login account
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // ✅ Many Doctors → One Hospital
+    // Many Doctors → One Hospital
     @ManyToOne
     @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
 
-    // ✅ Many Doctors → One Specialization
+    //  Many Doctors → One Specialization
     @ManyToOne
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
