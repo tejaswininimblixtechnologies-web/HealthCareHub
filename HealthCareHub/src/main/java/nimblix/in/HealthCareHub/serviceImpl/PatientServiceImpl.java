@@ -91,14 +91,16 @@ public class PatientServiceImpl implements PatientService {
     public String deletePatientDetails(Long patientId) {
 
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+                .orElseThrow(() ->
+                        new RuntimeException("Patient not found with id: " + patientId));
 
-        // If you have isActive field in Patient (recommended)
-        // patient.setIsActive(HealthCareConstants.IN_ACTIVE);
-        // patientRepository.save(patient);
+        if (!patient.getIsActive()) {
+            throw new RuntimeException("Patient already deleted");
+        }
 
-        // Hard delete (current)
-        patientRepository.delete(patient);
+        // Soft delete
+        patient.setIsActive(false);
+        patientRepository.save(patient);
 
         return "Patient deleted successfully";
     }

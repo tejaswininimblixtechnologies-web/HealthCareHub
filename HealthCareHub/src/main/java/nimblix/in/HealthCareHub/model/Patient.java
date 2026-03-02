@@ -24,6 +24,9 @@ public class Patient {
     @Column(unique = true)
     private String phone;
 
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
