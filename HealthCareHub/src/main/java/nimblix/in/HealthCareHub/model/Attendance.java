@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Attendance {
+public class Attendance {  //ADDED ATTENDANCE CLASS FOR ATTENDANCE TRACKING SYSTEM
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
