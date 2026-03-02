@@ -1,32 +1,39 @@
 package nimblix.in.HealthCareHub.controller;
 
+import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.AuditLog;
 import nimblix.in.HealthCareHub.service.AuditLogService;
 import org.springframework.web.bind.annotation.*;
-// comment
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/audit")
-public class AuditLogController {
-    public final AuditLogService auditLogService;
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
+public class AdminController {
 
-    //  Manual constructor
-    public AuditLogController(AuditLogService auditLogService) {
-        this.auditLogService = auditLogService;
+    private final AuditLogService auditLogService;
+
+    // Home API
+    @GetMapping("/")
+    public String home() {
+        return "Admin Panel Running Successfully!";
     }
 
-    @GetMapping
+    // Test Audit API
+    @GetMapping("/audit")
     public String test() {
         return "Audit API Running!";
     }
 
-    @PostMapping("/save")
+    // Save Audit Log
+    @PostMapping("/audit/save")
     public AuditLog saveAudit(@RequestBody AuditLog auditLog) {
         return auditLogService.saveAuditLog(auditLog);
     }
 
-    @GetMapping("/all")
+    // Get All Audit Logs
+    @GetMapping("/audit/all")
     public List<AuditLog> getAllLogs() {
         return auditLogService.getAllLogs();
     }
