@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.repository.UserRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,9 @@ public class HospitalController {
     private final UserRepository userRepository;
 
     @PostMapping("/register")
-    public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
+    public String registerHospital(
+            @RequestBody HospitalRegistrationRequest request) {
+
         return hospitalService.registerHospital(request);
     }
 
