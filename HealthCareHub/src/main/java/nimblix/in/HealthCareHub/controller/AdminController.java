@@ -6,6 +6,8 @@ import nimblix.in.HealthCareHub.service.AuditLogService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -38,4 +40,5 @@ public class AdminController {
     public List<AuditLog> getAllLogs() {
         return auditLogService.getAllLogs();
     }
+}
 }

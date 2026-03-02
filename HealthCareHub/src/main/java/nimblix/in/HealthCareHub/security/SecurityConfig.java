@@ -15,6 +15,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())   // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()   // Allow ALL requests without login
+                        .requestMatchers(
+                                "/auth/**",
+                                "/patients/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/api/doctors/**",
+                                "/api/hospital/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.disable())   // Disable login page
                 .httpBasic(basic -> basic.disable()); // Disable basic authentication
