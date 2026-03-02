@@ -2,5 +2,5 @@ package nimblix.in.HealthCareHub.service;
 import java.time.LocalDate;
 
 public interface FinanceService {
-    Double getRevenueSummary(LocalDate startDate, LocalDate endDate);
+    Double getRevenueSummary(String startDate, String endDate);
 }

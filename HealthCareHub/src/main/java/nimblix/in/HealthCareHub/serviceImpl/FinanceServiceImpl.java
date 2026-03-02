@@ -14,25 +14,14 @@ public class FinanceServiceImpl implements FinanceService {
     private PaymentRepository paymentRepository;
 
     @Override
-    public Double getRevenueSummary(LocalDate startDate, LocalDate endDate) {
+    public Double getRevenueSummary(String startDate, String endDate) {
 
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("Dates cannot be null");
-        }
-
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("Start date cannot be after end date");
-        }
-
-        if (endDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Future dates not allowed");
-        }
-
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+        LocalDateTime startDateTime = LocalDate.parse(startDate).atStartOfDay();
+        LocalDateTime endDateTime = LocalDate.parse(endDate).atTime(23, 59, 59);
 
         Double total = paymentRepository.getRevenueBetweenDates(startDateTime, endDateTime);
 
         return total != null ? total : 0.0;
     }
-}
+    }
+
