@@ -44,6 +44,11 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setDate(today);
 
         return attendanceRepository.save(attendance);
+    }
 
+    @Override
+    public List<Attendance> getAllAttendance() {
+        return attendanceRepository.findAll();
     }
 }
+

@@ -34,5 +34,10 @@ public class AdminController {
     // Get all attendance records
     @GetMapping("/attendance")
     public ResponseEntity<List<Attendance>> getAllAttendance() {
+
+        List<Attendance> attendanceList =
+                attendanceService.getAllAttendance();
+
+        return ResponseEntity.ok(attendanceList);
     }
 }

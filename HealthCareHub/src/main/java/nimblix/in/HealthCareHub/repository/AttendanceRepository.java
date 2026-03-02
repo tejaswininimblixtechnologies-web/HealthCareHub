@@ -16,3 +16,5 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     // Get attendance history of a staff
     List<Attendance> findByStaff(User Staff);
 }
+
+
