@@ -16,6 +16,7 @@ import nimblix.in.HealthCareHub.model.Specialization;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -29,42 +30,42 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public String registerDoctor(DoctorRegistrationRequest request) {
-     try {
-         // Check if email already exists
-         if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
-             return "Doctor already exists with this email";
-         }
+        try {
+            // Check if email already exists
+            if (doctorRepository.findByEmailId(request.getDoctorEmail()).isPresent()) {
+                return "Doctor already exists with this email";
+            }
 
-         // Fetch Hospital
-         Hospital hospital = hospitalRepository.findById(request.getHospitalId())
-                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
+            // Fetch Hospital
+            Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                    .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
-         // Fetch Specialization
-         Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
-                 .orElseThrow(() -> new RuntimeException("Specialization not found"));
+            // Fetch Specialization
+            Specialization specialization = specializationRepository.findByName(request.getSpecializationName())
+                    .orElseThrow(() -> new RuntimeException("Specialization not found"));
 
-         // Create Doctor
-         Doctor doctor = new Doctor();
+            // Create Doctor
+            Doctor doctor = new Doctor();
 
-         doctor.setName(request.getDoctorName());
-         doctor.setEmailId(request.getDoctorEmail());
-         doctor.setPassword(request.getPassword());
-         doctor.setPhone(request.getPhoneNo());
-         doctor.setQualification(request.getQualification());
-         doctor.setExperienceYears(request.getExperience());
-         doctor.setDescription(request.getDescription());
-         doctor.setHospital(hospital);
+            doctor.setName(request.getDoctorName());
+            doctor.setEmailId(request.getDoctorEmail());
+            doctor.setPassword(request.getPassword());
+            doctor.setPhone(request.getPhoneNo());
+            doctor.setQualification(request.getQualification());
+            doctor.setExperienceYears(request.getExperience());
+            doctor.setDescription(request.getDescription());
+            doctor.setHospital(hospital);
 
-         // ✅ CORRECT WAY (Set Objects, not IDs)
-         doctor.setHospital(hospital);
-         doctor.setSpecialization(specialization);
+            // ✅ CORRECT WAY (Set Objects, not IDs)
+            doctor.setHospital(hospital);
+            doctor.setSpecialization(specialization);
 
-         doctorRepository.save(doctor);
+            doctorRepository.save(doctor);
 
-         return "Doctor Registered Successfully";
-      }catch (UserNotFoundException e){
-         return  "User not found";
-     }
+            return "Doctor Registered Successfully";
+        } catch (UserNotFoundException e) {
+            return "User not found";
+        }
     }
 
     @Override
@@ -114,21 +115,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
 
-    @Override
-    public Doctor getDoctorDetails(Long doctorId, Long hospitalId) {
-
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
-
-        if (!doctor.getHospital().getId().equals(hospitalId)) {
-            throw new RuntimeException("Doctor does not belong to this hospital");
-        }
-
-        return doctor;
-    }
-
-    @Override
-    public String addPrescription(Long doctorId, List<String> medicines) {
+    //@Override
+  //  public String addPrescription(Long doctorId, List<String> medicines) {
 
 //    @Override
 //    public String deleteDoctorDetails(Long doctorId) {
@@ -142,39 +130,37 @@ public class DoctorServiceImpl implements DoctorService {
 //    }
 
 
-    @Override
-    public String deleteDoctorDetails(Long doctorId) {
+        @Override
+        public String deleteDoctorDetails (Long doctorId){
 
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+            Doctor doctor = doctorRepository.findById(doctorId)
+                    .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
 
-        doctor.setIsActive(HealthCareConstants.IN_ACTIVE);
-        doctorRepository.save(doctor);
+            doctor.setIsActive(HealthCareConstants.IN_ACTIVE);
+            doctorRepository.save(doctor);
 
-        return "Doctor deleted successfully (Hard Delete)";
+            return "Doctor deleted successfully (Hard Delete)";
+        }
+
+        @Override
+        public ResponseEntity<?> getPrescriptionsByDoctor(Long doctorId) {
+
+            Doctor doctor = doctorRepository.findById(doctorId)
+                    .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + doctorId));
+
+            List<String> prescriptions = doctor.getPrescriptions();
+
+
+            if (prescriptions == null || prescriptions.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(Collections.emptyList());
+            }
+
+            return ResponseEntity.ok(prescriptions);
+        }
     }
 
 
 
-}
 
 
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
-
-        doctor.getPrescriptions().addAll(medicines);
-
-        doctorRepository.save(doctor);
-
-        return "Prescription added successfully";
-    }
-
-    @Override
-    public List<String> getPrescriptions(Long doctorId) {
-
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
-
-        return doctor.getPrescriptions();
-    }
-}

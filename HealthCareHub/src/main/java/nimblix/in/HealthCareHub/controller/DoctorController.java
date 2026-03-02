@@ -45,5 +45,10 @@ public class DoctorController {
         return doctorService.deleteDoctorDetails(doctorId);
     }
 
-
+    @GetMapping("/{doctorId}/prescriptions")
+    public ResponseEntity<?> getPrescriptionsByDoctor(@PathVariable Long doctorId) {
+        return doctorService.getPrescriptionsByDoctor(doctorId);
+    }
 }
+
+

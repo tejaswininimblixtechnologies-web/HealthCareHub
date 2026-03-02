@@ -56,7 +56,7 @@ public class Doctor {
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "doctor_prescriptions",
             joinColumns = @JoinColumn(name = "doctor_id")

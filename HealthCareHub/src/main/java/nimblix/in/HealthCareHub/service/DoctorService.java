@@ -11,4 +11,7 @@ public interface DoctorService {
     String updateDoctorDetails(DoctorRegistrationRequest request);
 
     String deleteDoctorDetails(Long doctorId);
+
+    ResponseEntity<?> getPrescriptionsByDoctor(Long doctorId);
 }
+
