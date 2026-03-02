@@ -38,4 +38,12 @@ public class HealthCareConstants {
     public static final String PRESENT = "PRESENT";
     public static final String ABSENT = "ABSENT";
     public static final String TARDY = "TARDY";
+    // Room status
+    public static final String AVAILABLE = "AVAILABLE";
+    public static final String OCCUPIED = "OCCUPIED";
+    public static final String MAINTENANCE = "MAINTENANCE";
+    // Room types
+    public static final String ICU = "ICU";
+    public static final String GENERAL = "GENERAL";
+    public static final String PRIVATE = "PRIVATE";
 }

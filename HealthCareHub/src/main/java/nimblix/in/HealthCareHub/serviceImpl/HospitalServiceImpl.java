@@ -2,7 +2,7 @@ package nimblix.in.HealthCareHub.serviceImpl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.constants.RoomConstants;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 import nimblix.in.HealthCareHub.exception.HospitalNotFoundException;
 import nimblix.in.HealthCareHub.exception.InvalidRoomStatusException;
 import nimblix.in.HealthCareHub.exception.RoomNotFoundException;
@@ -64,18 +64,18 @@ public class HospitalServiceImpl implements HospitalService {
                 .orElseThrow(() -> new RoomNotFoundException("Room number not found for this hospital"));
 
         if (request.getStatus() == null ||
-                !request.getStatus().equals(RoomConstants.AVAILABLE) &&
-                !request.getStatus().equals(RoomConstants.OCCUPIED) &&
-                !request.getStatus().equals(RoomConstants.MAINTENANCE)) {
+                !request.getStatus().equals(HealthCareConstants.AVAILABLE) &&
+                !request.getStatus().equals(HealthCareConstants.OCCUPIED) &&
+                !request.getStatus().equals(HealthCareConstants.MAINTENANCE)) {
             throw new InvalidRoomStatusException("Invalid room status");
         }
 
         existingRoom.setStatus(request.getStatus());
 
         if (request.getType() != null && !request.getType().isEmpty()) {
-            if (!request.getType().equals(RoomConstants.ICU) &&
-                    !request.getType().equals(RoomConstants.GENERAL) &&
-                    !request.getType().equals(RoomConstants.PRIVATE)) {
+            if (!request.getType().equals(HealthCareConstants.ICU) &&
+                    !request.getType().equals(HealthCareConstants.GENERAL) &&
+                    !request.getType().equals(HealthCareConstants.PRIVATE)) {
                 throw new InvalidRoomStatusException("Invalid room type");
             }
             existingRoom.setType(request.getType());
