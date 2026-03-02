@@ -10,6 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/patient")
+@RequestMapping("/api/patient")
+@RequiredArgsConstructor
 public class PatientController {
 
     private final PatientRepository patientRepository;
