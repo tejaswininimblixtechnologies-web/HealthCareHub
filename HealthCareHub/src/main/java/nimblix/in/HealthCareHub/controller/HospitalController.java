@@ -7,17 +7,24 @@ import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import nimblix.in.HealthCareHub.service.StaffService;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/hospital")
 @RequiredArgsConstructor
 public class HospitalController {
 
-    private final HospitalService hospitalService;
     private final StaffService staffService;
+    private final HospitalService hospitalService;
 
     @PostMapping("/register")
     public String registerHospital(
@@ -25,6 +32,7 @@ public class HospitalController {
 
         return hospitalService.registerHospital(request);
     }
+
 
     @PostMapping("/{hospitalId}/rooms")
     public String addRooms(
@@ -61,3 +69,7 @@ public class HospitalController {
         }
     }
 }
+
+
+
+

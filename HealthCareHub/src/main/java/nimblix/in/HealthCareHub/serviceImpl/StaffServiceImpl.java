@@ -15,6 +15,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public Staff addStaff(Staff staff) {
 
+
         // 1️⃣ Null object check
         if (staff == null) {
             throw new RuntimeException("Staff object cannot be null");
@@ -58,3 +59,5 @@ public class StaffServiceImpl implements StaffService {
         return staffRepository.save(staff);
     }
 }
+
+
