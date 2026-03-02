@@ -1,10 +1,9 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
-import nimblix.in.HealthCareHub.model.User;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,41 +16,25 @@ public class HospitalController {
     private final HospitalService hospitalService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerHospital(@RequestBody HospitalRegistrationRequest request) {
+    public String registerHospital(
+            @RequestBody HospitalRegistrationRequest request) {
 
-        if (request == null) {
-            return ResponseEntity.badRequest().body("Request body cannot be empty");
-        }
-
-        return ResponseEntity.ok(hospitalService.registerHospital(request));
+        return hospitalService.registerHospital(request);
     }
 
-    @PostMapping("/staff")
-    public ResponseEntity<?> addStaff(@RequestBody User user) {
+    @PostMapping("/{hospitalId}/rooms")
+    public String addRooms(
+            @PathVariable Long hospitalId,
+            @RequestBody List<HospitalRegistrationRequest.Room> rooms) {
 
-        if (user == null) {
-            return ResponseEntity.badRequest().body("Request body cannot be empty");
-        }
+        hospitalService.addRooms(hospitalId, rooms);
+        return "Rooms added successfully";
+    }
 
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            return ResponseEntity.badRequest().body("Email is required");
-        }
+    @GetMapping("/{hospitalId}/available-rooms")
+    public List<RoomResponse> getAvailableRooms(
+            @PathVariable Long hospitalId) {
 
-        if (user.getPassword() == null || user.getPassword().isBlank()) {
-            return ResponseEntity.badRequest().body("Password is required");
-        }
-
-        if (user.getRole() == null) {
-            return ResponseEntity.badRequest().body("Role is required");
-        }
-
-        try {
-            User savedUser = hospitalService.addStaff(user);
-            return ResponseEntity.ok(savedUser);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-
+        return hospitalService.getAvailableRooms(hospitalId);
     }
 }
