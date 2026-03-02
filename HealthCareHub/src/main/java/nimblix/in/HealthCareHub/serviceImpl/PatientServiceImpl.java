@@ -16,6 +16,19 @@ public class PatientServiceImpl implements PatientService {
     private PatientRepository repository;
 
     //    public List<Patient> getAllPatients() {
+import nimblix.in.HealthCareHub.model.Patient;
+import nimblix.in.HealthCareHub.repository.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PatientServiceImpl {
+    @Autowired
+    private PatientRepository repository;
+
+//    public List<Patient> getAllPatients() {
 //
 //        return repository.findByIsDeletedFalse();
 //    }
