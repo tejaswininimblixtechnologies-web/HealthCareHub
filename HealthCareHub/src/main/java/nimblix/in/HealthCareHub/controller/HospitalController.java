@@ -1,9 +1,12 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Staff;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
+import nimblix.in.HealthCareHub.service.StaffService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 public class HospitalController {
 
     private final HospitalService hospitalService;
+    private final StaffService staffService;
 
     @PostMapping("/register")
     public String registerHospital(
@@ -36,5 +40,24 @@ public class HospitalController {
             @PathVariable Long hospitalId) {
 
         return hospitalService.getAvailableRooms(hospitalId);
+    }
+    @PostMapping("/staff")
+    public ResponseEntity<?> addStaff(@RequestBody Staff staff) {
+
+        if (staff == null) {
+            return ResponseEntity.badRequest().body("Staff data cannot be null");
+        }
+
+        if (staff.getName() == null || staff.getName().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Staff name is required");
+        }
+
+        try {
+            Staff savedStaff = staffService.addStaff(staff);
+            return ResponseEntity.status(201).body(savedStaff);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Unable to add staff");
+        }
     }
 }
