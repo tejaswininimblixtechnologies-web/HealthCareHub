@@ -2,6 +2,7 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
+import nimblix.in.HealthCareHub.response.DoctorProfileResponse;
 import nimblix.in.HealthCareHub.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 @RestController
@@ -38,7 +41,19 @@ public class DoctorController {
     }
 
 
+    @GetMapping("/{doctorId}/profile")
+    public ResponseEntity<Map<String, Object>> getDoctorProfile(
+            @PathVariable Long doctorId) {
 
+        DoctorProfileResponse response = doctorService.getDoctorProfile(doctorId);
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("status", HttpStatus.OK.value());
+        result.put("message", "Doctor profile fetched successfully");
+        result.put("data", response);
+
+        return ResponseEntity.ok(result);
+    }
 
     @DeleteMapping("/deleteDoctorDetails")
     public String deleteDoctorDetails(@RequestParam Long doctorId){
