@@ -1,44 +1,58 @@
 package nimblix.in.HealthCareHub.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import nimblix.in.HealthCareHub.utility.HealthCareUtil;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    // ✅ patientId field added
+    @Column(name = "patient_id")
+    private Long patientId;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    @Column(name = "doctor_id")
+    private Long doctorId;
 
-    private String appointmentDateTime;
-    private String status; // BOOKED, CANCELLED, COMPLETED
+    @Column(name = "appointment_date_time")
+    private LocalDateTime appointmentDateTime;
 
-    private String createdTime;
-    private String updatedTime;
+    @Column(name = "status")
+    private String status;
 
-    @PrePersist
-    protected void onCreate(){
-        createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        updatedTime = createdTime;
+    // ✅ id getter setter
+    public Long getId() { return id; }
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @PreUpdate
-    protected void onUpdate(){
-        updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+    // ✅ patientId getter setter
+    public Long getPatientId() { return patientId; }
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
+    }
+
+    // ✅ doctorId getter setter
+    public Long getDoctorId() { return doctorId; }
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    // ✅ appointmentDateTime getter setter
+    public LocalDateTime getAppointmentDateTime() {
+        return appointmentDateTime;
+    }
+    public void setAppointmentDateTime(LocalDateTime dt) {
+        this.appointmentDateTime = dt;
+    }
+
+    // ✅ status getter setter
+    public String getStatus() { return status; }
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

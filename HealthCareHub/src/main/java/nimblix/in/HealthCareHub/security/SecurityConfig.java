@@ -24,23 +24,37 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // ✅ Disable CSRF (JWT used)
                 .csrf(csrf -> csrf.disable())
+
+                // ✅ No Session (Stateless)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
+                // ✅ URL Permissions
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                // Public URLs - No token needed
                                 "/auth/**",
-                                "/patients/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/doctors/**",
-                                "/api/hospital/**"
+                                "/api/hospital/**",
+
+                                // ✅ Added - Patient appointments
+                                "/api/patients/**"
+
                         ).permitAll()
+
+                        // All other URLs need token
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+                // ✅ JWT Filter
+                .addFilterBefore(jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
