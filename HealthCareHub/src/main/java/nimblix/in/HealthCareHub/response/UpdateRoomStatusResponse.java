@@ -10,5 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UpdateRoomStatusResponse {
+    private String roomNumber;
+    private String roomType;
+    private String roomStatus;
     private String message;
 }

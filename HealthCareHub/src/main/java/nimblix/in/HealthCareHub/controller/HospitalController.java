@@ -8,6 +8,8 @@ import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/hospital")
 @RequiredArgsConstructor
@@ -20,9 +22,13 @@ public class HospitalController {
         return hospitalService.registerHospital(request);
     }
     // Update Room Status
-    @PatchMapping("/room/status")
-    public ResponseEntity<UpdateRoomStatusResponse> updateRoomStatus(@RequestBody UpdateRoomStatusRequest request) {
-        UpdateRoomStatusResponse response = hospitalService.updateRoomStatus(request);
+    @PatchMapping("/{hospitalId}/room-status")
+    public ResponseEntity<UpdateRoomStatusResponse> updateRoomStatus(
+            @PathVariable Long hospitalId,
+            @RequestBody UpdateRoomStatusRequest request) {
+
+        UpdateRoomStatusResponse response = hospitalService.updateRoomStatus(hospitalId,request);
+
         return ResponseEntity.ok(response);
     }
 }

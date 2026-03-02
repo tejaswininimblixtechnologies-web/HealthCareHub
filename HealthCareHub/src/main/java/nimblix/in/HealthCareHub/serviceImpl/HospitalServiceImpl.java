@@ -7,7 +7,6 @@ import nimblix.in.HealthCareHub.exception.HospitalNotFoundException;
 import nimblix.in.HealthCareHub.exception.InvalidRoomStatusException;
 import nimblix.in.HealthCareHub.exception.RoomNotFoundException;
 import nimblix.in.HealthCareHub.model.Hospital;
-import nimblix.in.HealthCareHub.model.RoomData;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.request.UpdateRoomStatusRequest;
@@ -48,42 +47,46 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     @Transactional
-    public UpdateRoomStatusResponse updateRoomStatus(UpdateRoomStatusRequest request) {
+    public UpdateRoomStatusResponse updateRoomStatus(Long hospitalId, UpdateRoomStatusRequest request) {
 
-        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+        Hospital hospital = hospitalRepository.findById(hospitalId)
                 .orElseThrow(() -> new HospitalNotFoundException("Hospital not found"));
 
-        List<RoomData> rooms = hospital.getRooms();
-        if (rooms == null || rooms.isEmpty() ) {
+        if (hospital.getRooms() == null || hospital.getRooms().isEmpty()) {
             throw new RoomNotFoundException("No rooms exist for this hospital");
         }
 
-        RoomData existingRoom = rooms.stream()
-                .filter(r -> r.getRoomNumber().equals(request.getRoomNumber()))
-                .findFirst()
-                .orElseThrow(() -> new RoomNotFoundException("Room number not found for this hospital"));
-
-        if (request.getStatus() == null ||
-                !request.getStatus().equals(HealthCareConstants.AVAILABLE) &&
-                !request.getStatus().equals(HealthCareConstants.OCCUPIED) &&
-                !request.getStatus().equals(HealthCareConstants.MAINTENANCE)) {
+        if (request.getRoomStatus() == null ||
+                (!HealthCareConstants.AVAILABLE.equals(request.getRoomStatus()) &&
+                        !HealthCareConstants.OCCUPIED.equals(request.getRoomStatus()) &&
+                        !HealthCareConstants.MAINTENANCE.equals(request.getRoomStatus()))) {
             throw new InvalidRoomStatusException("Invalid room status");
         }
 
-        existingRoom.setStatus(request.getStatus());
+        Hospital.Room existingRoom = hospital.getRooms().stream()
+                .filter(r -> r.getRoomNumber().equals(request.getRoomNumber()))
+                .findFirst()
+                .orElseThrow(() -> new RoomNotFoundException("Room not found"));
 
-        if (request.getType() != null && !request.getType().isEmpty()) {
-            if (!request.getType().equals(HealthCareConstants.ICU) &&
-                    !request.getType().equals(HealthCareConstants.GENERAL) &&
-                    !request.getType().equals(HealthCareConstants.PRIVATE)) {
+        existingRoom.setRoomStatus(request.getRoomStatus());
+
+        //Optional to update the Room Type
+        if (request.getRoomType() != null && !request.getRoomType().isEmpty()) {
+            if (!HealthCareConstants.ICU.equals(request.getRoomType()) &&
+                    !HealthCareConstants.GENERAL.equals(request.getRoomType()) &&
+                    !HealthCareConstants.PRIVATE.equals(request.getRoomType())) {
                 throw new InvalidRoomStatusException("Invalid room type");
             }
-            existingRoom.setType(request.getType());
+            existingRoom.setRoomType(request.getRoomType());
         }
 
         hospitalRepository.save(hospital);
 
-        return  UpdateRoomStatusResponse.builder()
+
+        return UpdateRoomStatusResponse.builder()
+                .roomNumber(existingRoom.getRoomNumber())
+                .roomType(existingRoom.getRoomType()) // existing type kept if not updated
+                .roomStatus(existingRoom.getRoomStatus())
                 .message("Room updated successfully")
                 .build();
     }
