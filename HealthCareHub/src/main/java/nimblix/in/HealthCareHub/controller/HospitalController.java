@@ -51,17 +51,7 @@ public class HospitalController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
 
-    @GetMapping("/staff")
-    public ResponseEntity<?> getAllStaff() {
 
-        List<User> staffList = hospitalService.getAllStaff();
-
-        if (staffList.isEmpty()) {
-            return ResponseEntity.ok("No staff found");
-        }
-
-        return ResponseEntity.ok(staffList);
     }
 }

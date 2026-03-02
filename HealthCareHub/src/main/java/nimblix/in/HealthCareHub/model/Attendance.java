@@ -26,4 +26,3 @@ public class Attendance {
     @Enumerated(EnumType.STRING)
     private AttendanceStatus status;
 }
-

@@ -12,9 +12,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     // Prevent duplicate attendance for same staff on same date
     Optional<Attendance> findByStaffAndDate(User user, LocalDate date);
-
-    // Get attendance history of a staff
-    List<Attendance> findByStaff(User Staff);
 }
 
 
