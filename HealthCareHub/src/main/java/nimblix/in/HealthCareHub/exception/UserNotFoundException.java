@@ -1,8 +1,12 @@
 package nimblix.in.HealthCareHub.exception;
 
-public class UserNotFoundException extends RuntimeException{
-    public UserNotFoundException(String s){
+public class UserNotFoundException extends ResourceNotFoundException {
 
-        super("User not found");
+    public UserNotFoundException(Long id) {
+        super("User not found with id: " + id);
+    }
+
+    public UserNotFoundException(String email) {
+        super("User not found with email: " + email);
     }
 }
