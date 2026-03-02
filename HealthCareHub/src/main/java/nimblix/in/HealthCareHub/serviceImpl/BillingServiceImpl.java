@@ -8,6 +8,7 @@ import nimblix.in.HealthCareHub.response.BillingResponse;
 import nimblix.in.HealthCareHub.service.BillingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +27,15 @@ public class BillingServiceImpl implements BillingService {
         }
 
         if (request.getPatientId() == null) {
-            throw new PaymentException("Patient ID required");
+            throw new PaymentException("Patient ID is required");
         }
 
         if (request.getAmount() == null || request.getAmount() <= 0) {
             throw new PaymentException("Invalid amount");
+        }
+
+        if (request.getPaymentMode() == null || request.getPaymentMode().isBlank()) {
+            throw new PaymentException("Payment mode is required");
         }
 
         Payment payment = new Payment();

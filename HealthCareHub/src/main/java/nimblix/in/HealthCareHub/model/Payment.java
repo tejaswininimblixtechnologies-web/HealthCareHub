@@ -17,18 +17,24 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Patient reference
     private Long patientId;
 
-    // Bill amount
     private Double amount;
 
-    // UPI / CARD / CASH
     private String paymentMode;
 
-    // PAID / PENDING
     private String status;
 
-    // Auto timestamp
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
