@@ -9,6 +9,6 @@ public interface DoctorService {
 
     ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId);
 
-    ResponseEntity<ApiResponse> activateDoctor(Long doctorId);
-    ResponseEntity<ApiResponse> deactivateDoctor(Long doctorId);
+    ResponseEntity<ApiResponse> activateDoctor(Long userId);
+    ResponseEntity<ApiResponse> deactivateDoctor(Long userId);
 }

@@ -6,6 +6,8 @@ import nimblix.in.HealthCareHub.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.constraints.Positive;
+
 @RestController
 @RequestMapping("api/patient")
 @RequiredArgsConstructor
@@ -13,13 +15,15 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    @PutMapping("/{patientId}/activate")
-    public ResponseEntity<ApiResponse> activatePatient(@PathVariable Long patientId) {
-        return patientService.activatePatient(patientId);
+    @PutMapping("/{userId}/activate")
+    public ResponseEntity<ApiResponse> activatePatient(
+            @PathVariable("userId") Long userId){
+        return patientService.activatePatient(userId);
     }
 
-    @PutMapping("/{patientId}/deactivate")
-    public ResponseEntity<ApiResponse> deactivatePatient(@PathVariable Long patientId) {
-        return patientService.deactivatePatient(patientId);
+    @PutMapping("/{userId}/deactivate")
+    public ResponseEntity<ApiResponse> deactivatePatient(
+            @PathVariable("userId") Long userId){
+        return patientService.deactivatePatient(userId);
     }
 }
