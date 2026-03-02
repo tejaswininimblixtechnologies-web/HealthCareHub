@@ -11,27 +11,44 @@ import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 @AllArgsConstructor
 @Builder
 public class Patient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private Integer age;
     private String gender;
     private String phone;
     private String disease;
-
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
     @ManyToOne
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
-
     private String createdTime;
     private String updatedTime;
+    @ElementCollection
+    @CollectionTable(
+            name = "patient_documents",
+            joinColumns = @JoinColumn(name = "patient_id")
+    )
+    private java.util.List<Document> documents = new java.util.ArrayList<>();
+
+
+
+    @Embeddable
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Document {
+
+        private String documentName;
+        private String documentPath;
+        private String documentType;
+        private String uploadedAt;
+    }
 
     @PrePersist
     protected void onCreate(){
@@ -43,4 +60,5 @@ public class Patient {
     protected void onUpdate(){
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
+
 }

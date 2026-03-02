@@ -38,4 +38,18 @@ public class HealthCareConstants {
     public static final String PRESENT = "PRESENT";
     public static final String ABSENT = "ABSENT";
     public static final String TARDY = "TARDY";
+    public static final String FILE_UPLOAD_SUCCESS = "Document uploaded successfully";
+    public static final String FILE_EMPTY = "Uploaded file is empty";
+    public static final String INVALID_FILE_TYPE = "Only PDF, JPG, JPEG, PNG files are allowed";
+    public static final String PATIENT_NOT_FOUND = "Patient not found with given id";
+    public static final String INVALID_PATIENT_ID = "Invalid Patient with given id";
+
+
+    public static final String FILE_TYPE_PDF = "pdf";
+    public static final String FILE_TYPE_JPG = "jpg";
+    public static final String FILE_TYPE_JPEG = "jpeg";
+    public static final String FILE_TYPE_PNG = "png";
+    public static final String FILE_UPLOAD_FAILED = "File upload failed. Please try again.";
+    public static final String FILE_REQUIRED = "File is required. Please try again.";
+
 }
