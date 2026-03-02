@@ -26,16 +26,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // ✅ KEEP ENUM (IMPORTANT)
+    //  KEEP ENUM (IMPORTANT)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private Role role;
 
-    // ✅ REQUIRED FOR SPRING SECURITY
+    //  REQUIRED FOR SPRING SECURITY
     @Column(nullable = false)
     private boolean enabled = true;
 
-    // ✅ ROLE PERMISSIONS STORED IN SEPARATE TABLE
+    //  ROLE PERMISSIONS STORED IN SEPARATE TABLE
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_permissions",
