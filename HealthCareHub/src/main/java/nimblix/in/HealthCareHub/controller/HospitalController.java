@@ -1,9 +1,13 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Specialization;
+import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
+import nimblix.in.HealthCareHub.response.HospitalResponse;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +18,10 @@ import java.util.List;
 public class HospitalController {
 
     private final HospitalService hospitalService;
+    private final SpecializationRepository specializationRepository;
 
     @PostMapping("/register")
-    public String registerHospital(
+    public HospitalResponse registerHospital(
             @RequestBody HospitalRegistrationRequest request) {
 
         return hospitalService.registerHospital(request);
@@ -36,5 +41,22 @@ public class HospitalController {
             @PathVariable Long hospitalId) {
 
         return hospitalService.getAvailableRooms(hospitalId);
+    }
+    // Create Specialization (NO DTO – single field only)
+    @PostMapping("/createSpecialization")
+    public ResponseEntity<?> createSpecialization(
+            @RequestParam String name) {
+
+        specializationRepository.findByName(name)
+                .ifPresent(existing -> {
+                    throw new RuntimeException("Specialization already exists");
+                });
+
+        Specialization specialization = new Specialization();
+        specialization.setName(name);
+
+        specializationRepository.save(specialization);
+
+        return ResponseEntity.ok("Specialization Created Successfully");
     }
 }

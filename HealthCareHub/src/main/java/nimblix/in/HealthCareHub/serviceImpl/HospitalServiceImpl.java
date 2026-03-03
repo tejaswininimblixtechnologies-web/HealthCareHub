@@ -7,6 +7,7 @@ import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
+import nimblix.in.HealthCareHub.response.HospitalResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,11 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
 
     @Override
-    public String registerHospital(HospitalRegistrationRequest request) {
+    public HospitalResponse registerHospital(HospitalRegistrationRequest request) {
 
 
         if (hospitalRepository.findByName(request.getName()).isPresent()) {
-            return "Hospital already exists";
+            throw new IllegalArgumentException("Hospital already exists");
         }
 
         Hospital hospital = Hospital.builder()
@@ -35,9 +36,19 @@ public class HospitalServiceImpl implements HospitalService {
                 .totalBeds(request.getTotalBeds())
                 .build();
 
-        hospitalRepository.save(hospital);
+        Hospital savedHospital=hospitalRepository.save(hospital);
 
-        return "Hospital Registered Successfully";
+        return HospitalResponse.builder()
+                .id(savedHospital.getId())
+                .name(savedHospital.getName())
+                .address(savedHospital.getAddress())
+                .city(savedHospital.getCity())
+                .state(savedHospital.getState())
+                .phone(savedHospital.getPhone())
+                .email(savedHospital.getEmail())
+                .totalBeds(savedHospital.getTotalBeds())
+                .message("Hospital Registered Successfully")
+                .build();
     }
 
 

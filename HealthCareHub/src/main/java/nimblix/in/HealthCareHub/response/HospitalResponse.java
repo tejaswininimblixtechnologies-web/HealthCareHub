@@ -1,0 +1,23 @@
+package nimblix.in.HealthCareHub.response;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class HospitalResponse {
+
+    private Long id;
+
+    private String name;
+    private String address;
+    private String city;
+    private String state;
+
+    private String phone;
+    private String email;
+
+    private Integer totalBeds;
+
+    private String message;
+}

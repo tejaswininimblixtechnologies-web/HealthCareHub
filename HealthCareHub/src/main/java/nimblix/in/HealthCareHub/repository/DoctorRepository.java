@@ -12,6 +12,8 @@ public interface DoctorRepository extends JpaRepository<Doctor,Long> {
 
     Optional<Doctor> findByEmailId(String emailId);
 
+    // Fetch doctor by doctorId + hospitalId
+    @Query("SELECT d FROM Doctor d WHERE d.id = :doctorId AND d.hospital.id = :hospitalId")
     Optional<Doctor> findByIdAndHospitalId(Long doctorId, Long hospitalId);
 
     @Query("""
