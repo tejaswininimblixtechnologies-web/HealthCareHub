@@ -22,11 +22,26 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String addMedicine(MedicineRequest request) {
 
+        if (request.getMedicineName() == null || request.getMedicineName().isBlank()) {
+            return "Medicine name is required";
+        }
+
+        if (request.getHospitalId() == null) {
+            return "Hospital ID is required";
+        }
+
+        if (request.getPrice() != null && request.getPrice() < 0) {
+            return "Price cannot be negative";
+        }
+
+        if (request.getStockQuantity() != null && request.getStockQuantity() < 0) {
+            return "Stock quantity cannot be negative";
+        }
+
         Hospital hospital = hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
         Medicine medicine = new Medicine();
-
         medicine.setMedicineName(request.getMedicineName());
         medicine.setManufacturer(request.getManufacturer());
         medicine.setDescription(request.getDescription());
@@ -58,6 +73,14 @@ public class AdminServiceImpl implements AdminService {
         Medicine medicine = medicineRepository.findById(request.getMedicineId())
                 .orElseThrow(() -> new RuntimeException("Medicine not found"));
 
+        if (request.getPrice() != null && request.getPrice() < 0) {
+            return "Price cannot be negative";
+        }
+
+        if (request.getStockQuantity() != null && request.getStockQuantity() < 0) {
+            return "Stock quantity cannot be negative";
+        }
+
         Hospital hospital = hospitalRepository.findById(request.getHospitalId())
                 .orElseThrow(() -> new RuntimeException("Hospital not found"));
 
@@ -82,18 +105,13 @@ public class AdminServiceImpl implements AdminService {
                         new RuntimeException("Medicine not found with id: " + medicineId));
 
         medicine.setIsActive(HealthCareConstants.IN_ACTIVE);
-
         medicineRepository.save(medicine);
 
-        return "Medicine Deleted Successfully";
+        return "Medicine deleted successfully";
     }
 
     @Override
     public String updateMedicineStock(Long medicineId, Integer quantity) {
-
-        Medicine medicine = medicineRepository.findById(medicineId)
-                .orElseThrow(() ->
-                        new RuntimeException("Medicine not found with id: " + medicineId));
 
         if (quantity == null) {
             return "Quantity cannot be null";
@@ -103,8 +121,11 @@ public class AdminServiceImpl implements AdminService {
             return "Quantity cannot be negative";
         }
 
-        medicine.setStockQuantity(quantity);
+        Medicine medicine = medicineRepository.findById(medicineId)
+                .orElseThrow(() ->
+                        new RuntimeException("Medicine not found with id: " + medicineId));
 
+        medicine.setStockQuantity(quantity);
         medicineRepository.save(medicine);
 
         return "Medicine Stock Updated Successfully";
