@@ -1,22 +1,46 @@
 package nimblix.in.HealthCareHub.repository;
 
+import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.model.Medicine;
+import nimblix.in.HealthCareHub.response.MedicineResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 
-    Optional<Medicine> findByName(String name);
+    @Query("""
+        SELECT new nimblix.in.HealthCareHub.response.MedicineResponse(
+            m.id,
+            m.medicineName,
+            m.manufacturer,
+            m.price,
+            m.stockQuantity,
+            m.hospital.id
+        )
+        FROM Medicine m
+        WHERE m.hospital.id = :hospitalId
+    """)
+    List<MedicineResponse> findMedicinesByHospital(Long hospitalId);
 
-    //List<Medicine> findByExpiryDateBetween(LocalDate start, LocalDate end);
 
-    List<Medicine> findByStockQuantityLessThanEqual(Integer quantity);
+    @Query("""
+        SELECT new nimblix.in.HealthCareHub.response.MedicineResponse(
+            m.id,
+            m.medicineName,
+            m.manufacturer,
+            m.price,
+            m.stockQuantity,
+            m.hospital.id
+        )
+        FROM Medicine m
+        WHERE m.stockQuantity <= :limit
+    """)
+    List<MedicineResponse> findLowStockMedicines(Integer limit);
 
-    @Query("SELECT m FROM Medicine m WHERE m.expiryDate BETWEEN :start AND :end")
-    List<Medicine> findByExpiryDateBetween(LocalDate start, LocalDate end);
 
+
+    Optional<Medicine> findByMedicineNameAndHospital(String medicineName, Hospital hospital);
 }

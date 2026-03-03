@@ -13,10 +13,11 @@ import java.time.LocalDate;
 @Builder
 public class MedicineResponse {
 
-    private Long id;
-    private String name;
-    private Integer stockQuantity;
-    private String manufacturer;
-    private LocalDate expiryDate;
+        private Long id;
+        private String medicineName;
+        private String manufacturer;
+        private Double price;
+        private Integer stockQuantity;
+        private Long hospitalId;
+    }
 
-}
