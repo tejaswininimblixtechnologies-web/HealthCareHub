@@ -10,6 +10,8 @@ import nimblix.in.HealthCareHub.request.MedicineAddRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
+import nimblix.in.HealthCareHub.model.Specialization;
+import nimblix.in.HealthCareHub.repository.SpecializationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     private final HospitalRepository hospitalRepository;
     private final MedicineRepository medicineRepository;
+    private final SpecializationRepository specializationRepository;
     @Override
     public String registerHospital(HospitalRegistrationRequest request) {
 
@@ -128,5 +131,30 @@ public class HospitalServiceImpl implements HospitalService {
         }
 
         return response;
+    }
+    @Override
+    public String createDepartment(String name) {
+
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Department name is required");
+        }
+
+        String cleanName = name.trim();
+
+        if (cleanName.length() < 3) {
+            throw new IllegalArgumentException("Department name must be at least 3 characters");
+        }
+
+        if (specializationRepository.existsByNameIgnoreCase(cleanName)) {
+            throw new IllegalArgumentException("Department already exists");
+        }
+
+        Specialization specialization = Specialization.builder()
+                .name(cleanName)
+                .build();
+
+        specializationRepository.save(specialization);
+
+        return "Department created successfully";
     }
 }

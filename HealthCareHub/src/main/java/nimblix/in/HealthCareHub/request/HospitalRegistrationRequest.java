@@ -17,6 +17,8 @@ public class HospitalRegistrationRequest {
     private String email;
     private Integer totalBeds;
 
+    private String departmentName;
+
     private List<Room> rooms;
 
     @Getter
