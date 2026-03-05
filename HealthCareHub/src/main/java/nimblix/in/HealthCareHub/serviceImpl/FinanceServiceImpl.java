@@ -5,16 +5,16 @@ import nimblix.in.HealthCareHub.model.Payment;
 import nimblix.in.HealthCareHub.repository.PaymentRepository;
 import nimblix.in.HealthCareHub.request.BillingRequest;
 import nimblix.in.HealthCareHub.response.BillingResponse;
-import nimblix.in.HealthCareHub.service.BillingService;
+import nimblix.in.HealthCareHub.service.FinanceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BillingServiceImpl implements BillingService {
+public class FinanceServiceImpl implements FinanceService {
 
     @Autowired
     private PaymentRepository paymentRepository;
@@ -32,10 +32,6 @@ public class BillingServiceImpl implements BillingService {
 
         if (request.getAmount() == null || request.getAmount() <= 0) {
             throw new PaymentException("Invalid amount");
-        }
-
-        if (request.getPaymentMode() == null || request.getPaymentMode().isBlank()) {
-            throw new PaymentException("Payment mode is required");
         }
 
         Payment payment = new Payment();
@@ -62,17 +58,22 @@ public class BillingServiceImpl implements BillingService {
             throw new PaymentException("No bills found");
         }
 
-        return bills.stream().map(this::map).collect(Collectors.toList());
+        return bills.stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
-    private BillingResponse map(Payment p) {
+    private BillingResponse map(Payment payment) {
+
         BillingResponse res = new BillingResponse();
-        res.setId(p.getId());
-        res.setPatientId(p.getPatientId());
-        res.setAmount(p.getAmount());
-        res.setPaymentMode(p.getPaymentMode());
-        res.setStatus(p.getStatus());
-        res.setCreatedAt(p.getCreatedAt());
+
+        res.setId(payment.getId());
+        res.setPatientId(payment.getPatientId());
+        res.setAmount(payment.getAmount());
+        res.setPaymentMode(payment.getPaymentMode());
+        res.setStatus(payment.getStatus());
+        res.setCreatedAt(payment.getCreatedAt());
+
         return res;
     }
 }

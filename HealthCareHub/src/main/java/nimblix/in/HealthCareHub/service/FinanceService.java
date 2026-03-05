@@ -4,7 +4,7 @@ import nimblix.in.HealthCareHub.request.BillingRequest;
 import nimblix.in.HealthCareHub.response.BillingResponse;
 import java.util.List;
 
-public interface BillingService {
+public interface FinanceService {
 
     BillingResponse createBill(BillingRequest request);
 
