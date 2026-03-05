@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -34,6 +37,14 @@ public class User {
     @Column(name = "updated_time")
     private String updatedTime;
 
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_permissions",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Column(name = "permission")
+    private Set<String> permissions = new HashSet<>();
 
     @PrePersist
     protected void onCreate(){
