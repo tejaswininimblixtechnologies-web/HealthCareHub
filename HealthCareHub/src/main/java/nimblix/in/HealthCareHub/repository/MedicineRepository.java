@@ -1,5 +1,6 @@
 package nimblix.in.HealthCareHub.repository;
 
+
 import nimblix.in.HealthCareHub.model.Medicine;
 import nimblix.in.HealthCareHub.response.MedicineResponse;
 import org.springframework.data.domain.Page;
@@ -26,3 +27,15 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     """)
     Page<MedicineResponse> findAllMedicineResponses(Pageable pageable);
 }
+
+import nimblix.in.HealthCareHub.model.Hospital;
+import nimblix.in.HealthCareHub.model.Medicine;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface MedicineRepository extends JpaRepository<Medicine, Long>{
+        Optional<Medicine> findByMedicineNameAndHospital(String medicineName, Hospital hospital);
+    }
+
+
