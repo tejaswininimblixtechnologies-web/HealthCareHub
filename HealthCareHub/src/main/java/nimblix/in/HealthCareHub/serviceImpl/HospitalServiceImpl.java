@@ -1,12 +1,15 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
+import nimblix.in.HealthCareHub.exception.RoomNotFoundException;
 import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.model.Medicine;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.MedicineRepository;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.request.MedicineAddRequest;
+import nimblix.in.HealthCareHub.request.RoomRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
@@ -128,5 +131,49 @@ public class HospitalServiceImpl implements HospitalService {
         }
 
         return response;
+    }
+
+    @Override
+    public RoomResponse updateRoomStatus(Long hospitalId, RoomRequest request) {
+
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new IllegalArgumentException("Hospital not found"));
+
+        Hospital.Room room = hospital.getRooms().stream()
+                .filter(r -> r.getRoomNumber().equalsIgnoreCase(request.getRoomNumber()))
+                .findFirst()
+                .orElseThrow(() -> new RoomNotFoundException("Room not found "));
+
+        // Directly set available based on status
+        String status = request.getRoomStatus().toUpperCase();
+        room.setRoomStatus(status);
+        if (HealthCareConstants.ROOM_AVAILABLE.equals(status)) {
+            room.setAvailable(true);
+        } else if (HealthCareConstants.ROOM_OCCUPIED.equals(status)
+                || HealthCareConstants.ROOM_MAINTENANCE.equals(status)) {
+            room.setAvailable(false);
+        } else {
+            throw new IllegalArgumentException("Invalid room status: " + request.getRoomStatus());
+        }
+
+        // Optional: validate roomType if provided
+        if (request.getRoomType() != null && !request.getRoomType().trim().isEmpty()) {
+            String roomType = request.getRoomType().toUpperCase();
+
+            if (!HealthCareConstants.ROOM_TYPES.contains(roomType)) {
+                throw new IllegalArgumentException("Invalid room type: " + roomType);
+            }
+
+            room.setRoomType(roomType);
+        }
+
+        hospitalRepository.save(hospital);
+
+        return RoomResponse.builder()
+                .roomNumber(room.getRoomNumber())
+                .roomType(room.getRoomType())
+                .available(room.isAvailable())
+                .roomStatus(room.getRoomStatus())
+                .build();
     }
 }

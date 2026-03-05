@@ -1,5 +1,7 @@
 package nimblix.in.HealthCareHub.constants;
 
+import java.util.List;
+
 public class HealthCareConstants {
 
     public static final String TRAIL_END_DATE = "Trial end date";
@@ -44,4 +46,11 @@ public class HealthCareConstants {
     public static final String SPECIALIZATION_NOT_FOUND = "Specialization not found";
     public static final String DOCTOR_NOT_BELONG_TO_HOSPITAL = "Doctor not belong to hospital";
     public static final String DOCTOR_NOT_FOUND = "Doctor not found";
+    // Room Status
+    public static final String ROOM_AVAILABLE = "AVAILABLE";
+    public static final String ROOM_OCCUPIED = "OCCUPIED";
+    public static final String ROOM_MAINTENANCE = "MAINTENANCE";
+    //Room Type
+    public static final List<String> ROOM_TYPES = List.of("GENERAL", "PRIVATE", "ICU");
+
 }
