@@ -13,45 +13,49 @@ import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
 
     private final UploadImageHelper uploadImageHelper;
     private final PatientRepository patientRepository;
+
     @Override
-    public PatientDocumentUploadResponse uploadPatientDocument(long patientId, PatientDocumentUploadRequest request) {
+    public PatientDocumentUploadResponse uploadPatientDocument(
+            long patientId,
+            PatientDocumentUploadRequest request) {
 
-        // 1️⃣ Validate patient
-        Patient patient = patientRepository.findById(request.getPatientId())
-                .orElseThrow(() -> new RuntimeException(HealthCareConstants.PATIENT_NOT_FOUND));
+        //  Validate patient
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() ->
+                        new RuntimeException(HealthCareConstants.PATIENT_NOT_FOUND));
 
-        // 2️⃣ Validate file
+        //  Validate file
         MultipartFile file = request.getFile();
 
         if (file == null || file.isEmpty()) {
             throw new RuntimeException(HealthCareConstants.FILE_EMPTY);
         }
 
-        // 3️⃣ Validate filename
+        //  Validate filename
         String originalFileName = file.getOriginalFilename();
 
         if (originalFileName == null || !originalFileName.contains(".")) {
             throw new RuntimeException(HealthCareConstants.INVALID_FILE_TYPE);
         }
 
-        // 4️⃣ Check extension
+        //  Check extension
         String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
 
-        if (!(extension.equals(HealthCareConstants.FILE_TYPE_PDF) ||
-                extension.equals(HealthCareConstants.FILE_TYPE_JPG) ||
-                extension.equals(HealthCareConstants.FILE_TYPE_JPEG) ||
-                extension.equals(HealthCareConstants.FILE_TYPE_PNG))) {
+        if (!(extension.equals(HealthCareConstants.FILE_TYPE_PDF)
+                || extension.equals(HealthCareConstants.FILE_TYPE_JPG)
+                || extension.equals(HealthCareConstants.FILE_TYPE_JPEG)
+                || extension.equals(HealthCareConstants.FILE_TYPE_PNG))) {
 
             throw new RuntimeException(HealthCareConstants.INVALID_FILE_TYPE);
         }
 
-        // 5️⃣ Upload file using helper
+        //  Upload file
         List<MultipartFile> files = new ArrayList<>();
         files.add(file);
 
@@ -70,30 +74,26 @@ public class PatientServiceImpl implements PatientService {
             throw new RuntimeException(HealthCareConstants.FILE_UPLOAD_FAILED);
         }
 
-        // 6️⃣ Get saved filename
+        //  Get saved filename
         String savedFileName = uploadResponse.getUploadedFileNames().get(0);
 
-        // 7️⃣ Create Document object (IMPORTANT — NOT Patient object)
-        Patient.Document doc = new Patient.Document();
-        doc.setDocumentName(originalFileName);
-
-        doc.setDocumentType(request.getDocumentType());
-        doc.setUploadedAt(
+        //  Set values directly to patient
+        patient.setDocumentName(originalFileName);
+        patient.setDocumentPath(savedFileName);
+        patient.setDocumentType(request.getDocumentType());
+        patient.setUploadedAt(
                 HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString()
         );
 
-        // 8️⃣ Add document into patient list
-        patient.getDocuments().add(doc);
-
-        // 9️⃣ Save patient (THIS saves into patient_documents table automatically)
+        //  Save patient
         patientRepository.save(patient);
 
-        // 🔟 Prepare response
+        //  Prepare response
         PatientDocumentUploadResponse response = new PatientDocumentUploadResponse();
         response.setDocumentId(patient.getId());
-        response.setFileName(doc.getDocumentName());
-        response.setDocumentType(doc.getDocumentType());
-        response.setUploadedAt(doc.getUploadedAt());
+        response.setFileName(patient.getDocumentName());
+        response.setDocumentType(patient.getDocumentType());
+        response.setUploadedAt(patient.getUploadedAt());
         response.setMessage(HealthCareConstants.FILE_UPLOAD_SUCCESS);
 
         return response;

@@ -5,6 +5,6 @@ import nimblix.in.HealthCareHub.response.PatientDocumentUploadResponse;
 
 public interface PatientService {
 
-    PatientDocumentUploadResponse uploadPatientDocument(long patientId,PatientDocumentUploadRequest request);
 
+    PatientDocumentUploadResponse uploadPatientDocument(long patientId, PatientDocumentUploadRequest request);
 }

@@ -27,28 +27,13 @@ public class Patient {
     private Hospital hospital;
     private String createdTime;
     private String updatedTime;
-    @ElementCollection
-    @CollectionTable(
-            name = "patient_documents",
-            joinColumns = @JoinColumn(name = "patient_id")
-    )
-    private java.util.List<Document> documents = new java.util.ArrayList<>();
 
 
+    private String documentName;
+    private String documentPath;
+    private String documentType;
+    private String uploadedAt;
 
-    @Embeddable
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Document {
-
-        private String documentName;
-        private String documentPath;
-        private String documentType;
-        private String uploadedAt;
-    }
 
     @PrePersist
     protected void onCreate(){
