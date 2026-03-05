@@ -9,7 +9,7 @@ import nimblix.in.HealthCareHub.service.LabResultService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import nimblix.in.HealthCareHub.model.LabResult;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,5 +71,25 @@ public class PatientController {
         response.put("data", data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    // Task 213 – Upload Lab Result
+
+    // POST api/patient/{patientId}/lab-results
+    // Task 213 – Upload Lab Result
+
+    // POST api/patient/{patientId}/lab-results
+    @PostMapping("/{patientId}/lab-results")
+    public ResponseEntity<Map<String, Object>> uploadLabResult(
+            @PathVariable Long patientId,
+            @RequestBody LabResult labResult) {
+
+        LabResult saved = labResultService.uploadLabResult(patientId, labResult);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.CREATED.value());
+        response.put("message", "Lab result uploaded successfully");
+        response.put("data", saved);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
