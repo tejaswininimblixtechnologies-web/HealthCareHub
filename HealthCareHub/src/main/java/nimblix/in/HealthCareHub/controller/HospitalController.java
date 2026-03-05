@@ -5,6 +5,7 @@ import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.request.MedicineAddRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,4 +54,22 @@ public class HospitalController {
 
         return hospitalService.getAvailableRooms(hospitalId);
     }
-}
+    @PostMapping("/specializations")
+    public ResponseEntity<?> createSpecialization(@RequestBody HospitalRegistrationRequest request) {
+
+        if (request == null) {
+            return ResponseEntity.badRequest().body("Request cannot be null");
+        }
+
+        if (request.getDepartmentName() == null || request.getDepartmentName().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Specialization name is required");
+        }
+
+        if (request.getDepartmentName().trim().length() < 3) {
+            return ResponseEntity.badRequest().body("Specialization name must be at least 3 characters");
+        }
+
+        String result = hospitalService.createDepartment(request.getDepartmentName());
+        return ResponseEntity.ok(result);
+    }
+   }

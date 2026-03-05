@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface SpecializationRepository extends JpaRepository<Specialization, Long> {
     Optional<Specialization> findByName(String name);
+
+    boolean existsByNameIgnoreCase(String name);
 }

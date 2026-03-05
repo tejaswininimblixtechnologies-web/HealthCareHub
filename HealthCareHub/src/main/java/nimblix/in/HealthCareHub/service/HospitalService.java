@@ -17,5 +17,7 @@ public interface HospitalService {
 
     List<RoomResponse> getAvailableRooms(Long hospitalId);
 
+    String createDepartment(String name);
+
 
 }
