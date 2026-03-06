@@ -1,0 +1,76 @@
+package nimblix.in.HealthCareHub.serviceImpl;
+
+import lombok.extern.slf4j.Slf4j;
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
+import nimblix.in.HealthCareHub.response.MultipleImageResponse;
+import nimblix.in.HealthCareHub.service.FileUploadService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@Slf4j
+@Service
+public class FileUploadServiceImpl implements FileUploadService {
+
+    @Value("${assignment.upload.path}")
+    private String uploadPath;
+
+    @Override
+    public MultipleImageResponse uploadFiles(List<MultipartFile> files) throws Exception {
+        List<String> uploadedFileNames = new ArrayList<>();
+        List<String> failedFileNames = new ArrayList<>();
+
+        if (files == null || files.isEmpty()) {
+            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, "No files provided", Collections.emptyList());
+        }
+
+        for (MultipartFile file : files) {
+            if (file == null || file.isEmpty()) {
+                failedFileNames.add(file != null ? file.getOriginalFilename() : "Unknown file");
+                continue;
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+            if (!uploadPath.endsWith(File.separator)) {
+                uploadPath += File.separator;
+            }
+
+            File directory = new File(uploadPath);
+            if (!directory.exists()) {
+                boolean created = directory.mkdirs();
+                if (created) {
+                    log.info("Directory created at: {}", uploadPath);
+                } else {
+                    log.error("Failed to create directory at: {}", uploadPath);
+                }
+            }
+
+            Path path = Paths.get(uploadPath + fileName);
+
+            try {
+                Files.write(path, file.getBytes());
+                log.info("File saved successfully: {}", fileName);
+                uploadedFileNames.add(fileName);
+            } catch (Exception e) {
+                log.error("Error saving file: {}, error: {}", fileName, e.getMessage(), e);
+                failedFileNames.add(fileName);
+            }
+        }
+
+        if (uploadedFileNames.isEmpty()) {
+            String failedFilesMessage = "Image upload failed for the following files: " + String.join(", ", failedFileNames);
+            return new MultipleImageResponse(HealthCareConstants.STATUS_ERORR, failedFilesMessage, Collections.emptyList());
+        }
+
+        return new MultipleImageResponse(HealthCareConstants.STATUS_SUCCESS, "Image upload successful", uploadedFileNames);
+    }
+}
