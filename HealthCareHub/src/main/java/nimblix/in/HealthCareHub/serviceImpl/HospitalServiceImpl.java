@@ -11,6 +11,11 @@ import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.stereotype.Service;
 
+
+import nimblix.in.HealthCareHub.model.Medicine;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +28,8 @@ public class HospitalServiceImpl implements HospitalService {
     private final MedicineRepository medicineRepository;
     @Override
     public String registerHospital(HospitalRegistrationRequest request) {
+
+
 
 
         if (hospitalRepository.findByName(request.getName()).isPresent()) {
