@@ -31,7 +31,7 @@ public class PatientController {
 
     @Operation(
             summary = "Reset Password",
-            description = "This API allows the patient to reset the password using the registered phone number and new password."
+            description = "This API allows the patient to reset  using the registered phone number and new password."
     )
 
     @PostMapping("/reset-password")
