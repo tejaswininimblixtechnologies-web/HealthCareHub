@@ -1,35 +1,107 @@
 package nimblix.in.HealthCareHub.serviceImpl;
 
+import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Hospital;
 import nimblix.in.HealthCareHub.model.Patient;
+import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.PatientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import nimblix.in.HealthCareHub.request.PatientRegistrationRequest;
+import nimblix.in.HealthCareHub.service.PatientService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class PatientServiceImpl {
-    @Autowired
-    private PatientRepository repository;
+@RequiredArgsConstructor
+public class PatientServiceImpl implements PatientService {
 
-//    public List<Patient> getAllPatients() {
-//
-//        return repository.findByIsDeletedFalse();
-//    }
+    private final PatientRepository patientRepository;
+    private final HospitalRepository hospitalRepository;
 
-    public String softDeletePatient(Long id) {
-        Patient patient = repository.findById(id)
+    @Override
+    public String registerPatient(PatientRegistrationRequest request) {
+
+        // Check if email already exists
+        if (patientRepository.findByEmailId(request.getEmail()).isPresent()) {
+            return "Patient already exists with this email";
+        }
+
+        // Fetch Hospital
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
+        // Create Patient
+        Patient patient = new Patient();
+
+        patient.setName(request.getName());
+        patient.setAge(request.getAge());
+        patient.setGender(request.getGender());
+        patient.setPhone(request.getPhone());
+        patient.setDisease(request.getDisease());
+        patient.setEmailId(request.getEmail());
+        patient.setHospital(hospital);
+
+        patientRepository.save(patient);
+
+        return "Patient Registered Successfully";
+    }
+
+
+    @Override
+    public ResponseEntity<?> getPatientDetails(Long patientId, Long hospitalId) {
+
+        Patient patient = patientRepository
+                .findByIdAndHospitalId(patientId, hospitalId)
+                .orElseThrow(() ->
+                        new RuntimeException("Patient not found in this hospital"));
+
+        return ResponseEntity.status(HttpStatus.OK).body(patient);
+    }
+
+
+    @Override
+    public String updatePatientDetails(PatientRegistrationRequest request) {
+
+        Patient patient = patientRepository.findById(request.getPatientId())
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
 
-//        patient.setDeleted();   //  Mark as deleted
-        repository.save(patient);
+        patientRepository.findByEmailId(request.getEmail())
+                .filter(existingPatient -> !existingPatient.getId().equals(patient.getId()))
+                .ifPresent(existingPatient -> {
+                    throw new RuntimeException("Email already used by another patient");
+                });
 
-        return "Patient soft deleted successfully";
+        Hospital hospital = hospitalRepository.findById(request.getHospitalId())
+                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+
+        patient.setName(request.getName());
+        patient.setAge(request.getAge());
+        patient.setGender(request.getGender());
+        patient.setPhone(request.getPhone());
+        patient.setDisease(request.getDisease());
+        patient.setEmailId(request.getEmail());
+        patient.setHospital(hospital);
+
+        patientRepository.save(patient);
+
+        return "Patient Updated Successfully";
     }
 
-    public Patient savePatient(Patient patient) {
-        // TODO Auto-generated method stub
-        return repository.save(patient);
-    }
+    @Override
+    public String deletePatientDetails(Long patientId) {
 
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() ->
+                        new RuntimeException("Patient not found with id: " + patientId));
+
+        if (!patient.getIsActive()) {
+            throw new RuntimeException("Patient already deleted");
+        }
+
+        // Soft delete
+        patient.setIsActive(false);
+        patientRepository.save(patient);
+
+        return "Patient deleted successfully";
+    }
 }

@@ -19,12 +19,20 @@ public class Patient {
     private String name;
     private Integer age;
     private String gender;
-    private String phone;
     private String disease;
+
+    @Column(unique = true)
+    private String phone;
+
+    @Column(name = "is_active")
+    private Boolean isActive = true;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(unique = true)
+    private String emailId;
 
     @ManyToOne
     @JoinColumn(name = "hospital_id")

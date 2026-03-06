@@ -2,11 +2,12 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.AdmitPatientRequest;
+import nimblix.in.HealthCareHub.request.PatientRegistrationRequest;
 import nimblix.in.HealthCareHub.response.AdmitPatientResponse;
 import nimblix.in.HealthCareHub.response.LabResultResponse;
 import nimblix.in.HealthCareHub.service.AdmissionService;
 import nimblix.in.HealthCareHub.service.LabResultService;
-import org.springframework.http.HttpStatus;
+import nimblix.in.HealthCareHub.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,57 +20,82 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PatientController {
 
+    private final PatientService patientService;
     private final AdmissionService admissionService;
     private final LabResultService labResultService;
 
+    // -------------------- Patient Registration --------------------
 
-    // Task 175 – Admission Endpoints
-    // POST api/patient/admissions/admit
+    @PostMapping("/register")
+    public ResponseEntity<?> registerPatient(@RequestBody PatientRegistrationRequest request) {
+
+        if (request == null) {
+            return ResponseEntity.badRequest().body("Request body cannot be empty");
+        }
+
+        String response = patientService.registerPatient(request);
+        return ResponseEntity.ok(response);
+    }
+
+    // -------------------- Get Patient Details --------------------
+
+    @GetMapping("/{patientId}/{hospitalId}")
+    public ResponseEntity<?> getPatientDetails(@PathVariable Long patientId,
+                                               @PathVariable Long hospitalId) {
+
+        return patientService.getPatientDetails(patientId, hospitalId);
+    }
+
+    // -------------------- Update Patient --------------------
+
+    @PutMapping
+    public ResponseEntity<?> updatePatientDetails(@RequestBody PatientRegistrationRequest request) {
+
+        if (request == null || request.getPatientId() == null) {
+            return ResponseEntity.badRequest().body("Patient ID is required for update");
+        }
+
+        return ResponseEntity.ok(patientService.updatePatientDetails(request));
+    }
+
+    // -------------------- Delete Patient --------------------
+
+    @DeleteMapping("/{patientId}")
+    public ResponseEntity<?> deletePatientDetails(@PathVariable Long patientId) {
+
+        return ResponseEntity.ok(patientService.deletePatientDetails(patientId));
+    }
+
+    // -------------------- Admit Patient --------------------
+
     @PostMapping("/admissions/admit")
     public ResponseEntity<Map<String, Object>> admitPatient(
             @RequestBody AdmitPatientRequest request) {
 
         AdmitPatientResponse data = admissionService.admitPatient(request);
 
-        if (data == null) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("status", HttpStatus.NOT_FOUND.value());
-            error.put("message", "Patient or Doctor not found");
-
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        }
-
         Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.CREATED.value());
-        response.put("message", "Patient admitted successfully");
+        response.put("message",
+                data == null ? "Patient or Doctor not found" : "Patient admitted successfully");
         response.put("data", data);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseEntity.ok(response); // always 200 OK
     }
 
-    // Task 186 – Lab Result Endpoint
+    // -------------------- Lab Results --------------------
 
-    // GET api/patient/lab-results/patient/{patientId}
     @GetMapping("/lab-results/patient/{patientId}")
     public ResponseEntity<Map<String, Object>> getLabResultsByPatient(
             @PathVariable Long patientId) {
 
         List<LabResultResponse> data = labResultService.getLabResultsByPatient(patientId);
 
-        if (data == null) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("status", HttpStatus.NOT_FOUND.value());
-            error.put("message", "Patient not found with id: " + patientId);
-
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        }
-
         Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.OK.value());
-        response.put("message", "Lab results fetched successfully");
-        response.put("count", data.size());
+        response.put("message",
+                data == null ? "Patient not found" : "Lab results fetched successfully");
+        response.put("count", data == null ? 0 : data.size());
         response.put("data", data);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok(response); // always 200 OK
     }
 }
