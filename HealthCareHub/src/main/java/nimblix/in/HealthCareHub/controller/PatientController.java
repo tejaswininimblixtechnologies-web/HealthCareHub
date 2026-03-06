@@ -13,7 +13,7 @@ import nimblix.in.HealthCareHub.model.LabResult;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 @RestController
 @RequestMapping("/api/patient")
 @RequiredArgsConstructor
@@ -72,12 +72,10 @@ public class PatientController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    // Task 213 – Upload Lab Result
-
-    // POST api/patient/{patientId}/lab-results
-    // Task 213 – Upload Lab Result
-
-    // POST api/patient/{patientId}/lab-results
+    // Task 213: Upload Lab Result
+    // This API uploads the lab result file/details for a patient.
+    // After successful upload, the lab result is saved into DB
+    // and returns CREATED (201) response with saved data.
     @PostMapping("/{patientId}/lab-results")
     public ResponseEntity<Map<String, Object>> uploadLabResult(
             @PathVariable Long patientId,
@@ -85,11 +83,14 @@ public class PatientController {
 
         LabResult saved = labResultService.uploadLabResult(patientId, labResult);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", HttpStatus.CREATED.value());
-        response.put("message", "Lab result uploaded successfully");
-        response.put("data", saved);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        Map<String, Object> response = new HashMap<>();
+
+        response.put(HealthCareConstants.STATUS, HttpStatus.CREATED.value());
+        response.put(HealthCareConstants.MESSAGE, HealthCareConstants.LAB_RESULT_UPLOADED_SUCCESSFULLY);
+        response.put(HealthCareConstants.DATA, saved);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
     }
 }
