@@ -2,10 +2,14 @@ package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.AdmitPatientRequest;
+import nimblix.in.HealthCareHub.request.AppointmentRequest;
 import nimblix.in.HealthCareHub.response.AdmitPatientResponse;
+import nimblix.in.HealthCareHub.response.AppointmentResponse;
 import nimblix.in.HealthCareHub.response.LabResultResponse;
 import nimblix.in.HealthCareHub.service.AdmissionService;
 import nimblix.in.HealthCareHub.service.LabResultService;
+import nimblix.in.HealthCareHub.service.AppointmentService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +25,7 @@ public class PatientController {
 
     private final AdmissionService admissionService;
     private final LabResultService labResultService;
-
+    private final AppointmentService appointmentService;
 
     // Task 175 – Admission Endpoints
     // POST api/patient/admissions/admit
@@ -48,7 +52,6 @@ public class PatientController {
     }
 
     // Task 186 – Lab Result Endpoint
-
     // GET api/patient/lab-results/patient/{patientId}
     @GetMapping("/lab-results/patient/{patientId}")
     public ResponseEntity<Map<String, Object>> getLabResultsByPatient(
@@ -71,5 +74,29 @@ public class PatientController {
         response.put("data", data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // Task – Book Appointment Endpoint
+    // POST api/patient/appointments/book
+    @PostMapping("/appointments/book")
+    public ResponseEntity<Map<String, Object>> bookAppointment(
+            @RequestBody AppointmentRequest request) {
+
+        AppointmentResponse data = appointmentService.bookAppointment(request);
+
+        if (data == null) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("status", HttpStatus.NOT_FOUND.value());
+            error.put("message", "Patient or Doctor not found");
+
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.CREATED.value());
+        response.put("message", "Appointment booked successfully");
+        response.put("data", data);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
