@@ -31,4 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# IntelliJ files
 .idea/
+*.iml
+
+# Local configuration
+application.properties
