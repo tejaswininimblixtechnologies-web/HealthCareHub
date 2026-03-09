@@ -1,6 +1,16 @@
 package nimblix.in.HealthCareHub.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import nimblix.in.HealthCareHub.service.PrescriptionService;
+import nimblix.in.HealthCareHub.model.Prescription;
+import java.util.List;
+
 import nimblix.in.HealthCareHub.request.AdmitPatientRequest;
 import nimblix.in.HealthCareHub.response.AdmitPatientResponse;
 import nimblix.in.HealthCareHub.response.LabResultResponse;
@@ -13,11 +23,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+ main
 
 @RestController
 @RequestMapping("/api/patient")
 @RequiredArgsConstructor
 public class PatientController {
+ NithinRajkumar
+    @Autowired
+    private PrescriptionService prescriptionService;
+
+    // Add this endpoint method:
+    @GetMapping("/{patientId}/prescriptions")
+    public List<Prescription> getPrescriptionsByPatient(@PathVariable Long patientId) {
+        return prescriptionService.getPrescriptionsByPatientId(patientId);
+
 
     private final AdmissionService admissionService;
     private final LabResultService labResultService;
@@ -71,5 +91,6 @@ public class PatientController {
         response.put("data", data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+ main
     }
 }
