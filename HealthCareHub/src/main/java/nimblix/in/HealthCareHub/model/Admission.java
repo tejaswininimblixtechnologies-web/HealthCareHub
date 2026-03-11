@@ -15,6 +15,21 @@ public class Admission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String admissionDate;
+    private String reason;
+    private String roomNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+}
     private Long admissionId;
 
     // Simple Long FK - no @ManyToOne mapping
