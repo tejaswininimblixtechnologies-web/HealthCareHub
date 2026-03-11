@@ -13,6 +13,8 @@ public class HealthCareConstants {
     public static final String LOGIN_FAILED ="Login failed" ;
     public static final String ADMIN ="ADMIN";
     public static final String TEACHER ="TEACHER" ;
+    public static final String NO_ADMISSION_HISTORY_FOUND_FOR_PATIENT_ID = "No admission history found for patient id: ";
+    public static final String ADMISSION_HISTORY_FETCH_SUCCESSFULLY ="Admission history fetched successfully" ;
     public static String ROLE_MISMATCH ="Role mismatch" ;
     public static String PAID = "PAID";
     public static String SUBSCRIPTION_ACTIVATED_SUCCESSFULLY ="Subscription activated successfully" ;

@@ -3,16 +3,18 @@ package nimblix.in.HealthCareHub.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class AdmissionResponse {
+public class HospitalSearchResponse {
+
     private Long id;
-    private String patientName;
     private String hospitalName;
-    private String reason;
-    private String roomNumber;
-    private String admissionDate;
+    private String city;
+    private String state;
+  //  private String phoneNumber;
 
 }
