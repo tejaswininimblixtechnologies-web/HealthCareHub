@@ -5,56 +5,44 @@ import lombok.*;
 import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 
 @Entity
-@Table(name = "admissions")
+@Table(name = "lab_results")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Admission {
+public class LabResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String admissionDate;
-    private String reason;
-    private String roomNumber;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
-
-
-    @ManyToOne
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
-}
-    private Long admissionId;
+    private Long resultId;
 
     // Simple Long FK - no @ManyToOne mapping
-    @Column(name = "patientId")
+    @Column(name = "patient_id")
     private Long patientId;
 
     // Simple Long FK - no @ManyToOne mapping
     @Column(name = "doctor_id")
     private Long doctorId;
 
-    // Simple Long FK - no @ManyToOne mapping
-    @Column(name = "room_id")
-    private Long roomId;
+    @Column(nullable = false)
+    private String testName;
 
-    @Column(name = "admission_date")
-    private String admissionDate;
+    private String testCategory;
 
-    @Column(name = "admission_reason")
-    private String admissionReason;
+    private String result;
 
-    private String symptoms;
+    private String referenceRange;
 
-    private String initialDiagnosis;
+    private String unit;
 
-    private String status;  // "ADMITTED", "DISCHARGED", "TRANSFERRED"
+    @Column(nullable = false)
+    private String status;  // "PENDING", "COMPLETED", "NORMAL", "ABNORMAL"
+
+    private String remarks;
+
+    @Column(name = "tested_at")
+    private String testedAt;
 
     @Column(name = "created_time")
     private String createdTime;
@@ -66,10 +54,12 @@ public class Admission {
     protected void onCreate() {
         this.createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
         this.updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
-        if (this.admissionDate == null) {
-            this.admissionDate = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
+        if (this.testedAt == null) {
+            this.testedAt = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
         }
-
+        if (this.status == null) {
+            this.status = "PENDING";
+        }
     }
 
     @PreUpdate

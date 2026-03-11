@@ -15,6 +15,9 @@ public class HealthCareConstants {
     public static final String TEACHER ="TEACHER" ;
     public static final String NO_ADMISSION_HISTORY_FOUND_FOR_PATIENT_ID = "No admission history found for patient id: ";
     public static final String ADMISSION_HISTORY_FETCH_SUCCESSFULLY ="Admission history fetched successfully" ;
+    public static final String PATIENT_ADMITTED_SUCCESSFULLY ="Patient admitted successfully" ;
+    public static final String COUNT = "count";
+    public static final String LAB_RESULT_FETCHED_SUCCESSFULLY ="Lab results fetched successfully" ;
     public static String ROLE_MISMATCH ="Role mismatch" ;
     public static String PAID = "PAID";
     public static String SUBSCRIPTION_ACTIVATED_SUCCESSFULLY ="Subscription activated successfully" ;
@@ -40,4 +43,10 @@ public class HealthCareConstants {
     public static final String PRESENT = "PRESENT";
     public static final String ABSENT = "ABSENT";
     public static final String TARDY = "TARDY";
+    public static final String DOCTOR_REGISTERED_SUCCESS = "Doctor Registered Successfully";
+    public static final String DOCTOR_ALREADY_EXISTS = "Doctor already exists with this email";
+    public static final String HOSPITAL_NOT_FOUND = "Hospital not found";
+    public static final String SPECIALIZATION_NOT_FOUND = "Specialization not found";
+    public static final String DOCTOR_NOT_BELONG_TO_HOSPITAL = "Doctor not belong to hospital";
+    public static final String DOCTOR_NOT_FOUND = "Doctor not found";
 }

@@ -31,12 +31,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/**",
+                                "/patients/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/doctors/**",
                                 "/api/hospital/**",
                                 "/api/patients/**"
+                                "/api/auth/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
