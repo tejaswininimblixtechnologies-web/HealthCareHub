@@ -11,11 +11,11 @@ import nimblix.in.HealthCareHub.utility.HealthCareUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import nimblix.in.HealthCareHub.model.LabResult;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import nimblix.in.HealthCareHub.constants.HealthCareConstants;
 @RestController
 @RequestMapping("/api/patient")
 @RequiredArgsConstructor
@@ -74,5 +74,26 @@ public class PatientController {
         response.put(HealthCareConstants.DATA, data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    // Task 213: Upload Lab Result
+    // This API uploads the lab result file/details for a patient.
+    // After successful upload, the lab result is saved into DB
+    // and returns CREATED (201) response with saved data.
+    @PostMapping("/{patientId}/lab-results")
+    public ResponseEntity<Map<String, Object>> uploadLabResult(
+            @PathVariable Long patientId,
+            @RequestBody LabResult labResult) {
+
+        LabResult saved = labResultService.uploadLabResult(patientId, labResult);
+
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put(HealthCareConstants.STATUS, HttpStatus.CREATED.value());
+        response.put(HealthCareConstants.MESSAGE, HealthCareConstants.LAB_RESULT_UPLOADED_SUCCESSFULLY);
+        response.put(HealthCareConstants.DATA, saved);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
     }
 }
