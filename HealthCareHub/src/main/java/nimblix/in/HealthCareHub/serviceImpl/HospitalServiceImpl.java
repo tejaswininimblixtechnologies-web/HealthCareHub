@@ -2,6 +2,10 @@ package nimblix.in.HealthCareHub.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.model.Hospital;
+import nimblix.in.HealthCareHub.model.Role;
+import nimblix.in.HealthCareHub.model.User;
+import nimblix.in.HealthCareHub.repository.HospitalRepository;
+import nimblix.in.HealthCareHub.repository.UserRepository;
 import nimblix.in.HealthCareHub.model.Medicine;
 import nimblix.in.HealthCareHub.repository.HospitalRepository;
 import nimblix.in.HealthCareHub.repository.MedicineRepository;
@@ -20,14 +24,24 @@ import java.util.Optional;
 public class HospitalServiceImpl implements HospitalService {
 
     private final HospitalRepository hospitalRepository;
+    private final UserRepository userRepository;
+
     private final MedicineRepository medicineRepository;
     @Override
     public String registerHospital(HospitalRegistrationRequest request) {
 
-
         if (hospitalRepository.findByName(request.getName()).isPresent()) {
             return "Hospital already exists";
         }
+
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .role(request.getRole() != null ? request.getRole() : Role.HOSPITAL)
+                .enabled(true)
+                .build();
+
+        userRepository.save(user);
 
         Hospital hospital = Hospital.builder()
                 .name(request.getName())
