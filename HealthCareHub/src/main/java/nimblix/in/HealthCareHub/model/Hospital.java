@@ -71,6 +71,7 @@ public class Hospital {
         private String roomNumber;
         private String roomType;
         private boolean available;
+        private String roomStatus;
 
     }
 }

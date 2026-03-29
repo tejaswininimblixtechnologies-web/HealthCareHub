@@ -11,4 +11,5 @@ public class RoomResponse {
     private String roomNumber;
     private String roomType;
     private boolean available;
+    private String roomStatus;
 }

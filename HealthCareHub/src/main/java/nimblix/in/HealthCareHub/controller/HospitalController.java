@@ -3,8 +3,10 @@ package nimblix.in.HealthCareHub.controller;
 import lombok.RequiredArgsConstructor;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.request.MedicineAddRequest;
+import nimblix.in.HealthCareHub.request.RoomRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 import nimblix.in.HealthCareHub.service.HospitalService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,5 +54,15 @@ public class HospitalController {
             @PathVariable Long hospitalId) {
 
         return hospitalService.getAvailableRooms(hospitalId);
+    }
+
+    @PatchMapping("/{hospitalId}/room-status")
+    public ResponseEntity<RoomResponse> updateRoomStatus(
+            @PathVariable Long hospitalId,
+            @RequestBody RoomRequest request) {
+
+        RoomResponse response = hospitalService.updateRoomStatus(hospitalId, request);
+
+        return ResponseEntity.ok(response);
     }
 }

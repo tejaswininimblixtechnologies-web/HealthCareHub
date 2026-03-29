@@ -3,6 +3,7 @@ package nimblix.in.HealthCareHub.service;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 
 import nimblix.in.HealthCareHub.request.MedicineAddRequest;
+import nimblix.in.HealthCareHub.request.RoomRequest;
 import nimblix.in.HealthCareHub.response.RoomResponse;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public interface HospitalService {
     void addRooms(Long hospitalId, List<HospitalRegistrationRequest.Room> rooms);
 
     List<RoomResponse> getAvailableRooms(Long hospitalId);
+
+    RoomResponse updateRoomStatus(Long hospitalId, RoomRequest request);
+
 
 
 }
